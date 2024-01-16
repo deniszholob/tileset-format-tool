@@ -1,7 +1,7 @@
 {
-  "name": "template_ts_app_name",
-  "short_name": "template_ts_app_name",
-  "description": "template_ts_app_description",
+  "name": "Tileset Format Tool",
+  "short_name": "Tileset Format Tool",
+  "description": "tileset_format_tool_description",
   "theme_color": "#ffffff",
   "background_color": "#000000",
   "display": "standalone",
