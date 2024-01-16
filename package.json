@@ -1,10 +1,10 @@
 {
-  "name": "template-ts-app",
+  "name": "tileset-format-tool",
   "version": "0.0.0",
   "license": "GPL-3",
   "author": "Denis Zholob",
-  "description": "template_ts_app_description",
-  "repository": "github:deniszholob/template-ts-app",
+  "description": "tileset_format_tool_description",
+  "repository": "github:deniszholob/tileset-format-tool",
   "private": true,
   "main": "index.js",
   "scripts": {

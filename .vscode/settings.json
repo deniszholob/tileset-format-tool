@@ -77,6 +77,8 @@
     "**/*.d.ts": false,
     "**/debug.log": false
   },
-  "cSpell.words": [],
-  "liveServer.settings.port": 5502
+  "cSpell.words": [
+    "tilesets"
+  ],
+  "liveServer.settings.port": 5501
 }

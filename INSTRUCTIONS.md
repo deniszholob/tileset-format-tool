@@ -2,9 +2,9 @@
 
 - Create new repo from this template repo: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template
 - Clone to your machine
-- Replace `template-ts-app` with your project `dashed-name`
-- Replace `template_ts_app_name` with your `Project Name`
-- Replace `template_ts_app_description` with your `Project Description`
+- Replace `tileset-format-tool` with your project `dashed-name`
+- Replace `tileset_format_tool` with your `Project Name`
+- Replace `tileset_format_tool_description` with your `Project Description`
 - Replace `#ffffff` with your project theme color
 - replace `#000000` with your project bg color
 - Replace `Denis Zholob` with your name
@@ -14,11 +14,11 @@
 - Write your app
 - Add screenshot to [screenshots](./screenshots) folder and remove the .gitkeep file
 - In the repo enable workflow permissions for deploying to pages
-  - Go to repo settings for Actions: https://github.com/deniszholob/template-ts-app/settings/actions
+  - Go to repo settings for Actions: https://github.com/deniszholob/tileset-format-tool/settings/actions
   - Under Workflow Permissions change to "Read and write permissions"
 - Push code to github
 - Enable pages deployment
-  - Go to repo settings for Pages: https://github.com/deniszholob/template-ts-app/settings/pages
+  - Go to repo settings for Pages: https://github.com/deniszholob/tileset-format-tool/settings/pages
   - Under `Source` dropdown select `Deploy from branch`
   - Under `Branch` dropdown select `gh-pages` clicks save
 - Add url to About section

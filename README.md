@@ -1,11 +1,11 @@
-# template_ts_app_name [App](https://deniszholob.github.io/template-ts-app/)
+# Tileset Format Tool [App](https://deniszholob.github.io/tileset-format-tool/)
 
-template_ts_app_description
+tileset_format_tool_description
 
-## Deployments [![Build Status](https://github.com/deniszholob/template-ts-app/actions/workflows/main.yml/badge.svg)](https://github.com/deniszholob/template-ts-app/actions/workflows/main.yml)
+## Deployments [![Build Status](https://github.com/deniszholob/tileset-format-tool/actions/workflows/main.yml/badge.svg)](https://github.com/deniszholob/tileset-format-tool/actions/workflows/main.yml)
 
 - Master branch is for the source code that's hosted on
-  [GhPages](https://deniszholob.github.io/template-ts-app/)
+  [GhPages](https://deniszholob.github.io/tileset-format-tool/)
 
 # Support Me
 
@@ -16,4 +16,4 @@ If you find the cheat sheet or the source code useful, consider:
 
 # Screenshots
 
-![template_ts_app_name](screenshots/template-ts-app-screenshot.png)
+![Tileset Format Tool](screenshots/tileset-format-tool-screenshot.png)

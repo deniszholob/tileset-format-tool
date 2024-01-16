@@ -6,9 +6,12 @@
 
 1. Ensure [NodeJS](https://nodejs.org/) version 18.12.1 LTS or later is installed on your system.
 2. Install [VSCode](https://code.visualstudio.com/) v1.74 or later
-3. Clone the repository using git cli or ui like github desktop/sourcetree/gitkraken etc...
-4. Open the cloned folder using VSCode and install recommended extensions
+3. Clone the repository using `git` cli or ui like github desktop/sourcetree/gitkraken etc...
+4. Open the cloned folder using VSCode and `install recommended extensions` (make sure you have `ritwickdey.liveserver` to be able to hos the index.html)
 5. Run `npm run i` in the folder that you've just cloned to ensure you have all dependencies that are needed for development.
+6. Run `npm run copy:watch` to copy static files to public directory
+7. Run `npm run ts:watch` to compile typescript into javascript and put into public directory
+8. In vscode; right click on the [public/index.html](public/index.html) and `Open with Live Server` to open the app with hot reloading
 
 ## Hidden Files in VSCode
 

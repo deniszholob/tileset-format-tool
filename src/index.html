@@ -6,32 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="Denis Zholob" />
     <meta name="keywords" content="Denis, Zholob" />
-    <meta name="title" content="template_ts_app_name" />
-    <meta name="description" content="template_ts_app_description" />
+    <meta name="title" content="Tileset Format Tool" />
+    <meta name="description" content="tileset_format_tool_description" />
 
     <!-- Google / Search Engine Tags -->
-    <meta itemprop="name" content="template_ts_app_name" />
-    <meta itemprop="description" content="template_ts_app_description" />
+    <meta itemprop="name" content="Tileset Format Tool" />
+    <meta itemprop="description" content="tileset_format_tool_description" />
     <meta itemprop="image" content="assets/icons/splash.png" />
 
     <!-- Facebook Meta Tags -->
-    <meta property="og:url" content="https://github.com/deniszholob/template-ts-app" />
+    <meta property="og:url" content="https://github.com/deniszholob/tileset-format-tool" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="template_ts_app_name" />
-    <meta property="og:description" content="template_ts_app_description" />
+    <meta property="og:title" content="Tileset Format Tool" />
+    <meta property="og:description" content="tileset_format_tool_description" />
     <meta property="og:image" content="assets/icons/splash.png" />
     <meta property="og:author" content="Denis Zholob" />
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="template_ts_app_name" />
-    <meta name="twitter:description" content="template_ts_app_description" />
+    <meta name="twitter:title" content="Tileset Format Tool" />
+    <meta name="twitter:description" content="tileset_format_tool_description" />
     <meta name="twitter:image" content="assets/icons/splash.png" />
     <meta name="twitter:site" content="@deniszholob" />
     <meta name="twitter:creator" content="@deniszholob" />
 
     <!-- Title/Icon -->
-    <title>template_ts_app_name</title>
+    <title>Tileset Format Tool</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
@@ -83,11 +83,212 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="./styles/styles.css" />
     <!-- TODO: Remove sandbox Tailwind -->
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
-  <body onload="onLoad()">
-    Hello World!
+  <body
+    class="bg-stone-600 min-h-screen min-w-screen flex justify-center flex-col p-4"
+    onload="onLoad()"
+  >
+    <div class="w-full p-4 bg-stone-200 shadow-md rounded-md">
+      <div
+        id="ImageUpload"
+        class="flex flex-row items-center justify-between p-4 border border-gray-300 rounded-md bg-blue-500 text-white flex-1 container-max m-auto flex-wrap"
+      >
+        <div class="flex flex-col justify-center flex-1">
+          <label for="imageInput" class="mb-2 text-xl">Upload Tile Set</label>
+
+          <input type="file" id="imageInput" accept="image/*" class="" onchange="onImageUpload()" />
+        </div>
+
+        <div class="flex-1 flex flex-col">
+          <img
+            id="uploadImagePreview"
+            alt="Uploaded Image"
+            class="max-h-full w-auto min-w-32 image-pixelated"
+          />
+          <p class="text-center"><span class="text-bold" id="uploadImageDimensions"></span></p>
+        </div>
+      </div>
+
+      <hr class="my-4 border-blue-500" />
+
+      <div id="Settings" class="flex flex-col gap-4 py-4 container-max m-auto">
+        <!-- <h2 class="text-xl text-center">Settings</h2> -->
+
+        <div
+          class="flex flex-row gap-4 flex-wrap border border-gray-300 rounded-md p-4 bg-stone-100"
+        >
+          <div class="flex items-center flex-1">
+            <label for="tileSizeInput" class="mr-2">Square Tile Size (px):</label>
+            <input
+              type="number"
+              id="tileSizeInput"
+              class="p-2 border border-gray-300 rounded-md"
+              min="1"
+              value="32"
+              oninput="onTileSizeChange()"
+              disabled
+            />
+          </div>
+
+          <div class="flex items-center flex-1">
+            <label for="rowsInput" class="mr-2">Rows:</label>
+            <input
+              type="number"
+              id="rowsInput"
+              class="p-2 border border-gray-300 rounded-md 1"
+              min="1"
+              value="1"
+              oninput="onNumRowsChange()"
+              disabled
+            />
+          </div>
+
+          <div class="flex items-center flex-1">
+            <label for="columnsInput" class="mr-2">Columns: </label>
+            <input
+              type="number"
+              id="columnsInput"
+              class="p-2 border border-gray-300 rounded-md"
+              min="1"
+              value="1"
+              oninput="onNumColsChange()"
+              disabled
+            />
+          </div>
+        </div>
+
+        <div
+          class="flex flex-row gap-4 flex-wrap border border-gray-300 rounded-md p-4 bg-stone-100"
+        >
+          <div class="flex-1">
+            <label for="sourcePaddingInput" class="mr-2">Source Padding (px):</label>
+            <input
+              type="number"
+              id="sourcePaddingInput"
+              class="p-2 border border-gray-300 rounded-md"
+              value="0"
+              oninput="onUpdateSourcePadding()"
+            />
+          </div>
+
+          <div class="flex-1">
+            <label for="outputPaddingInput" class="mr-2">Output Padding (px):</label>
+            <input
+              type="number"
+              id="outputPaddingInput"
+              class="p-2 border border-gray-300 rounded-md"
+              value="1"
+              oninput="onUpdateOutputPadding()"
+            />
+          </div>
+
+          <div class="flex-1">
+            <label for="bgColorInput" class="mr-2">BG Color:</label>
+            <input type="color" id="bgColorInput" value="#ff0000" oninput="onUpdateBgColor()" />
+          </div>
+
+          <div class="flex-1">
+            <label for="bgAlphaInput" class="mr-2">BG Alpha:</label>
+            <input
+              type="number"
+              id="bgAlphaInput"
+              value="100"
+              oninput="onUpdateBgAlpha()"
+              min="0"
+              max="100"
+              step="1"
+            />
+          </div>
+
+          <div class="flex-1">
+            <label for="renderTileIds" class="mr-2">Render Tile Ids:</label>
+            <input
+              type="checkbox"
+              id="renderTileIds"
+              onclick="onToggleRenderTileIds()"
+              checked="true"
+            />
+          </div>
+        </div>
+
+        <button onclick="onProcessImage()" class="bg-blue-500 text-white px-4 py-2 rounded-md">
+          Process Image
+        </button>
+      </div>
+
+      <hr class="my-4 border-blue-500" />
+
+      <div id="Preview" class="flex flex-row justify-evenly gap-4 mb-4 flex-wrap">
+        <div class="flex flex-col gap-4 border border-gray-300 rounded-md p-4 flex-1 bg-stone-100">
+          <div>
+            <h2 class="text-xl text-center pb-4">Tiled Input</h2>
+            <label for="inputTileSetSelect" class="mr-2">Input Tileset:</label>
+            <select
+              id="inputTileSetSelect"
+              class="p-2 border border-gray-300 rounded-md"
+              onchange="onUpdateInputTileSet()"
+            >
+              <option value="0" selected>Option 0</option>
+            </select>
+          </div>
+
+          <div class="block p-4 rounded-md border border-gray-300">
+            <p class="text-center mb-2">Input Bit Mask</p>
+            <span>TODO</span>
+          </div>
+
+          <a
+            id="inputImagePreviewLink"
+            download="input_image.png"
+            class="block p-4 rounded-md border border-gray-300"
+          >
+            <p class="text-center mb-2">
+              Input Tile Set <span class="text-bold" id="inputImagePreviewDimensions"></span>
+            </p>
+            <img
+              id="inputImagePreview"
+              class="w-full h-auto border border-gray-300 image-pixelated min-w-24 bg-checkerboard"
+              alt="Input Tile Set"
+            />
+          </a>
+        </div>
+
+        <div class="flex flex-col gap-4 border border-gray-300 rounded-md p-4 flex-1 bg-stone-100">
+          <div>
+            <h2 class="text-xl text-center pb-4">Tiled Output</h2>
+            <label for="outputTileSetSelect" class="mr-2">Output Tile Set:</label>
+            <select
+              id="outputTileSetSelect"
+              class="p-2 border border-gray-300 rounded-md"
+              onchange="onUpdateOutputTileSet()"
+            >
+              <option value="0" selected>Option 0</option>
+            </select>
+          </div>
+
+          <div class="block p-4 rounded-md border border-gray-300">
+            <p class="text-center mb-2">Output Bit Mask</p>
+            <span>TODO</span>
+          </div>
+          <a
+            id="outputImagePreviewLink"
+            download="output_image.png"
+            class="block p-4 rounded-md border border-gray-300"
+          >
+            <p class="text-center mb-2">
+              Output Tile Set <span class="text-bold" id="outputImagePreviewDimensions"></span>
+            </p>
+            <img
+              id="outputImagePreview"
+              class="w-full h-auto border border-gray-300 image-pixelated min-w-24 bg-checkerboard"
+              alt="Output Tile Set"
+            />
+          </a>
+        </div>
+      </div>
+    </div>
 
     <!-- https://jakearchibald.com/2017/es-modules-in-browsers/ -->
     <script src="./js/main.js" type="module"></script>
