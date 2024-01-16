@@ -1,0 +1,49 @@
+{
+  "name": "template-ts-app",
+  "version": "0.0.0",
+  "license": "GPL-3",
+  "author": "Denis Zholob",
+  "description": "template_ts_app_description",
+  "repository": "github:deniszholob/template-ts-app",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "ci": "npm ci",
+    "i": "npm i",
+    "ts:build": "tsc",
+    "ts:watch": "tsc -w",
+    "copy:build": "copy-and-watch --clean src/index.html src/meta/**/* src/icons/**/* global/**/* public/",
+    "copy:watch": "copy-and-watch --watch src/index.html src/meta/**/!(*.md) src/icons/**/!(*.md) global/**/!(*.md,*.gitkeep) public/",
+    "lint": "npx eslint .",
+    "lint:fix": "npx eslint . --fix",
+    "lint:err": "npx eslint . --quiet",
+    "format:fix": "npx prettier . --write",
+    "format:check": "npx prettier . --check",
+    "build:prod": "npm run copy:build && npm run ts:build",
+    "npmVersionPatch": "npm version patch",
+    "pre-commit": "npx lint-staged",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx,js,jsx}": [
+      "eslint --fix"
+    ],
+    "**/*": [
+      "prettier --write --ignore-unknown"
+    ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "copy-and-watch": "0.1.6",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-simple-import-sort": "10.0.0",
+    "eslint-plugin-unused-imports": "3.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "3.2.2",
+    "prettier-plugin-organize-attributes": "1.0.0",
+    "typescript": "^5.3.3"
+  }
+}
