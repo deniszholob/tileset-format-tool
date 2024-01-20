@@ -33,7 +33,7 @@ export class TileSet implements TileSetBase {
 export const TILE_SETS: TileSet[] = [
   new TileSet({
     name: 'blob-steampunk',
-    link: 'hhttps://opengameart.org/content/steampunk-brick-new-connecting-tileset-16x16',
+    link: 'https://opengameart.org/content/steampunk-brick-new-connecting-tileset-16x16',
     set: [
       [0, 4, 68, 64, 20, 80, 21, 84, 87, 93, 245, 215],
       [16, 28, 124, 112, 5, 65, 69, 81, 213, 117, 125, 95],
@@ -116,7 +116,7 @@ export const TILE_SETS: TileSet[] = [
   }),
   new TileSet({
     name: 'lpc-terrain',
-    link: 'hhttps://opengameart.org/',
+    link: 'https://opengameart.org/',
     set: [
       [0, 247, 223],
       [0, 253, 127],
