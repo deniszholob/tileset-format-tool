@@ -90,6 +90,9 @@
     class="bg-stone-600 min-h-screen min-w-screen flex justify-center flex-col p-4"
     onload="onLoad()"
   >
+    <!-- Without this image doesn't load programmatically for some reason -->
+    <img src="assets/bit-mask-tiles.png" class="hidden" />
+
     <div class="w-full p-4 bg-stone-200 shadow-md rounded-md">
       <div
         id="ImageUpload"
@@ -224,7 +227,7 @@
         <div class="flex flex-col gap-4 border border-gray-300 rounded-md p-4 flex-1 bg-stone-100">
           <div>
             <h2 class="text-xl text-center pb-4">Tiled Input</h2>
-            <label for="inputTileSetSelect" class="mr-2">Input Tileset:</label>
+            <label for="inputTileSetSelect" class="mr-2">Input Tile Set:</label>
             <select
               id="inputTileSetSelect"
               class="p-2 border border-gray-300 rounded-md"
@@ -234,10 +237,20 @@
             </select>
           </div>
 
-          <div class="block p-4 rounded-md border border-gray-300">
-            <p class="text-center mb-2">Input Bit Mask</p>
-            <span>TODO</span>
-          </div>
+          <a
+            id="inputImageBitMaskLink"
+            download="input_image_bit_mask.png"
+            class="block p-4 rounded-md border border-gray-300"
+          >
+            <p class="text-center mb-2">
+              Input Bit Mask <span class="text-bold" id="inputImageBitMaskDimensions"></span>
+            </p>
+            <img
+              id="inputImageBitMask"
+              class="w-full h-auto border border-gray-300 image-pixelated min-w-24 bg-checkerboard"
+              alt="Input Bit Mask"
+            />
+          </a>
 
           <a
             id="inputImagePreviewLink"
@@ -268,10 +281,21 @@
             </select>
           </div>
 
-          <div class="block p-4 rounded-md border border-gray-300">
-            <p class="text-center mb-2">Output Bit Mask</p>
-            <span>TODO</span>
-          </div>
+          <a
+            id="outputImageBitMaskLink"
+            download="output_image_bit_mask.png"
+            class="block p-4 rounded-md border border-gray-300"
+          >
+            <p class="text-center mb-2">
+              Output Bit Mask <span class="text-bold" id="outputImageBitMaskDimensions"></span>
+            </p>
+            <img
+              id="outputImageBitMask"
+              class="w-full h-auto border border-gray-300 image-pixelated min-w-24 bg-checkerboard"
+              alt="Output Bit Mask"
+            />
+          </a>
+
           <a
             id="outputImagePreviewLink"
             download="output_image.png"

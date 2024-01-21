@@ -8,10 +8,6 @@
   image-rendering: pixelated;
 }
 
-/* img {
-  min-width: 200px;
-} */
-
 .container-max {
   max-width: 1024px;
 }
