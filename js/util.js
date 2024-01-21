@@ -2,9 +2,12 @@ export function renderTextOnCanvas(canvas, text, x, y, fontSize) {
     const context = canvas.getContext('2d');
     if (!context)
         throw new Error(`Cannot load Canvas Context`);
-    // context.imageSmoothingEnabled = false;
+    context.imageSmoothingEnabled = false;
+    // context.textRendering = 'geometricPrecision';
     context.fillStyle = 'black';
-    context.font = `${fontSize}px Arial`;
+    // context.font = `${fontSize}px Arial`;
+    context.font = `${Math.round(fontSize)}px VT323 monospace`;
+    // console.log(Math.round(fontSize));
     const textWidth = context.measureText(text).width;
     const textX = x - textWidth / 2;
     const textY = y + fontSize / 2;
@@ -52,6 +55,13 @@ export function htmlImageToCanvasImage(image) {
 // }
 /** @ref https://learnersbucket.com/examples/interview/convert-hex-color-to-rgb-in-javascript/ */
 export class Color {
+    /** #000000 */
+    hex;
+    /** */
+    a;
+    r;
+    g;
+    b;
     /**
      * @param hex Hex color value, e.g. #000000
      * @param alpha 0-100

@@ -1,25 +1,42 @@
 export class HtmlElements {
-    constructor() {
-        this.imageInput = this.getElementById('imageInput');
-        this.uploadImagePreview = this.getElementById('uploadImagePreview');
-        this.uploadImageDimensions = this.getElementById('uploadImageDimensions');
-        this.tileSizeInput = this.getElementById('tileSizeInput');
-        this.rowsInput = this.getElementById('rowsInput');
-        this.columnsInput = this.getElementById('columnsInput');
-        this.sourcePaddingInput = this.getElementById('sourcePaddingInput');
-        this.outputPaddingInput = this.getElementById('outputPaddingInput');
-        this.bgColorInput = this.getElementById('bgColorInput');
-        this.bgAlphaInput = this.getElementById('bgAlphaInput');
-        this.renderTileIds = this.getElementById('renderTileIds');
-        this.inputImagePreview = this.getElementById('inputImagePreview');
-        this.inputImagePreviewDimensions = this.getElementById('inputImagePreviewDimensions');
-        this.outputImagePreview = this.getElementById('outputImagePreview');
-        this.outputImagePreviewDimensions = this.getElementById('outputImagePreviewDimensions');
-        this.inputImagePreviewLink = this.getElementById('inputImagePreviewLink');
-        this.outputImagePreviewLink = this.getElementById('outputImagePreviewLink');
-        this.inputTileSetSelect = this.getElementById('inputTileSetSelect');
-        this.outputTileSetSelect = this.getElementById('outputTileSetSelect');
-    }
+    updateDate = this.getElementById('updateDate');
+    imageInput = this.getElementById('imageInput');
+    uploadImagePreview = this.getElementById('uploadImagePreview');
+    uploadImageDimensions = this.getElementById('uploadImageDimensions');
+    // =================================================
+    tileSizeInput = this.getElementById('tileSizeInput');
+    rowsInput = this.getElementById('rowsInput');
+    columnsInput = this.getElementById('columnsInput');
+    // =================================================
+    sourceImageBorderSizeInput = this.getElementById('sourceImageBorderSizeInput');
+    sourceBorderSizeInput = this.getElementById('sourceBorderSizeInput');
+    outputBorderSizeInput = this.getElementById('outputBorderSizeInput');
+    bgColorInput = this.getElementById('bgColorInput');
+    bgAlphaInput = this.getElementById('bgAlphaInput');
+    renderTileIds = this.getElementById('renderTileIds');
+    // =================================================
+    inputTileSetSelect = this.getElementById('inputTileSetSelect');
+    inputTileSetLink = this.getElementById('inputTileSetLink');
+    // -------------------------------------------------
+    inputImageBitMaskLink = this.getElementById('inputImageBitMaskLink');
+    inputImageBitMaskDimensions = this.getElementById('inputImageBitMaskDimensions');
+    inputImageBitMask = this.getElementById('inputImageBitMask');
+    // -------------------------------------------------
+    inputImagePreviewLink = this.getElementById('inputImagePreviewLink');
+    inputImagePreviewDimensions = this.getElementById('inputImagePreviewDimensions');
+    inputImagePreview = this.getElementById('inputImagePreview');
+    // =================================================
+    outputTileSetSelect = this.getElementById('outputTileSetSelect');
+    outputTileSetLink = this.getElementById('outputTileSetLink');
+    // -------------------------------------------------
+    outputImageBitMaskLink = this.getElementById('outputImageBitMaskLink');
+    outputImageBitMaskDimensions = this.getElementById('outputImageBitMaskDimensions');
+    outputImageBitMask = this.getElementById('outputImageBitMask');
+    // -------------------------------------------------
+    outputImagePreviewLink = this.getElementById('outputImagePreviewLink');
+    outputImagePreviewDimensions = this.getElementById('outputImagePreviewDimensions');
+    outputImagePreview = this.getElementById('outputImagePreview');
+    constructor() { }
     getElementById(name) {
         const element = document.getElementById(name);
         if (this.checkNull(element))

@@ -7,25 +7,37 @@
     <meta name="author" content="Denis Zholob" />
     <meta name="keywords" content="Denis, Zholob" />
     <meta name="title" content="Tileset Format Tool" />
-    <meta name="description" content="tileset_format_tool_description" />
+    <meta
+      name="description"
+      content="Tile set tool to convert wetween different tile set formats, and modify borders."
+    />
 
     <!-- Google / Search Engine Tags -->
     <meta itemprop="name" content="Tileset Format Tool" />
-    <meta itemprop="description" content="tileset_format_tool_description" />
+    <meta
+      itemprop="description"
+      content="Tile set tool to convert wetween different tile set formats, and modify borders."
+    />
     <meta itemprop="image" content="assets/icons/splash.png" />
 
     <!-- Facebook Meta Tags -->
     <meta property="og:url" content="https://github.com/deniszholob/tileset-format-tool" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Tileset Format Tool" />
-    <meta property="og:description" content="tileset_format_tool_description" />
+    <meta
+      property="og:description"
+      content="Tile set tool to convert wetween different tile set formats, and modify borders."
+    />
     <meta property="og:image" content="assets/icons/splash.png" />
     <meta property="og:author" content="Denis Zholob" />
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Tileset Format Tool" />
-    <meta name="twitter:description" content="tileset_format_tool_description" />
+    <meta
+      name="twitter:description"
+      content="Tile set tool to convert wetween different tile set formats, and modify borders."
+    />
     <meta name="twitter:image" content="assets/icons/splash.png" />
     <meta name="twitter:site" content="@deniszholob" />
     <meta name="twitter:creator" content="@deniszholob" />
@@ -61,7 +73,8 @@
       crossorigin="anonymous"> -->
 
     <!-- Fonts -->
-    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?"> -->
+    <!-- https://fonts.google.com/specimen/VT323?preview.text=0123456789&query=VT323+ -->
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
     <script
       defer
       src="https://use.fontawesome.com/releases/v6.4.0/js/all.js"
@@ -87,135 +100,194 @@
   </head>
 
   <body
-    class="bg-stone-600 min-h-screen min-w-screen flex justify-center flex-col p-4"
+    class="bg-stone-200 min-h-screen min-w-screen flex justify-center flex-col"
     onload="onLoad()"
   >
-    <div class="w-full p-4 bg-stone-200 shadow-md rounded-md">
-      <div
-        id="ImageUpload"
-        class="flex flex-row items-center justify-between p-4 border border-gray-300 rounded-md bg-blue-500 text-white flex-1 container-max m-auto flex-wrap"
-      >
-        <div class="flex flex-col justify-center flex-1">
-          <label for="imageInput" class="mb-2 text-xl">Upload Tile Set</label>
+    <!-- Without this image doesn't load programmatically for some reason -->
+    <img src="assets/bit-mask-tiles.png" class="hidden" />
 
-          <input type="file" id="imageInput" accept="image/*" class="" onchange="onImageUpload()" />
+    <div class="w-full p-4 m-auto" style="max-width: 1920px">
+      <div id="header" class="flex flex-row justify-evenly items-center">
+        <div class="inline-flex gap-4 items-center">
+          <h1 class="text-3xl">Tile Set Format Tool</h1>
+          <a
+            href="https://gamedev.stackexchange.com/questions/148460/combinations-for-tiling-two-textures-together/148464#148464"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-blue-600 hover:text-blue-500 underline"
+          >
+            Tile Sets Overview
+          </a>
         </div>
 
-        <div class="flex-1 flex flex-col">
-          <img
-            id="uploadImagePreview"
-            alt="Uploaded Image"
-            class="max-h-full w-auto min-w-32 image-pixelated"
-          />
-          <p class="text-center"><span class="text-bold" id="uploadImageDimensions"></span></p>
+        <div>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-blue-600 hover:text-blue-500 underline"
+            href="https://github.com/deniszholob/tileset-format-tool"
+          >
+            Github
+          </a>
+          <span>Updated: <span id="updateDate"></span></span>
         </div>
       </div>
 
       <hr class="my-4 border-blue-500" />
 
-      <div id="Settings" class="flex flex-col gap-4 py-4 container-max m-auto">
-        <!-- <h2 class="text-xl text-center">Settings</h2> -->
+      <div class="flex flex-wrap flex-row gap-4">
+        <div id="Image" class="flex flex-col gap-4 container-max m-auto">
+          <div
+            id="ImageUpload"
+            class="flex flex-row items-center justify-between p-4 border border-gray-300 rounded-md bg-blue-500 text-white flex-1 container-max m-auto flex-wrap"
+          >
+            <div class="flex flex-col justify-center flex-1">
+              <label for="imageInput" class="mb-2 text-xl">Upload Tile Set</label>
 
-        <div
-          class="flex flex-row gap-4 flex-wrap border border-gray-300 rounded-md p-4 bg-stone-100"
-        >
-          <div class="flex items-center flex-1">
-            <label for="tileSizeInput" class="mr-2">Square Tile Size (px):</label>
-            <input
-              type="number"
-              id="tileSizeInput"
-              class="p-2 border border-gray-300 rounded-md"
-              min="1"
-              value="32"
-              oninput="onTileSizeChange()"
-              disabled
-            />
+              <input
+                type="file"
+                id="imageInput"
+                accept="image/*"
+                class=""
+                onchange="onImageUpload()"
+              />
+            </div>
+
+            <div class="flex-1 flex flex-col">
+              <img
+                id="uploadImagePreview"
+                alt="Uploaded Image"
+                class="h-40 w-auto object-contain m-auto image-pixelated"
+              />
+              <p class="text-center"><span class="text-bold" id="uploadImageDimensions"></span></p>
+            </div>
           </div>
 
-          <div class="flex items-center flex-1">
-            <label for="rowsInput" class="mr-2">Rows:</label>
-            <input
-              type="number"
-              id="rowsInput"
-              class="p-2 border border-gray-300 rounded-md 1"
-              min="1"
-              value="1"
-              oninput="onNumRowsChange()"
-              disabled
-            />
-          </div>
+          <div
+            class="flex flex-row gap-4 flex-wrap border border-gray-300 rounded-md p-4 bg-stone-100"
+          >
+            <div class="flex items-center flex-1">
+              <label for="tileSizeInput" class="mr-2">Square Tile Size (px):</label>
+              <input
+                type="number"
+                id="tileSizeInput"
+                class="p-2 border border-gray-300 rounded-md max-w-20"
+                min="1"
+                value="32"
+                oninput="onTileSizeChange()"
+                disabled
+              />
+            </div>
 
-          <div class="flex items-center flex-1">
-            <label for="columnsInput" class="mr-2">Columns: </label>
-            <input
-              type="number"
-              id="columnsInput"
-              class="p-2 border border-gray-300 rounded-md"
-              min="1"
-              value="1"
-              oninput="onNumColsChange()"
-              disabled
-            />
-          </div>
-        </div>
+            <div class="flex items-center flex-1">
+              <label for="rowsInput" class="mr-2">Rows:</label>
+              <input
+                type="number"
+                id="rowsInput"
+                class="p-2 border border-gray-300 rounded-md max-w-20"
+                min="1"
+                value="1"
+                oninput="onNumRowsChange()"
+                disabled
+              />
+            </div>
 
-        <div
-          class="flex flex-row gap-4 flex-wrap border border-gray-300 rounded-md p-4 bg-stone-100"
-        >
-          <div class="flex-1">
-            <label for="sourcePaddingInput" class="mr-2">Source Padding (px):</label>
-            <input
-              type="number"
-              id="sourcePaddingInput"
-              class="p-2 border border-gray-300 rounded-md"
-              value="0"
-              oninput="onUpdateSourcePadding()"
-            />
-          </div>
-
-          <div class="flex-1">
-            <label for="outputPaddingInput" class="mr-2">Output Padding (px):</label>
-            <input
-              type="number"
-              id="outputPaddingInput"
-              class="p-2 border border-gray-300 rounded-md"
-              value="1"
-              oninput="onUpdateOutputPadding()"
-            />
-          </div>
-
-          <div class="flex-1">
-            <label for="bgColorInput" class="mr-2">BG Color:</label>
-            <input type="color" id="bgColorInput" value="#ff0000" oninput="onUpdateBgColor()" />
-          </div>
-
-          <div class="flex-1">
-            <label for="bgAlphaInput" class="mr-2">BG Alpha:</label>
-            <input
-              type="number"
-              id="bgAlphaInput"
-              value="100"
-              oninput="onUpdateBgAlpha()"
-              min="0"
-              max="100"
-              step="1"
-            />
-          </div>
-
-          <div class="flex-1">
-            <label for="renderTileIds" class="mr-2">Render Tile Ids:</label>
-            <input
-              type="checkbox"
-              id="renderTileIds"
-              onclick="onToggleRenderTileIds()"
-              checked="true"
-            />
+            <div class="flex items-center flex-1">
+              <label for="columnsInput" class="mr-2">Columns: </label>
+              <input
+                type="number"
+                id="columnsInput"
+                class="p-2 border border-gray-300 rounded-md max-w-20"
+                min="1"
+                value="1"
+                oninput="onNumColsChange()"
+                disabled
+              />
+            </div>
           </div>
         </div>
 
-        <button onclick="onProcessImage()" class="bg-blue-500 text-white px-4 py-2 rounded-md">
-          Process Image
-        </button>
+        <!-- <hr class="my-4 border-blue-500" /> -->
+
+        <div id="Settings" class="flex flex-col gap-4 container-max m-auto">
+          <!-- <h2 class="text-xl text-center">Settings</h2> -->
+
+          <div
+            class="flex flex-row gap-4 flex-wrap border border-gray-300 rounded-md p-4 bg-stone-100"
+          >
+            <div class="flex-1">
+              <label for="sourceImageBorderSizeInput" class="mr-2">
+                Source Image Border (px):
+              </label>
+              <input
+                type="number"
+                id="sourceImageBorderSizeInput"
+                class="p-2 border border-gray-300 rounded-md max-w-20"
+                value="0"
+                oninput="onUpdateSourceImageBorderSize()"
+              />
+            </div>
+
+            <div class="flex-1">
+              <label for="sourceBorderSizeInput" class="mr-2">Source Tile Border (px):</label>
+              <input
+                type="number"
+                id="sourceBorderSizeInput"
+                class="p-2 border border-gray-300 rounded-md max-w-20"
+                value="0"
+                oninput="onUpdateSourceBorderSize()"
+              />
+            </div>
+
+            <div class="flex-1">
+              <label for="outputBorderSizeInput" class="mr-2">Output Tile Border (px):</label>
+              <input
+                type="number"
+                id="outputBorderSizeInput"
+                class="p-2 border border-gray-300 rounded-md max-w-20"
+                value="1"
+                oninput="onUpdateOutputBorderSize()"
+              />
+            </div>
+          </div>
+
+          <div
+            class="flex flex-row gap-4 flex-wrap border border-gray-300 rounded-md p-4 bg-stone-100"
+          >
+            <div class="flex-1">
+              <label for="bgColorInput" class="mr-2">BG Color:</label>
+              <input type="color" id="bgColorInput" value="#ff0000" oninput="onUpdateBgColor()" />
+            </div>
+
+            <div class="flex-1">
+              <label for="bgAlphaInput" class="mr-2">BG Alpha:</label>
+              <input
+                type="number"
+                id="bgAlphaInput"
+                value="100"
+                oninput="onUpdateBgAlpha()"
+                min="0"
+                max="100"
+                step="1"
+                class="p-2 border border-gray-300 rounded-md max-w-20"
+              />
+            </div>
+
+            <div class="flex-1">
+              <label for="renderTileIds" class="mr-2">Render Tile Ids:</label>
+              <input
+                type="checkbox"
+                id="renderTileIds"
+                onclick="onToggleRenderTileIds()"
+                checked="true"
+              />
+            </div>
+          </div>
+
+          <button onclick="onProcessImage()" class="bg-blue-500 text-white px-4 py-2 rounded-md">
+            Process Image
+          </button>
+        </div>
       </div>
 
       <hr class="my-4 border-blue-500" />
@@ -224,7 +296,7 @@
         <div class="flex flex-col gap-4 border border-gray-300 rounded-md p-4 flex-1 bg-stone-100">
           <div>
             <h2 class="text-xl text-center pb-4">Tiled Input</h2>
-            <label for="inputTileSetSelect" class="mr-2">Input Tileset:</label>
+            <label for="inputTileSetSelect" class="mr-2">Input Tile Set:</label>
             <select
               id="inputTileSetSelect"
               class="p-2 border border-gray-300 rounded-md"
@@ -232,12 +304,29 @@
             >
               <option value="0" selected>Option 0</option>
             </select>
+            <a
+              id="inputTileSetLink"
+              href=""
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-blue-600 hover:text-blue-500 underline"
+            ></a>
           </div>
 
-          <div class="block p-4 rounded-md border border-gray-300">
-            <p class="text-center mb-2">Input Bit Mask</p>
-            <span>TODO</span>
-          </div>
+          <a
+            id="inputImageBitMaskLink"
+            download="input_image_bit_mask.png"
+            class="block p-4 rounded-md border border-gray-300"
+          >
+            <p class="text-center mb-2">
+              Input Bit Mask <span class="text-bold" id="inputImageBitMaskDimensions"></span>
+            </p>
+            <img
+              id="inputImageBitMask"
+              class="h-40 w-auto object-contain m-auto border border-gray-300 image-pixelated bg-checkerboard"
+              alt="Input Bit Mask"
+            />
+          </a>
 
           <a
             id="inputImagePreviewLink"
@@ -249,7 +338,7 @@
             </p>
             <img
               id="inputImagePreview"
-              class="w-full h-auto border border-gray-300 image-pixelated min-w-24 bg-checkerboard"
+              class="h-40 w-auto object-contain m-auto border border-gray-300 image-pixelated bg-checkerboard"
               alt="Input Tile Set"
             />
           </a>
@@ -266,12 +355,30 @@
             >
               <option value="0" selected>Option 0</option>
             </select>
+            <a
+              id="outputTileSetLink"
+              href=""
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-blue-600 hover:text-blue-500 underline"
+            ></a>
           </div>
 
-          <div class="block p-4 rounded-md border border-gray-300">
-            <p class="text-center mb-2">Output Bit Mask</p>
-            <span>TODO</span>
-          </div>
+          <a
+            id="outputImageBitMaskLink"
+            download="output_image_bit_mask.png"
+            class="block p-4 rounded-md border border-gray-300"
+          >
+            <p class="text-center mb-2">
+              Output Bit Mask <span class="text-bold" id="outputImageBitMaskDimensions"></span>
+            </p>
+            <img
+              id="outputImageBitMask"
+              class="h-40 w-auto object-contain m-auto border border-gray-300 image-pixelated bg-checkerboard"
+              alt="Output Bit Mask"
+            />
+          </a>
+
           <a
             id="outputImagePreviewLink"
             download="output_image.png"
@@ -282,7 +389,7 @@
             </p>
             <img
               id="outputImagePreview"
-              class="w-full h-auto border border-gray-300 image-pixelated min-w-24 bg-checkerboard"
+              class="h-40 w-auto object-contain m-auto border border-gray-300 image-pixelated bg-checkerboard"
               alt="Output Tile Set"
             />
           </a>

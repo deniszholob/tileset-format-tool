@@ -8,10 +8,6 @@
   image-rendering: pixelated;
 }
 
-/* img {
-  min-width: 200px;
-} */
-
 .container-max {
   max-width: 1024px;
 }
@@ -27,4 +23,8 @@
     0 10px,
     10px -10px,
     -10px 0px;
+}
+
+.pixel-text {
+  font-family: "VT323", monospace;
 }
