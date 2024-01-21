@@ -4,7 +4,7 @@
 - Clone to your machine
 - Replace `tileset-format-tool` with your project `dashed-name`
 - Replace `tileset_format_tool` with your `Project Name`
-- Replace `tileset_format_tool_description` with your `Project Description`
+- Replace `Tile set tool to convert wetween different tile set formats, and modify borders.` with your `Project Description`
 - Replace `#ffffff` with your project theme color
 - replace `#000000` with your project bg color
 - Replace `Denis Zholob` with your name

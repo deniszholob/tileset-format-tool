@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "GPL-3",
   "author": "Denis Zholob",
-  "description": "tileset_format_tool_description",
+  "description": "Tile set tool to convert wetween different tile set formats, and modify borders.",
   "repository": "github:deniszholob/tileset-format-tool",
   "private": true,
   "main": "index.js",
