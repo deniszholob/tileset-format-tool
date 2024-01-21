@@ -5,45 +5,67 @@ export class HtmlElements {
   public uploadImageDimensions: HTMLSpanElement = this.getElementById(
     'uploadImageDimensions',
   );
-
+  // =================================================
   public tileSizeInput: HTMLInputElement = this.getElementById('tileSizeInput');
   public rowsInput: HTMLInputElement = this.getElementById('rowsInput');
   public columnsInput: HTMLInputElement = this.getElementById('columnsInput');
 
+  // =================================================
   public sourcePaddingInput: HTMLInputElement =
     this.getElementById('sourcePaddingInput');
   public outputPaddingInput: HTMLInputElement =
     this.getElementById('outputPaddingInput');
-
   public bgColorInput: HTMLInputElement = this.getElementById('bgColorInput');
   public bgAlphaInput: HTMLInputElement = this.getElementById('bgAlphaInput');
-
   public renderTileIds: HTMLInputElement = this.getElementById('renderTileIds');
 
-  public inputImagePreview: HTMLImageElement =
-    this.getElementById('inputImagePreview');
-  public inputImagePreviewDimensions: HTMLSpanElement = this.getElementById(
-    'inputImagePreviewDimensions',
-  );
+  // =================================================
+  public inputTileSetSelect: HTMLSelectElement =
+    this.getElementById('inputTileSetSelect');
 
-  public outputImagePreview: HTMLImageElement =
-    this.getElementById('outputImagePreview');
-  public outputImagePreviewDimensions: HTMLSpanElement = this.getElementById(
-    'outputImagePreviewDimensions',
+  // -------------------------------------------------
+  public inputImageBitMaskLink: HTMLAnchorElement = this.getElementById(
+    'inputImageBitMaskLink',
   );
+  public inputImageBitMaskDimensions: HTMLSpanElement = this.getElementById(
+    'inputImageBitMaskDimensions',
+  );
+  public inputImageBitMask: HTMLImageElement =
+    this.getElementById('inputImageBitMask');
 
+  // -------------------------------------------------
   public inputImagePreviewLink: HTMLAnchorElement = this.getElementById(
     'inputImagePreviewLink',
   );
-  public outputImagePreviewLink: HTMLAnchorElement = this.getElementById(
-    'outputImagePreviewLink',
+  public inputImagePreviewDimensions: HTMLSpanElement = this.getElementById(
+    'inputImagePreviewDimensions',
   );
+  public inputImagePreview: HTMLImageElement =
+    this.getElementById('inputImagePreview');
 
-  public inputTileSetSelect: HTMLSelectElement =
-    this.getElementById('inputTileSetSelect');
+  // =================================================
   public outputTileSetSelect: HTMLSelectElement = this.getElementById(
     'outputTileSetSelect',
   );
+  // -------------------------------------------------
+  public outputImageBitMaskLink: HTMLAnchorElement = this.getElementById(
+    'outputImageBitMaskLink',
+  );
+  public outputImageBitMaskDimensions: HTMLSpanElement = this.getElementById(
+    'outputImageBitMaskDimensions',
+  );
+  public outputImageBitMask: HTMLImageElement =
+    this.getElementById('outputImageBitMask');
+
+  // -------------------------------------------------
+  public outputImagePreviewLink: HTMLAnchorElement = this.getElementById(
+    'outputImagePreviewLink',
+  );
+  public outputImagePreviewDimensions: HTMLSpanElement = this.getElementById(
+    'outputImagePreviewDimensions',
+  );
+  public outputImagePreview: HTMLImageElement =
+    this.getElementById('outputImagePreview');
 
   constructor() {}
 
