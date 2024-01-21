@@ -14,7 +14,9 @@ export class TileSet implements TileSetBase {
 
   numRows: number;
   numCols: number;
+  /** Total matrix size */
   size: number;
+  /** Number of nun empty(null) tiles */
   tileCount: number;
 
   constructor(obj: TileSetBase) {
@@ -28,11 +30,14 @@ export class TileSet implements TileSetBase {
 
     this.tileCount = this.set.flatMap((v) => v).filter((v) => v != null).length;
   }
+
+  public toString(): string {
+    return `${this.name} | ${this.numRows}x${this.numCols} - ${this.tileCount} tiles`;
+  }
 }
 
 export const BIT_MASK_TILE_SET: TileSet = new TileSet({
-  name: '257-tiles',
-  link: 'https://opengameart.org/',
+  name: '257-tiles-line',
   set: [
     [
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
@@ -57,17 +62,7 @@ export const BIT_MASK_TILE_SET: TileSet = new TileSet({
 
 export const TILE_SETS: TileSet[] = [
   new TileSet({
-    name: 'blob-steampunk',
-    link: 'https://opengameart.org/content/steampunk-brick-new-connecting-tileset-16x16',
-    set: [
-      [0, 4, 68, 64, 20, 80, 21, 84, 87, 93, 245, 215],
-      [16, 28, 124, 112, 5, 65, 69, 81, 213, 117, 125, 95],
-      [17, 31, 255, 241, 29, 116, 23, 92, 247, 223, 119, 221],
-      [1, 7, 199, 193, 71, 209, 197, 113, 253, 127, 85, -1],
-    ],
-  }),
-  new TileSet({
-    name: 'blob-set-47-tilepipe2',
+    name: 'blob-tilepipe2',
     link: 'https://aleksandrbazhin.itch.io/tilepipe2',
     set: [
       [16, 20, 84, 80, 213, 92, 116, 87, 28, 125, 124, 112],
@@ -77,7 +72,7 @@ export const TILE_SETS: TileSet[] = [
     ],
   }),
   new TileSet({
-    name: 'blob-set-47-tilesetter',
+    name: 'blob-tilesetter',
     link: 'https://www.tilesetter.org/docs/generating_tilesets#blob-sets',
     set: [
       [28, 124, 112, 16, 20, 116, 92, 80, 84, 221, null],
@@ -88,45 +83,17 @@ export const TILE_SETS: TileSet[] = [
     ],
   }),
   new TileSet({
-    name: 'wang-set-16-tilepipe',
-    link: 'https://aleksandrbazhin.itch.io/tilepipe2',
+    name: 'blob-steampunk',
+    link: 'https://opengameart.org/content/steampunk-brick-new-connecting-tileset-16x16',
     set: [
-      [112, 31, 253, 124],
-      [221, 127, 255, 247],
-      [7, 199, 223, 241],
-      [-1, 28, 119, 193],
+      [0, 4, 68, 64, 20, 80, 21, 84, 87, 93, 245, 215],
+      [16, 28, 124, 112, 5, 65, 69, 81, 213, 117, 125, 95],
+      [17, 31, 255, 241, 29, 116, 23, 92, 247, 223, 119, 221],
+      [1, 7, 199, 193, 71, 209, 197, 113, 253, 127, 85, -1],
     ],
   }),
   new TileSet({
-    name: 'wang-set-16-tilesetter',
-    link: 'https://www.tilesetter.org/docs/generating_tilesets#wang-sets',
-    set: [
-      [null, 28, 124, 112, 247, 223],
-      [-1, 31, 255, 241, 253, 127],
-      [null, 7, 199, 193, 221, 119],
-    ],
-  }),
-  new TileSet({
-    name: 'wang-set-16-marching-squares',
-    link: 'https://www.boristhebrave.com/2013/07/14/tileset-roundup/?q=tutorials/tileset-roundup',
-    set: [
-      [255, 199, 241, 31],
-      [-1, 124, 221, 119],
-      [247, 223, 28, 112],
-      [253, 127, 7, 193],
-    ],
-  }),
-  new TileSet({
-    name: '6-rpg-maker',
-    link: 'https://aleksandrbazhin.itch.io/tilepipe2',
-    set: [
-      [0, 85],
-      [28, 112],
-      [7, 193],
-    ],
-  }),
-  new TileSet({
-    name: 'wang-blob-set-opengameart',
+    name: 'blob-opengameart',
     link: 'https://opengameart.org/content/seamless-tileset-template',
     set: [
       [20, 68, 84, 68, 68, 80, -1, 16],
@@ -140,19 +107,106 @@ export const TILE_SETS: TileSet[] = [
     ],
   }),
   new TileSet({
-    name: 'lpc-terrain',
-    link: 'https://opengameart.org/',
+    name: 'blob',
+    link: 'http://www.squidi.net/three/entry.php?id=166',
+    set: [
+      [16, 28, 124, 112, 20, 84, 80, 247, 215, 223],
+      [17, 31, 255, 241, 21, 0, 81, 245, 85, 95],
+      [1, 7, 199, 193, 5, 69, 65, 253, 125, 127],
+      [null, 4, 68, 64, 116, 209, 23, 92, 213, 87],
+      [-1, null, 221, 119, 29, 71, 197, 113, 117, 93],
+    ],
+  }),
+  new TileSet({
+    name: 'wang-marching-squares',
+    link: 'https://www.boristhebrave.com/2013/07/14/tileset-roundup/?q=tutorials/tileset-roundup',
+    set: [
+      [255, 199, 241, 31],
+      [-1, 124, 221, 119],
+      [247, 223, 28, 112],
+      [253, 127, 7, 193],
+    ],
+  }),
+  new TileSet({
+    name: 'wang-marching-squares-tilepipe2',
+    link: 'https://aleksandrbazhin.itch.io/tilepipe2',
+    set: [
+      [112, 31, 253, 124],
+      [221, 127, 255, 247],
+      [7, 199, 223, 241],
+      [-1, 28, 119, 193],
+    ],
+  }),
+  new TileSet({
+    name: 'wang-marching-squares-tilesetter',
+    link: 'https://www.tilesetter.org/docs/generating_tilesets#wang-sets',
+    set: [
+      [null, 28, 124, 112, 247, 223],
+      [-1, 31, 255, 241, 253, 127],
+      [null, 7, 199, 193, 221, 119],
+    ],
+  }),
+  new TileSet({
+    name: 'wang-inside/outside',
+    link: 'https://gamedev.stackexchange.com/questions/148460/combinations-for-tiling-two-textures-together/148464#148464',
+    set: [
+      [28, 124, 112, 247, 223],
+      [31, 255, 241, 253, 127],
+      [7, 199, 193, -1, null],
+    ],
+  }),
+  new TileSet({
+    name: 'wang-inside/outside-lpc-terrain',
+    link: 'https://opengameart.org/art-search?keys=lpc+terrain',
     set: [
       [0, 247, 223],
       [0, 253, 127],
       [28, 124, 112],
-      [31, 225, 241],
+      [31, 255, 241],
       [7, 199, 193],
       [255, 255, 255],
     ],
   }),
   new TileSet({
-    name: '256-tiles-16x16',
+    name: 'wang-fence-inside-corners',
+    link: 'https://gamedev.stackexchange.com/questions/148460/combinations-for-tiling-two-textures-together/148464#148464',
+    set: [
+      [16, 20, 84, 80],
+      [17, 21, 85, 81],
+      [1, 5, 69, 65],
+      [0, 4, 68, 64],
+    ],
+  }),
+  new TileSet({
+    name: 'wang-rug-outside-corners',
+    link: 'https://gamedev.stackexchange.com/questions/148460/combinations-for-tiling-two-textures-together/148464#148464',
+    set: [
+      [16, 28, 124, 112],
+      [17, 31, 255, 241],
+      [1, 7, 199, 193],
+      [0, 4, 68, 64],
+    ],
+  }),
+  new TileSet({
+    name: 'wang-9-slice',
+    link: 'https://gamedev.stackexchange.com/questions/148460/combinations-for-tiling-two-textures-together/148464#148464',
+    set: [
+      [28, 124, 112],
+      [31, 255, 241],
+      [7, 199, 193],
+    ],
+  }),
+  new TileSet({
+    name: 'rpg-maker',
+    link: 'https://aleksandrbazhin.itch.io/tilepipe2',
+    set: [
+      [0, 85],
+      [28, 112],
+      [7, 193],
+    ],
+  }),
+  new TileSet({
+    name: '256-tiles-square',
     set: [
       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
       [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
@@ -202,7 +256,6 @@ export const TILE_SETS: TileSet[] = [
       ],
     ],
   }),
-
   BIT_MASK_TILE_SET,
 ];
 
@@ -211,7 +264,8 @@ export interface SelectOption {
   value: number;
 }
 
+/** TODO: Add Custom Option */
 export const TILE_SET_OPTIONS: SelectOption[] = TILE_SETS.map((v, i) => ({
-  name: `${i} | ${v.name}`,
+  name: `${i} | ${v.toString()}`,
   value: i,
 }));

@@ -1,7 +1,7 @@
 {
   "name": "Tileset Format Tool",
   "short_name": "Tileset Format Tool",
-  "description": "tileset_format_tool_description",
+  "description": "Tile set tool to convert wetween different tile set formats, and modify borders.",
   "theme_color": "#ffffff",
   "background_color": "#000000",
   "display": "standalone",

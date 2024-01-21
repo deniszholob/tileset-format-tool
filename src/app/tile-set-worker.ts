@@ -21,7 +21,7 @@ export class RenderImage {
 export function getRenderImageFromTiles(
   tiles: Tile[],
   tileSet: TileSet,
-  padding: number,
+  borderSize: number,
   color: Color,
   text: boolean,
 ): RenderImage {
@@ -38,7 +38,7 @@ export function getRenderImageFromTiles(
   const numRows: number = tileSet.numRows;
   const numCols: number = tileSet.numCols;
 
-  const tileSizePadded: number = tileSize + 2 * padding;
+  const tileSizePadded: number = tileSize + 2 * borderSize;
 
   canvas.width = numCols * tileSizePadded;
   canvas.height = numRows * tileSizePadded;
@@ -64,7 +64,7 @@ export function getRenderImageFromTiles(
       const y: number = iR * tileSizePadded;
 
       // Render extra spacing and background only if margin size is greater than 0
-      if (padding > 0) {
+      if (borderSize > 0) {
         context.fillStyle = color.toString();
         context.fillRect(x, y, tileSizePadded, tileSizePadded);
       }
@@ -72,8 +72,8 @@ export function getRenderImageFromTiles(
       if (tileObj && tileObj.id != null) {
         context.drawImage(
           tileObj.canvas,
-          x + padding,
-          y + padding,
+          x + borderSize,
+          y + borderSize,
           // tileSize,
           // tileSize,
         );
@@ -95,28 +95,37 @@ export function cutImageIntoTiles(
   image: HTMLImageElement,
   tileSizePadded: number,
   tileSet: TileSet,
-  padding: number = 0,
+  borderSize: number = 0,
+  imageBorderSize: number = 0,
 ): Tile[] {
   const canvasImage: HTMLCanvasElement = htmlImageToCanvasImage(image);
   const tiles: Tile[] = [];
 
-  for (let y: number = 0; y < image.height; y += tileSizePadded) {
-    for (let x: number = 0; x < image.width; x += tileSizePadded) {
+  for (
+    let y: number = imageBorderSize;
+    y < image.height - imageBorderSize;
+    y += tileSizePadded
+  ) {
+    for (
+      let x: number = imageBorderSize;
+      x < image.width - imageBorderSize;
+      x += tileSizePadded
+    ) {
       const tileCanvas: HTMLCanvasElement = document.createElement('canvas');
       const tileContext: CanvasRenderingContext2D | null =
         tileCanvas.getContext('2d');
       if (!tileContext) throw new Error(`Cannot load Canvas Context`);
       tileContext.imageSmoothingEnabled = false;
 
-      const tileSize: number = tileSizePadded - 2 * padding;
+      const tileSize: number = tileSizePadded - 2 * borderSize;
 
       tileCanvas.width = tileSize;
       tileCanvas.height = tileSize;
 
       tileContext.drawImage(
         canvasImage,
-        x + padding,
-        y + padding,
+        x + borderSize,
+        y + borderSize,
         tileSizePadded,
         tileSizePadded,
         0,
@@ -130,15 +139,15 @@ export function cutImageIntoTiles(
           Math.round(x / tileSizePadded)
         ];
 
-      console.log(
-        tileSizePadded,
-        tileSize,
-        y,
-        x,
-        Math.round(y / tileSizePadded),
-        Math.round(x / tileSizePadded),
-        tileIdFromTileSet,
-      );
+      // console.log(
+      //   tileSizePadded,
+      //   tileSize,
+      //   y,
+      //   x,
+      //   Math.round(y / tileSizePadded),
+      //   Math.round(x / tileSizePadded),
+      //   tileIdFromTileSet,
+      // );
 
       tiles.push({ id: tileIdFromTileSet, canvas: tileCanvas });
     }

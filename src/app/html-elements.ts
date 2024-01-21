@@ -1,4 +1,5 @@
 export class HtmlElements {
+  public updateDate: HTMLSpanElement = this.getElementById('updateDate');
   public imageInput: HTMLInputElement = this.getElementById('imageInput');
   public uploadImagePreview: HTMLImageElement =
     this.getElementById('uploadImagePreview');
@@ -11,10 +12,15 @@ export class HtmlElements {
   public columnsInput: HTMLInputElement = this.getElementById('columnsInput');
 
   // =================================================
-  public sourcePaddingInput: HTMLInputElement =
-    this.getElementById('sourcePaddingInput');
-  public outputPaddingInput: HTMLInputElement =
-    this.getElementById('outputPaddingInput');
+  public sourceImageBorderSizeInput: HTMLInputElement = this.getElementById(
+    'sourceImageBorderSizeInput',
+  );
+  public sourceBorderSizeInput: HTMLInputElement = this.getElementById(
+    'sourceBorderSizeInput',
+  );
+  public outputBorderSizeInput: HTMLInputElement = this.getElementById(
+    'outputBorderSizeInput',
+  );
   public bgColorInput: HTMLInputElement = this.getElementById('bgColorInput');
   public bgAlphaInput: HTMLInputElement = this.getElementById('bgAlphaInput');
   public renderTileIds: HTMLInputElement = this.getElementById('renderTileIds');
@@ -22,7 +28,8 @@ export class HtmlElements {
   // =================================================
   public inputTileSetSelect: HTMLSelectElement =
     this.getElementById('inputTileSetSelect');
-
+  public inputTileSetLink: HTMLAnchorElement =
+    this.getElementById('inputTileSetLink');
   // -------------------------------------------------
   public inputImageBitMaskLink: HTMLAnchorElement = this.getElementById(
     'inputImageBitMaskLink',
@@ -47,6 +54,8 @@ export class HtmlElements {
   public outputTileSetSelect: HTMLSelectElement = this.getElementById(
     'outputTileSetSelect',
   );
+  public outputTileSetLink: HTMLAnchorElement =
+    this.getElementById('outputTileSetLink');
   // -------------------------------------------------
   public outputImageBitMaskLink: HTMLAnchorElement = this.getElementById(
     'outputImageBitMaskLink',

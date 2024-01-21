@@ -7,15 +7,17 @@ export function renderTextOnCanvas(
 ) {
   const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
   if (!context) throw new Error(`Cannot load Canvas Context`);
-  // context.imageSmoothingEnabled = false;
+  context.imageSmoothingEnabled = false;
+  // context.textRendering = 'geometricPrecision';
   context.fillStyle = 'black';
-  context.font = `${fontSize}px Arial`;
+  // context.font = `${fontSize}px Arial`;
+  context.font = `${Math.round(fontSize)}px VT323 monospace`;
+  // console.log(Math.round(fontSize));
   const textWidth: number = context.measureText(text).width;
   const textX: number = x - textWidth / 2;
   const textY: number = y + fontSize / 2;
   context.fillText(text, textX, textY);
 }
-
 export async function getImageFromFile(file: File): Promise<HTMLImageElement> {
   const imageUrl: string = URL.createObjectURL(file);
   const image = new Image();

@@ -24,3 +24,7 @@
     10px -10px,
     -10px 0px;
 }
+
+.pixel-text {
+  font-family: "VT323", monospace;
+}

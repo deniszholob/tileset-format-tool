@@ -1,6 +1,6 @@
-# Tileset Format Tool [App](https://deniszholob.github.io/tileset-format-tool/)
+# Tile Set Format Tool [App](https://deniszholob.github.io/tileset-format-tool/)
 
-tileset_format_tool_description
+Tile set tool to convert wetween different tile set formats, and modify borders.
 
 ## Deployments [![Build Status](https://github.com/deniszholob/tileset-format-tool/actions/workflows/main.yml/badge.svg)](https://github.com/deniszholob/tileset-format-tool/actions/workflows/main.yml)
 
@@ -16,4 +16,4 @@ If you find the cheat sheet or the source code useful, consider:
 
 # Screenshots
 
-![Tileset Format Tool](screenshots/tileset-format-tool-screenshot.png)
+![Tile Set Format Tool](screenshots/tile-set-format-tool.png)
