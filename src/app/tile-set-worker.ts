@@ -1,4 +1,4 @@
-import { TileSet } from './tilesets.js';
+import { TileSet } from './classes/TileSet.model.js';
 import { Color, htmlImageToCanvasImage, renderTextOnCanvas } from './util.js';
 
 export interface Tile {

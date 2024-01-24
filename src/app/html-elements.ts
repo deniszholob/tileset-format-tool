@@ -1,5 +1,7 @@
-export class HtmlElements {
-  public updateDate: HTMLSpanElement = this.getElementById('updateDate');
+import { HtmlElementsBase } from './classes/HtmlElements.model.js';
+
+export class HtmlElementsMainPage extends HtmlElementsBase {
+  public bitMask: HTMLImageElement = this.getElementById('bitMask');
   public imageInput: HTMLInputElement = this.getElementById('imageInput');
   public uploadImagePreview: HTMLImageElement =
     this.getElementById('uploadImagePreview');
@@ -75,16 +77,4 @@ export class HtmlElements {
   );
   public outputImagePreview: HTMLImageElement =
     this.getElementById('outputImagePreview');
-
-  constructor() {}
-
-  private getElementById<T extends HTMLElement>(name: string): T {
-    const element: HTMLElement | null = document.getElementById(name);
-    if (this.checkNull(element)) return element as T;
-    throw new Error(`${name} does not exist: ${element}`);
-  }
-
-  private checkNull<T>(v?: T | null): v is T {
-    return v != null;
-  }
 }

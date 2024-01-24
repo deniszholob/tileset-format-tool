@@ -33,6 +33,16 @@
     "models.ts": "url",
     "services.ts": "url"
   },
+  // Enable the inline display of inferred types for js
+  "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
+  "javascript.inlayHints.parameterTypes.enabled": true,
+  "javascript.inlayHints.propertyDeclarationTypes.enabled": true,
+  "javascript.inlayHints.variableTypes.enabled": true,
+  // Enable the inline display of inferred types for ts
+  "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+  "typescript.inlayHints.parameterTypes.enabled": true,
+  "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+  "typescript.inlayHints.variableTypes.enabled": true,
   "workbench.editor.pinnedTabsOnSeparateRow": true,
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
