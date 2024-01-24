@@ -49,14 +49,14 @@ let numCols: number = 1;
 // let borderSizeSource: number = 7;
 let outerBorderSize: number = 0;
 let borderSizeSource: number = 0;
-let borderSizeOutput: number = 1;
+let borderSizeOutput: number = 0;
 
 let bgColor: string = '#bbbbbb'; // #ff0000 // red
 let bgAlpha: number = 100;
 
-let renderTileIds: boolean = true;
+let renderTileIds: boolean = false;
 
-let inputTileSetId: number = 19;
+let inputTileSetId: number = 1;
 let outputTileSetId: number = 0;
 let selectedInputTileSet: TileSet = getSelectedTileSet(inputTileSetId);
 let selectedOutputTileSet: TileSet = getSelectedTileSet(outputTileSetId);
