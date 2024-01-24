@@ -17,3 +17,4 @@ If you find the cheat sheet or the source code useful, consider:
 # Screenshots
 
 ![Tile Set Format Tool](screenshots/tile-set-format-tool.png)
+![Tile Set Format Tool Editor](screenshots/tile-set-format-tool-editor.png)

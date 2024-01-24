@@ -1,3 +1,5 @@
+import { TileSets } from './classes/TileSets.model.js';
+
 export function renderTextOnCanvas(
   canvas: HTMLCanvasElement,
   text: string,
@@ -101,4 +103,22 @@ export class Color {
   toString(): string {
     return `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`;
   }
+}
+
+const LOCAL_STORAGE_KEY = 'tile-sets';
+
+export function saveTileSetsToLocalStorage(tileSets: TileSets): void {
+  console.log(`saved: `, tileSets.toJson());
+  localStorage.setItem(LOCAL_STORAGE_KEY, tileSets.toJson());
+}
+
+export function loadTileSetsToLocalStorage(): TileSets {
+  const tileSetsJson = localStorage.getItem(LOCAL_STORAGE_KEY) ?? '';
+  console.log(`loaded: `, JSON.parse(tileSetsJson));
+
+  return TileSets.getTileSetsFromJson(tileSetsJson);
+}
+
+export function existSavedTileSets(): boolean {
+  return Object.prototype.hasOwnProperty.call(localStorage, LOCAL_STORAGE_KEY);
 }
