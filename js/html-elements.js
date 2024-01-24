@@ -1,5 +1,6 @@
-export class HtmlElements {
-    updateDate = this.getElementById('updateDate');
+import { HtmlElementsBase } from './classes/HtmlElements.model.js';
+export class HtmlElementsMainPage extends HtmlElementsBase {
+    bitMask = this.getElementById('bitMask');
     imageInput = this.getElementById('imageInput');
     uploadImagePreview = this.getElementById('uploadImagePreview');
     uploadImageDimensions = this.getElementById('uploadImageDimensions');
@@ -36,14 +37,4 @@ export class HtmlElements {
     outputImagePreviewLink = this.getElementById('outputImagePreviewLink');
     outputImagePreviewDimensions = this.getElementById('outputImagePreviewDimensions');
     outputImagePreview = this.getElementById('outputImagePreview');
-    constructor() { }
-    getElementById(name) {
-        const element = document.getElementById(name);
-        if (this.checkNull(element))
-            return element;
-        throw new Error(`${name} does not exist: ${element}`);
-    }
-    checkNull(v) {
-        return v != null;
-    }
 }

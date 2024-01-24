@@ -104,12 +104,16 @@
     onload="onLoad()"
   >
     <!-- Without this image doesn't load programmatically for some reason -->
-    <img src="assets/bit-mask-tiles.png" class="hidden" />
+    <img id="bitMask" src="assets/bit-mask-tiles-beige-brown_64.png" class="hidden" />
+    <!-- <img id="bitMask" src="assets/bit-mask-tiles-beige-brown.png" class="hidden" /> -->
+    <!-- <img id="bitMask" src="assets/bit-mask-tiles-green-brown.png" class="hidden" /> -->
+    <!-- <img id="bitMask" src="assets/bit-mask-tiles-blue-green.png" class="hidden" /> -->
+    <!-- <img id="bitMask" src="assets/bit-mask-tiles-bw.png" class="hidden" /> -->
 
     <div class="w-full p-4 m-auto" style="max-width: 1920px">
       <div id="header" class="flex flex-row justify-evenly items-center">
         <div class="inline-flex gap-4 items-center">
-          <h1 class="text-3xl">Tile Set Format Tool</h1>
+          <h1 class="text-3xl">Tile Set Tool</h1>
           <a
             href="https://gamedev.stackexchange.com/questions/148460/combinations-for-tiling-two-textures-together/148464#148464"
             target="_blank"
@@ -120,7 +124,15 @@
           </a>
         </div>
 
-        <div>
+        <div class="flex gap-2">
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-blue-600 hover:text-blue-500 underline"
+            href="https://discord.gg/PkyzXzz"
+          >
+            Discord
+          </a>
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -130,6 +142,37 @@
             Github
           </a>
           <span>Updated: <span id="updateDate"></span></span>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-4 container-max m-auto">
+        <div id="nav">
+          Navigation:
+          <a href="./editor.html" class="text-blue-600 hover:text-blue-500 underline">Editor</a>
+        </div>
+        <div class="flex gap-4">
+          <span class="text-center text-muted">
+            If you find the tool or source code useful, you can
+          </span>
+          <div class="flex gap-4">
+            <a
+              href="https://ko-fi.com/deniszholob"
+              target="_blank"
+              rel="noopener"
+              class="text-blue-600 hover:text-blue-500 underline"
+            >
+              Buy me Ko-fi
+            </a>
+
+            <a
+              href="https://patreon.com/deniszholob"
+              target="_blank"
+              rel="noopener"
+              class="text-blue-600 hover:text-blue-500 underline"
+            >
+              Support on Patreon
+            </a>
+          </div>
         </div>
       </div>
 
@@ -159,7 +202,7 @@
                 alt="Uploaded Image"
                 class="h-40 w-auto object-contain m-auto image-pixelated"
               />
-              <p class="text-center"><span class="text-bold" id="uploadImageDimensions"></span></p>
+              <p class="text-center"><span class="font-bold" id="uploadImageDimensions"></span></p>
             </div>
           </div>
 
@@ -254,6 +297,10 @@
           <div
             class="flex flex-row gap-4 flex-wrap border border-gray-300 rounded-md p-4 bg-stone-100"
           >
+            <button onclick="onProcessImage()" class="bg-blue-500 text-white px-4 py-2 rounded-md">
+              Re Process Image
+            </button>
+
             <div class="flex-1">
               <label for="bgColorInput" class="mr-2">BG Color:</label>
               <input type="color" id="bgColorInput" value="#ff0000" oninput="onUpdateBgColor()" />
@@ -283,10 +330,6 @@
               />
             </div>
           </div>
-
-          <button onclick="onProcessImage()" class="bg-blue-500 text-white px-4 py-2 rounded-md">
-            Process Image
-          </button>
         </div>
       </div>
 
@@ -319,11 +362,11 @@
             class="block p-4 rounded-md border border-gray-300"
           >
             <p class="text-center mb-2">
-              Input Bit Mask <span class="text-bold" id="inputImageBitMaskDimensions"></span>
+              Input Bit Mask <span class="font-bold" id="inputImageBitMaskDimensions"></span>
             </p>
             <img
               id="inputImageBitMask"
-              class="h-40 w-auto object-contain m-auto border border-gray-300 image-pixelated bg-checkerboard"
+              class="h-64 w-auto object-contain m-auto border border-gray-300 image-pixelated bg-checkerboard"
               alt="Input Bit Mask"
             />
           </a>
@@ -334,11 +377,11 @@
             class="block p-4 rounded-md border border-gray-300"
           >
             <p class="text-center mb-2">
-              Input Tile Set <span class="text-bold" id="inputImagePreviewDimensions"></span>
+              Input Tile Set <span class="font-bold" id="inputImagePreviewDimensions"></span>
             </p>
             <img
               id="inputImagePreview"
-              class="h-40 w-auto object-contain m-auto border border-gray-300 image-pixelated bg-checkerboard"
+              class="h-64 w-auto object-contain m-auto border border-gray-300 image-pixelated bg-checkerboard"
               alt="Input Tile Set"
             />
           </a>
@@ -370,11 +413,11 @@
             class="block p-4 rounded-md border border-gray-300"
           >
             <p class="text-center mb-2">
-              Output Bit Mask <span class="text-bold" id="outputImageBitMaskDimensions"></span>
+              Output Bit Mask <span class="font-bold" id="outputImageBitMaskDimensions"></span>
             </p>
             <img
               id="outputImageBitMask"
-              class="h-40 w-auto object-contain m-auto border border-gray-300 image-pixelated bg-checkerboard"
+              class="h-64 w-auto object-contain m-auto border border-gray-300 image-pixelated bg-checkerboard"
               alt="Output Bit Mask"
             />
           </a>
@@ -385,11 +428,11 @@
             class="block p-4 rounded-md border border-gray-300"
           >
             <p class="text-center mb-2">
-              Output Tile Set <span class="text-bold" id="outputImagePreviewDimensions"></span>
+              Output Tile Set <span class="font-bold" id="outputImagePreviewDimensions"></span>
             </p>
             <img
               id="outputImagePreview"
-              class="h-40 w-auto object-contain m-auto border border-gray-300 image-pixelated bg-checkerboard"
+              class="h-64 w-auto object-contain m-auto border border-gray-300 image-pixelated bg-checkerboard"
               alt="Output Tile Set"
             />
           </a>

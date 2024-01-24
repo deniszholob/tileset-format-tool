@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Meta Data -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Denis Zholob" />
+    <meta name="keywords" content="Denis, Zholob" />
+    <meta name="title" content="Tileset Format Tool" />
+    <meta
+      name="description"
+      content="Tile set tool to convert wetween different tile set formats, and modify borders."
+    />
+
+    <!-- Google / Search Engine Tags -->
+    <meta itemprop="name" content="Tileset Format Tool" />
+    <meta
+      itemprop="description"
+      content="Tile set tool to convert wetween different tile set formats, and modify borders."
+    />
+    <meta itemprop="image" content="assets/icons/splash.png" />
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://github.com/deniszholob/tileset-format-tool" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Tileset Format Tool" />
+    <meta
+      property="og:description"
+      content="Tile set tool to convert wetween different tile set formats, and modify borders."
+    />
+    <meta property="og:image" content="assets/icons/splash.png" />
+    <meta property="og:author" content="Denis Zholob" />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Tileset Format Tool" />
+    <meta
+      name="twitter:description"
+      content="Tile set tool to convert wetween different tile set formats, and modify borders."
+    />
+    <meta name="twitter:image" content="assets/icons/splash.png" />
+    <meta name="twitter:site" content="@deniszholob" />
+    <meta name="twitter:creator" content="@deniszholob" />
+
+    <!-- Title/Icon -->
+    <title>Tileset Format Tool</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="apple-touch-startup-image" href="assets/icons/splash.jpg" />
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#ffffff" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <!-- <base href="/" /> -->
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Meta Tags Generated via http://heymeta.com -->
+    <!-- Icons generated with https://realfavicongenerator.net/ -->
+
+    <!-- Prefetch/Preconnect -->
+    <!-- <link rel="dns-prefetch" href="https://fonts.googleapis.com"> -->
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous"> -->
+    <!-- <link rel="dns-prefetch" href="https://fonts.gstatic.com/s/"> -->
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com/s/" crossorigin="anonymous"> -->
+    <link rel="dns-prefetch" href="https://use.fontawesome.com" />
+    <link rel="preconnect" href="https://use.fontawesome.com" crossorigin="anonymous" />
+
+    <!-- Bootstrap -->
+    <!-- <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"> -->
+
+    <!-- Fonts -->
+    <!-- https://fonts.google.com/specimen/VT323?preview.text=0123456789&query=VT323+ -->
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v6.4.0/js/all.js"
+      integrity="sha384-Y7LSKwoY+C2iyfu/oupNnkGEN3EgA6skmJeVg5AyQk7ttcjX0XsLREmmuJW/SdbU"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Global Site Tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-28080172-12"></script>
+    <script async="">
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "UA-28080172-12");
+    </script>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="./styles/styles.css" />
+    <!-- TODO: Remove sandbox Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body
+    class="bg-stone-200 min-h-screen min-w-screen flex justify-center flex-col"
+    onload="onLoad()"
+  >
+    <!-- Without this image doesn't load programmatically for some reason -->
+    <img id="bitMask" src="assets/bit-mask-tiles-beige-brown_64.png" class="hidden" />
+    <!-- <img id="bitMask" src="assets/bit-mask-tiles-beige-brown.png" class="hidden" /> -->
+    <!-- <img id="bitMask" src="assets/bit-mask-tiles-green-brown.png" class="hidden" /> -->
+    <!-- <img id="bitMask" src="assets/bit-mask-tiles-blue-green.png" class="hidden" /> -->
+    <!-- <img id="bitMask" src="assets/bit-mask-tiles-bw.png" class="hidden" /> -->
+
+    <div class="w-full p-4 m-auto" style="max-width: 1920px">
+      <div id="header" class="flex flex-row justify-evenly items-center">
+        <div class="inline-flex gap-4 items-center">
+          <h1 class="text-3xl">Tile Set Tool</h1>
+          <small>(WIP)</small>
+          <a
+            href="https://gamedev.stackexchange.com/questions/148460/combinations-for-tiling-two-textures-together/148464#148464"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-blue-600 hover:text-blue-500 underline"
+          >
+            Tile Sets Overview
+          </a>
+        </div>
+
+        <div class="flex gap-2">
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-blue-600 hover:text-blue-500 underline"
+            href="https://discord.gg/PkyzXzz"
+          >
+            Discord
+          </a>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-blue-600 hover:text-blue-500 underline"
+            href="https://github.com/deniszholob/tileset-format-tool"
+          >
+            Github
+          </a>
+          <span>Updated: <span id="updateDate"></span></span>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-4 container-max m-auto">
+        <div id="nav">
+          Navigation:
+          <a href="./index.html" class="text-blue-600 hover:text-blue-500 underline">Formatter</a>
+        </div>
+
+        <div class="flex gap-4">
+          <span class="text-center text-muted">
+            If you find the tool or source code useful, you can
+          </span>
+          <div class="flex gap-4">
+            <a
+              href="https://ko-fi.com/deniszholob"
+              target="_blank"
+              rel="noopener"
+              class="text-blue-600 hover:text-blue-500 underline"
+            >
+              Buy me Ko-fi
+            </a>
+
+            <a
+              href="https://patreon.com/deniszholob"
+              target="_blank"
+              rel="noopener"
+              class="text-blue-600 hover:text-blue-500 underline"
+            >
+              Support on Patreon
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <hr class="my-4 border-blue-500" />
+
+      <div class="flex flex-col gap-4 container-max m-auto">
+        <div>
+          <button onclick="onSaveTileSets()" class="bg-blue-500 text-white px-4 py-2 rounded-md">
+            Save Tile Sets Config
+          </button>
+
+          <button
+            onclick="onDownloadTileSets()"
+            class="bg-blue-500 text-white px-4 py-2 rounded-md"
+          >
+            Download Tile Sets Config
+          </button>
+
+          <button onclick="onResetTileSets()" class="bg-red-500 text-white px-4 py-2 rounded-md">
+            Reset Tile Sets Config
+          </button>
+        </div>
+      </div>
+
+      <hr class="my-4 border-blue-500" />
+
+      <div id="editorSpace" class="flex flex-col gap-4 container-max m-auto">
+        <div class="tileSet flex flex-row gap-4">
+          <div class="flex flex-col gap-4">
+            <label for="editTileSetName">Tile Set Name</label>
+            <input
+              id="editTileSetName"
+              id="editTileSetName"
+              type="text"
+              placeholder="NewTileSet"
+              onchange="onUpdateEditTileSetName()"
+              onkeyup="onUpdateEditTileSetName()"
+            />
+
+            <label for="editTileSetLink">Tile Set Link (Optional)</label>
+            <input
+              id="editTileSetLink"
+              name="editTileSetLink"
+              type="text"
+              placeholder="https://itch.io/"
+              onchange="onUpdateEditTileSetLink()"
+              onkeyup="onUpdateEditTileSetLink()"
+            />
+
+            <label for="editTileSetConfig">Tile Set Config (Json Array)</label>
+            <textarea
+              id="editTileSetConfig"
+              name="editTileSetConfig"
+              cols="40"
+              rows="10"
+              placeholder="[
+  [255, 255],
+  [255, 255],
+]"
+              onchange="onUpdateEditTileSetConfig()"
+              onkeyup="onUpdateEditTileSetConfig()"
+            ></textarea>
+
+            <div id="editTileSetActions">
+              <button
+                class="bg-blue-500 text-white px-2 py-1 rounded-md"
+                onclick="editTileSetAdd()"
+              >
+                Add
+              </button>
+              <button
+                class="bg-blue-500 text-white px-2 py-1 rounded-md"
+                onclick="editTileSetCancel()"
+              >
+                Cancel
+              </button>
+              <button
+                class="bg-red-500 text-white px-2 py-1 rounded-md"
+                onclick="editTileSetReset()"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+
+          <div id="editTileSetPreviewContainer">
+            <p id="editTileSetPreviewError" class="text-red-500"></p>
+            <a
+              id="editTileSetPreviewLink"
+              download="output_image.png"
+              class="block p-4 rounded-md border border-gray-300"
+            >
+              <p class="text-center mb-2">
+                <span id="editTileSetPreviewName"></span>
+                <span class="font-bold" id="editTileSetPreviewDimensions"></span>
+              </p>
+              <img
+                id="editTileSetPreview"
+                class="h-64 w-auto object-contain m-auto border border-gray-300 image-pixelated bg-checkerboard"
+                alt="Preview"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <hr class="my-4 border-blue-500" />
+
+      <div id="editorList" class="flex flex-col gap-4 container-max m-auto">
+        <div>
+          <button class="bg-green-500 text-white px-2 py-1 rounded-md" onclick="editTileSetNew()">
+            New
+          </button>
+        </div>
+        <div class="flex flex-row gap-2">
+          <button class="bg-red-500 text-white px-2 py-1 rounded-md">Delete</button>
+          <button class="bg-orange-500 text-white px-2 py-1 rounded-md">Edit</button>
+          <span>0 | blob-tilepipe2 | 4x12 - 48 tiles</span>
+          <a
+            id="tileSetLink"
+            href="https://opengameart.org/content/swamp-2d-tileset-pixel-art"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-blue-600 hover:text-blue-500 underline"
+          >
+            craftpix
+          </a>
+          <img src="" alt="Preview" />
+        </div>
+      </div>
+    </div>
+
+    <!-- https://jakearchibald.com/2017/es-modules-in-browsers/ -->
+    <script src="./js/pages/editor.js" type="module"></script>
+    <noscript> Please enable JavaScript to continue using this application. </noscript>
+  </body>
+</html>
