@@ -1,9 +1,13 @@
-import { BIT_MASK_TILE_SET } from './data/tile-set-bit-mask.data.js';
-import { cutImageIntoTiles, RenderImage, Tile } from './tile-set-worker.js';
+import { BIT_MASK_TILE_SET } from '../data/tile-set-bit-mask.data.js';
+import {
+  cutImageIntoTiles,
+  RenderImage,
+  RenderSet,
+} from './tile-set-worker.js';
 
 export function generateBitMaskTiles(
   bitMaskImageElement: HTMLImageElement,
-): Tile[] {
+): RenderSet {
   const bitMaskTileSize = Math.max(
     bitMaskImageElement.width / BIT_MASK_TILE_SET.numCols,
     bitMaskImageElement.height / BIT_MASK_TILE_SET.numRows,
