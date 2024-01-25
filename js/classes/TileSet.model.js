@@ -1,3 +1,4 @@
+import { Tile } from './Tile.model.js';
 export class TileSet {
     name;
     link;
@@ -18,7 +19,7 @@ export class TileSet {
     constructor(obj) {
         this.name = obj.name;
         this.link = obj.link;
-        this.set = obj.set;
+        this.set = obj.set.map((row) => row.map((tile) => Tile.getTileFromString(tile)));
         this.numRows = this.set.length;
         this.numCols = this.set?.[0].length ?? 0;
         this.size = this.numRows * this.numCols;
@@ -26,5 +27,15 @@ export class TileSet {
     }
     toString() {
         return `${this.name} | ${this.numRows}x${this.numCols} - ${this.tileCount} tiles`;
+    }
+    toTileSetBase() {
+        return {
+            name: this.name,
+            link: this.link,
+            set: this.set.map((row) => row.map((tile) => tile?.toString() ?? '')),
+        };
+    }
+    toJson() {
+        return JSON.stringify(this.toTileSetBase());
     }
 }

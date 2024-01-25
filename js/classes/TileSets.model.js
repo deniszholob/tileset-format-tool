@@ -17,25 +17,23 @@ export class TileSets {
     getTileSetFromBase(tileSetsBase) {
         return tileSetsBase.map((tileSetBase) => new TileSet(tileSetBase));
     }
-    addTileSet(tileSetBase) {
-        this.sets.push(new TileSet(tileSetBase));
-    }
-    addTileSets(tileSetBase) {
-        this.sets.push(...this.getTileSetFromBase(tileSetBase));
-    }
-    removeTileSet(tileSetName) {
-        const index = this.sets.findIndex((tileSet) => tileSet.name === tileSetName);
-        this.sets.splice(index, 1);
-    }
+    // public addTileSet(tileSetBase: TileSetBase): void {
+    //   this.sets.push(new TileSet(tileSetBase));
+    // }
+    // public addTileSets(tileSetBase: TileSetBase[]): void {
+    //   this.sets.push(...this.getTileSetFromBase(tileSetBase));
+    // }
+    // public removeTileSet(tileSetName: string): void {
+    //   const index = this.sets.findIndex(
+    //     (tileSet) => tileSet.name === tileSetName,
+    //   );
+    //   this.sets.splice(index, 1);
+    // }
     toJson() {
-        const tileSetsBase = this.sets.map((v) => ({
-            name: v.name,
-            set: v.set,
-            link: v.link,
-        }));
-        return JSON.stringify(tileSetsBase);
+        const tileSetsJson = this.sets.map((v) => v.toJson());
+        return JSON.stringify(tileSetsJson);
     }
-    /** TODO: Add Custom Option (Here?) */
+    /** TODO: Add Custom Option (Not Here?) */
     toSelectOptions() {
         return this.sets.map((v, i) => ({
             name: `${i} | ${v.toString()}`,

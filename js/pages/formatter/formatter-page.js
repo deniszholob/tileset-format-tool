@@ -1,10 +1,12 @@
-import { APP_UPDATE_DATE } from './app-update.js';
-import { DEFAULT_TILE_SETS } from './data/tile-set_default.data.js';
-import { BIT_MASK_TILE_SET } from './data/tile-set-bit-mask.data.js';
+import { APP_UPDATE_DATE } from '../../app-update.js';
+import { DEFAULT_TILE_SETS } from '../../data/tile-set_default.data.js';
+// import { DEFAULT_TILE_SETS } from '../../data/tile-set_default.data.js';
+import { BIT_MASK_TILE_SET } from '../../data/tile-set-bit-mask.data.js';
+import { existSavedTileSets, loadTileSetsToLocalStorage, } from '../../util/data-util.ts.js';
+import { checkImageLoaded, Color, getImageFromFile, } from '../../util/html-util.js';
+import { generateBitMaskTiles, renderTileSet, } from '../../util/tile-set-renderer.js';
+import { cutImageIntoTiles, getRenderImageFromTiles, } from '../../util/tile-set-worker.js';
 import { HtmlElementsMainPage } from './html-elements.js';
-import { generateBitMaskTiles, renderTileSet } from './tile-set-renderer.js';
-import { cutImageIntoTiles, getRenderImageFromTiles, } from './tile-set-worker.js';
-import { checkImageLoaded, Color, existSavedTileSets, getImageFromFile, loadTileSetsToLocalStorage, } from './util.js';
 // console.log(TILE_SETS);
 // console.log(TILE_SET_OPTIONS);
 // ================================================================= //
@@ -14,19 +16,21 @@ const HTML_ELEMENTS = new HtmlElementsMainPage();
 let TILE_SETS = DEFAULT_TILE_SETS;
 let TILE_SET_OPTIONS = TILE_SETS.toSelectOptions();
 let userUpload = undefined;
-let imageTiles = undefined;
-let bitMaskTiles = undefined;
+let imageRenderSet = undefined;
+let bitMaskRenderSet = undefined;
 let tileSize = 32;
 let numRows = 1;
 let numCols = 1;
+// craftpix-top tiles
 // let outerBorderSize: number = 3;
 // let borderSizeSource: number = 7;
 let outerBorderSize = 0;
 let borderSizeSource = 0;
 let borderSizeOutput = 0;
-let bgColor = '#bbbbbb'; // #ff0000 // red
+let bgColor = '#bbbbbb';
+// let bgColor: string = '#ff0000'; // red
 let bgAlpha = 100;
-let renderTileIds = false;
+let doRenderTileIds = false;
 let inputTileSetId = 1;
 let outputTileSetId = 0;
 let selectedInputTileSet = getSelectedTileSet(inputTileSetId);
@@ -85,8 +89,7 @@ function loadTileSets() {
 }
 function makeBitMaskTiles() {
     const bitMaskImageElement = HTML_ELEMENTS.bitMask;
-    bitMaskTiles = generateBitMaskTiles(bitMaskImageElement);
-    // console.log({ bitMaskImageElement, bitMaskTileSize, bitMaskTiles });
+    bitMaskRenderSet = generateBitMaskTiles(bitMaskImageElement);
     reRenderInputImageBitMask();
     reRenderOutputImageBitMask();
 }
@@ -99,7 +102,7 @@ function syncStateWithHtml() {
     HTML_ELEMENTS.outputBorderSizeInput.valueAsNumber = borderSizeOutput;
     HTML_ELEMENTS.bgColorInput.value = bgColor;
     HTML_ELEMENTS.bgAlphaInput.valueAsNumber = bgAlpha;
-    HTML_ELEMENTS.renderTileIds.checked = renderTileIds;
+    HTML_ELEMENTS.renderTileIds.checked = doRenderTileIds;
     HTML_ELEMENTS.inputTileSetSelect.selectedIndex = inputTileSetId;
     HTML_ELEMENTS.outputTileSetSelect.selectedIndex = outputTileSetId;
 }
@@ -171,7 +174,7 @@ function onUpdateBgAlpha() {
     bgAlpha = HTML_ELEMENTS.bgAlphaInput.valueAsNumber;
 }
 export function onToggleRenderTileIds() {
-    renderTileIds = !renderTileIds;
+    doRenderTileIds = !doRenderTileIds;
     reRenderInputImagePreview();
     reRenderOutputImagePreview();
     reRenderInputImageBitMask();
@@ -218,14 +221,12 @@ function recalculateRowsCols() {
 function recalculateInputImageVars() {
     const image = userUpload?.image;
     if (checkImageLoaded(image)) {
-        // tileSize = Math.max(image.width / numCols, image.height / numRows);
         tileSize = getTileSizeFromImage(image, outerBorderSize);
-        // console.log({ tileSize, outerBorderSize });
-        imageTiles = cutImageIntoTiles(image, tileSize, selectedInputTileSet, borderSizeSource, outerBorderSize);
+        imageRenderSet = cutImageIntoTiles(image, tileSize, selectedInputTileSet, borderSizeSource, outerBorderSize);
     }
     else {
         tileSize = 0;
-        imageTiles = undefined;
+        imageRenderSet = undefined;
     }
     HTML_ELEMENTS.tileSizeInput.valueAsNumber = tileSize;
 }
@@ -235,26 +236,26 @@ function getTileSizeFromImage(image, imageBorderSize = 0) {
     return Math.max(effectiveImageWidth / numCols, effectiveImageHeight / numRows);
 }
 function reRenderInputImageBitMask() {
-    if (bitMaskTiles) {
-        const tileRender = getRenderImageFromTiles(bitMaskTiles, selectedInputTileSet, borderSizeOutput, new Color(bgColor, bgAlpha), renderTileIds);
+    if (bitMaskRenderSet) {
+        const tileRender = getRenderImageFromTiles(bitMaskRenderSet, selectedInputTileSet, borderSizeOutput, new Color(bgColor, bgAlpha), doRenderTileIds);
         renderTileSet(tileRender, HTML_ELEMENTS.inputImageBitMask, HTML_ELEMENTS.inputImageBitMaskLink, HTML_ELEMENTS.inputImageBitMaskDimensions, getDownloadLink(true, selectedInputTileSet.name));
     }
 }
 function reRenderOutputImageBitMask() {
-    if (bitMaskTiles) {
-        const tileRender = getRenderImageFromTiles(bitMaskTiles, selectedOutputTileSet, borderSizeOutput, new Color(bgColor, bgAlpha), renderTileIds);
+    if (bitMaskRenderSet) {
+        const tileRender = getRenderImageFromTiles(bitMaskRenderSet, selectedOutputTileSet, borderSizeOutput, new Color(bgColor, bgAlpha), doRenderTileIds);
         renderTileSet(tileRender, HTML_ELEMENTS.outputImageBitMask, HTML_ELEMENTS.outputImageBitMaskLink, HTML_ELEMENTS.outputImageBitMaskDimensions, getDownloadLink(true, selectedOutputTileSet.name));
     }
 }
 function reRenderInputImagePreview() {
-    if (imageTiles && userUpload) {
-        const tileRender = getRenderImageFromTiles(imageTiles, selectedInputTileSet, borderSizeOutput, new Color(bgColor, bgAlpha), renderTileIds);
+    if (imageRenderSet && userUpload) {
+        const tileRender = getRenderImageFromTiles(imageRenderSet, selectedInputTileSet, borderSizeOutput, new Color(bgColor, bgAlpha), doRenderTileIds);
         renderTileSet(tileRender, HTML_ELEMENTS.inputImagePreview, HTML_ELEMENTS.inputImagePreviewLink, HTML_ELEMENTS.inputImagePreviewDimensions, getDownloadLink(false, selectedInputTileSet.name, selectedInputTileSet.name));
     }
 }
 function reRenderOutputImagePreview() {
-    if (imageTiles && userUpload) {
-        const tileRender = getRenderImageFromTiles(imageTiles, selectedOutputTileSet, borderSizeOutput, new Color(bgColor, bgAlpha), renderTileIds);
+    if (imageRenderSet && userUpload) {
+        const tileRender = getRenderImageFromTiles(imageRenderSet, selectedOutputTileSet, borderSizeOutput, new Color(bgColor, bgAlpha), doRenderTileIds);
         renderTileSet(tileRender, HTML_ELEMENTS.outputImagePreview, HTML_ELEMENTS.outputImagePreviewLink, HTML_ELEMENTS.outputImagePreviewDimensions, getDownloadLink(false, selectedOutputTileSet.name, selectedOutputTileSet.name));
     }
 }

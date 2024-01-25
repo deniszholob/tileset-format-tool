@@ -1,19 +1,24 @@
-import { APP_UPDATE_DATE } from '../app-update.js';
-import { TileSet } from '../classes/TileSet.model.js';
-import { DEFAULT_TILE_SETS } from '../data/tile-set_default.data.js';
-import { generateBitMaskTiles, renderTileSet } from '../tile-set-renderer.js';
-import { getRenderImageFromTiles, } from '../tile-set-worker.js';
-import { Color, existSavedTileSets, loadTileSetsToLocalStorage, saveTileSetsToLocalStorage, } from '../util.js';
+import { APP_UPDATE_DATE } from '../../app-update.js';
+import { TileSet } from '../../classes/TileSet.model.js';
+import { DEFAULT_TILE_SETS } from '../../data/tile-set_default.data.js';
+// import { DEFAULT_TILE_SETS } from '../../data/tile-set_default.data.js';
+import { csvToMatrix, existSavedTileSets, loadTileSetsToLocalStorage, saveTileSetsToLocalStorage, } from '../../util/data-util.ts.js';
+import { Color } from '../../util/html-util.js';
+import { generateBitMaskTiles, renderTileSet, } from '../../util/tile-set-renderer.js';
+import { getRenderImageFromTiles, } from '../../util/tile-set-worker.js';
 import { HtmlElementsEditorPage } from './html-elements.js';
 console.log('// ===================== Editor.ts ======================== //');
+const DEFAULT_TILE_SET_NAME = 'New';
+const DEFAULT_TILE_SET_LINK = '';
+const DEFAULT_TILE_SET_CONFIG = '28, 112\n7, 193';
 // ================================================================= //
 // State
 const HTML_ELEMENTS = new HtmlElementsEditorPage();
 let TILE_SETS = DEFAULT_TILE_SETS;
 let bitMaskTiles = undefined;
-let newTileSetName = 'New';
-let newTileSetLink = '';
-let newTileSetConfig = '[\n  [28, 112],\n  [  7, 193]\n]';
+let newTileSetName = DEFAULT_TILE_SET_NAME;
+let newTileSetLink = DEFAULT_TILE_SET_LINK;
+let newTileSetConfig = DEFAULT_TILE_SET_CONFIG;
 // ================================================================= //
 // Expose global functions
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -46,6 +51,7 @@ function onLoad() {
     console.log('// ================= onLoad() - Editor ==================== //');
     console.log(`App Updated last: `, APP_UPDATE_DATE);
     HTML_ELEMENTS.updateDate.innerHTML = APP_UPDATE_DATE;
+    HTML_ELEMENTS.editTileSetConfig.placeholder = DEFAULT_TILE_SET_CONFIG;
     loadTileSets();
     syncStateWithHtml();
     makeBitMaskTiles();
@@ -72,9 +78,11 @@ function loadTileSets() {
         : DEFAULT_TILE_SETS;
 }
 function editTileSetReset() {
-    newTileSetName = '';
-    newTileSetLink = '';
-    newTileSetConfig = '';
+    newTileSetName = DEFAULT_TILE_SET_NAME;
+    newTileSetLink = DEFAULT_TILE_SET_LINK;
+    newTileSetConfig = DEFAULT_TILE_SET_CONFIG;
+    syncStateWithHtml();
+    updatePreview();
 }
 function editTileSetNew() {
     HTML_ELEMENTS.editorSpace.classList.remove('hidden');
@@ -102,7 +110,7 @@ function onUpdateEditTileSetConfig() {
 function updatePreview() {
     if (bitMaskTiles) {
         try {
-            const set = JSON.parse(newTileSetConfig);
+            const set = csvToMatrix(newTileSetConfig);
             const tileSet = new TileSet({
                 name: newTileSetName,
                 link: newTileSetLink,

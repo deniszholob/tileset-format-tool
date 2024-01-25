@@ -1,4 +1,4 @@
-import { HtmlElementsBase } from './classes/HtmlElements.model.js';
+import { HtmlElementsBase } from '../../classes/HtmlElementsBase.model.js';
 export class HtmlElementsMainPage extends HtmlElementsBase {
     bitMask = this.getElementById('bitMask');
     imageInput = this.getElementById('imageInput');

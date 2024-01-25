@@ -183,7 +183,7 @@
       <div class="flex flex-col gap-4 container-max m-auto">
         <div>
           <button onclick="onSaveTileSets()" class="bg-blue-500 text-white px-4 py-2 rounded-md">
-            Save Tile Sets Config
+            Save Tile Sets Config <small>(To browser local storage)</small>
           </button>
 
           <button
@@ -194,7 +194,7 @@
           </button>
 
           <button onclick="onResetTileSets()" class="bg-red-500 text-white px-4 py-2 rounded-md">
-            Reset Tile Sets Config
+            Reset Tile Sets Config <small>(Clear local storage, reset to default)</small>
           </button>
         </div>
       </div>
@@ -202,6 +202,15 @@
       <hr class="my-4 border-blue-500" />
 
       <div id="editorSpace" class="flex flex-col gap-4 container-max m-auto">
+        <p>
+          Create your own tile set rule set to use in the formatter. <br />
+          Use numbers from -1 to 255 to represent the main tiles <br />
+          Use _tag suffix to represent any variations <br />
+          e.g. If you have multiple grass tiles, you can encode them like 255, 255_a, 255_b <br />
+          The number part will share the same bit mask, the suffix will differentiate the textures
+          <br />
+          Use empty space for empty tiles <br />
+        </p>
         <div class="tileSet flex flex-row gap-4">
           <div class="flex flex-col gap-4">
             <label for="editTileSetName">Tile Set Name</label>
@@ -224,16 +233,15 @@
               onkeyup="onUpdateEditTileSetLink()"
             />
 
-            <label for="editTileSetConfig">Tile Set Config (Json Array)</label>
+            <label for="editTileSetConfig">Tile Set Config (CSV)</label>
             <textarea
               id="editTileSetConfig"
               name="editTileSetConfig"
               cols="40"
               rows="10"
-              placeholder="[
-  [255, 255],
-  [255, 255],
-]"
+              placeholder="255, 255
+255, 255
+"
               onchange="onUpdateEditTileSetConfig()"
               onkeyup="onUpdateEditTileSetConfig()"
             ></textarea>
@@ -308,7 +316,7 @@
     </div>
 
     <!-- https://jakearchibald.com/2017/es-modules-in-browsers/ -->
-    <script src="./js/pages/editor.js" type="module"></script>
+    <script src="./js/pages/editor/editor-page.js" type="module"></script>
     <noscript> Please enable JavaScript to continue using this application. </noscript>
   </body>
 </html>
