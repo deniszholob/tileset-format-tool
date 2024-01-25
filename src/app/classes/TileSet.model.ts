@@ -28,7 +28,9 @@ export class TileSet {
     );
 
     this.numRows = this.set.length;
-    this.numCols = this.set?.[0].length ?? 0;
+    this.numCols = this.set
+      .map((t: (Tile | undefined)[]): number => t.length)
+      .reduce((acc: number, curr: number): number => Math.max(acc, curr), 0);
     this.size = this.numRows * this.numCols;
 
     this.tileCount = this.set.flatMap((v) => v).filter((v) => v != null).length;

@@ -113,7 +113,6 @@ let selectedOutputTileSet: TileSet = getSelectedTileSet(outputTileSetId);
 
 function onLoad(): void {
   console.log('// ================= onLoad() - Main ==================== //');
-  console.log(`App Updated last: `, APP_UPDATE_DATE);
   HTML_ELEMENTS.updateDate.innerHTML = APP_UPDATE_DATE;
   loadTileSets();
   makeBitMaskTiles();

@@ -8,7 +8,7 @@ import {
 export function generateBitMaskTiles(
   bitMaskImageElement: HTMLImageElement,
 ): RenderSet {
-  const bitMaskTileSize = Math.max(
+  const bitMaskTileSize: number = Math.max(
     bitMaskImageElement.width / BIT_MASK_TILE_SET.numCols,
     bitMaskImageElement.height / BIT_MASK_TILE_SET.numRows,
   );
@@ -32,7 +32,7 @@ export function renderTileSet(
   outputImageDimensionsElement: HTMLSpanElement,
   /** What should the downloadable file be saved as  */
   downloadName: string,
-) {
+): void {
   outputImageElement.src = renderImage.src;
   outputImageLinkElement.href = renderImage.src;
   outputImageLinkElement.download = downloadName;

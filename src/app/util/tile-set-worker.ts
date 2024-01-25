@@ -9,6 +9,7 @@ import {
 
 export interface RenderSet {
   name: string;
+  tileSize: number;
   set: RenderTile[];
 }
 
@@ -29,97 +30,6 @@ export class RenderImage {
   }
 }
 
-export function getRenderImageFromTiles(
-  renderSet: RenderSet,
-  tileSet: TileSet,
-  borderSize: number,
-  color: Color,
-  doRenderText: boolean,
-): RenderImage {
-  const canvas: HTMLCanvasElement = document.createElement('canvas');
-  const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
-  if (!context) throw new Error(`Cannot load Canvas Context`);
-  context.imageSmoothingEnabled = false;
-
-  const sampleTile: RenderTile | undefined = renderSet.set[0];
-  if (!sampleTile) {
-    throw Error(`tiles array is empty or null: ${renderSet.set}`);
-  }
-  const tileSize: number = sampleTile.canvas.width;
-  const numRows: number = tileSet.numRows;
-  const numCols: number = tileSet.numCols;
-
-  const tileSizePadded: number = tileSize + 2 * borderSize;
-
-  canvas.width = numCols * tileSizePadded;
-  canvas.height = numRows * tileSizePadded;
-
-  tileSet.set.forEach((rowTiles: (Tile | undefined)[], iR: number) => {
-    rowTiles.forEach((tile: Tile | undefined, iC: number) => {
-      const x: number = iC * tileSizePadded;
-      const y: number = iR * tileSizePadded;
-
-      // Render extra spacing and background only if margin size is greater than 0
-      if (borderSize > 0) {
-        // If using fill
-        context.fillStyle = color.toString();
-        context.fillRect(x, y, tileSizePadded, tileSizePadded);
-
-        // // If using stroke
-        // context.strokeStyle = color.toString();
-        // context.lineWidth = borderSize;
-        // // NOTE: Stroke operates on half pixels: https://stackoverflow.com/a/13879402
-        // context.strokeRect(
-        //   x + borderSize / 2,
-        //   y + borderSize / 2,
-        //   tileSizePadded - borderSize,
-        //   tileSizePadded - borderSize,
-        // );
-      }
-
-      if (!tile) return;
-
-      // Try to find variant tile
-      let renderTile: RenderTile | undefined = renderSet.set.find(
-        (t: RenderTile): boolean =>
-          t.tile?.id === tile.id && t.tile.variant === tile.variant,
-      );
-
-      // this will pull from the renderset vs tileset, for bitmasks, there is no variants
-      let textTile: Tile = tile;
-
-      // If no variant tile found, try to find base tile
-      if (!renderTile) {
-        renderTile = renderSet.set.find(
-          (t: RenderTile): boolean => t.tile?.id === tile.id,
-        );
-        if (renderTile?.tile && renderSet.name !== BIT_MASK_TILE_SET_NAME) {
-          textTile = renderTile.tile;
-        }
-      }
-
-      if (renderTile?.tile == null) return;
-
-      context.drawImage(
-        renderTile.canvas,
-        x + borderSize,
-        y + borderSize,
-        // tileSize,
-        // tileSize,
-      );
-      if (doRenderText) {
-        const text: string = textTile.toString();
-        const tileXCenter: number = iC * tileSizePadded + tileSizePadded / 2;
-        const tileYCenter: number = iR * tileSizePadded + tileSizePadded / 2;
-        const fontSize: number = tileSize / 3;
-        renderTextOnCanvas(canvas, text, tileXCenter, tileYCenter, fontSize);
-      }
-    });
-  });
-
-  return new RenderImage(canvas);
-}
-
 export function cutImageIntoTiles(
   image: HTMLImageElement,
   tileSizePadded: number,
@@ -129,6 +39,7 @@ export function cutImageIntoTiles(
 ): RenderSet {
   const canvasImage: HTMLCanvasElement = htmlImageToCanvasImage(image);
   const tiles: RenderTile[] = [];
+  const tileSize: number = tileSizePadded - 2 * borderSize;
 
   for (
     let y: number = imageBorderSize;
@@ -145,8 +56,6 @@ export function cutImageIntoTiles(
         tileCanvas.getContext('2d');
       if (!tileContext) throw new Error(`Cannot load Canvas Context`);
       tileContext.imageSmoothingEnabled = false;
-
-      const tileSize: number = tileSizePadded - 2 * borderSize;
 
       tileCanvas.width = tileSize;
       tileCanvas.height = tileSize;
@@ -172,5 +81,156 @@ export function cutImageIntoTiles(
     }
   }
 
-  return { name: tileSet.name, set: tiles };
+  return { name: tileSet.name, tileSize, set: tiles };
+}
+
+export function getRenderImageFromTiles(
+  renderSet: RenderSet,
+  tileSet: TileSet,
+  borderSize: number,
+  color: Color,
+  doRenderText: boolean,
+): RenderImage {
+  const canvas: HTMLCanvasElement = document.createElement('canvas');
+  const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
+  if (!context) throw new Error(`Cannot load Canvas Context`);
+  context.imageSmoothingEnabled = false;
+
+  const tileSize: number = renderSet.tileSize;
+  const numRows: number = tileSet.numRows;
+  const numCols: number = tileSet.numCols;
+
+  const tileSizePadded: number = tileSize + 2 * borderSize;
+
+  canvas.width = numCols * tileSizePadded;
+  canvas.height = numRows * tileSizePadded;
+
+  // console.groupCollapsed(`Render Image ${renderSet.name}`);
+  for (let iRow: number = 0; iRow < tileSet.numRows; iRow++) {
+    for (let iCol: number = 0; iCol < tileSet.numCols; iCol++) {
+      const tile: Tile | undefined = tileSet.set?.[iRow]?.[iCol];
+
+      const tilesToRender = findTilesToRender(renderSet, tile);
+
+      // console.group(`Render Tile ${iRow}, ${iCol}`);
+      drawImageFromTile(
+        context,
+        iCol,
+        iRow,
+        tileSizePadded,
+        borderSize,
+        color,
+        tilesToRender?.renderTile,
+      );
+
+      if (doRenderText && tilesToRender?.textTile) {
+        drawTextFromTile(
+          context,
+          iCol,
+          iRow,
+          tileSizePadded,
+          tilesToRender.textTile,
+        );
+      }
+      // console.groupEnd();
+    }
+  }
+  // console.groupEnd();
+
+  // tileSet.set.forEach((rowTiles: (Tile | undefined)[], iR: number) => {
+  //   rowTiles.forEach((tile: Tile | undefined, iC: number) => {
+
+  //   });
+  // });
+
+  return new RenderImage(canvas);
+}
+
+function findTilesToRender(renderSet: RenderSet, tile: Tile | undefined) {
+  if (!tile) return;
+
+  // Try to find variant tile
+  let renderTile: RenderTile | undefined = renderSet.set.find(
+    (t: RenderTile): boolean =>
+      t.tile?.id === tile.id && t.tile.variant === tile.variant,
+  );
+
+  // this will pull from the renderset vs tileset, for bitmasks, there is no variants
+  let textTile: Tile = tile;
+
+  // If no variant tile found, try to find base tile
+  if (!renderTile) {
+    renderTile = renderSet.set.find(
+      (t: RenderTile): boolean => t.tile?.id === tile.id,
+    );
+    if (renderTile?.tile && renderSet.name !== BIT_MASK_TILE_SET_NAME) {
+      textTile = renderTile.tile;
+    }
+  }
+
+  if (renderTile?.tile == null) return;
+
+  return { renderTile, textTile };
+}
+
+function drawTextFromTile(
+  context: CanvasRenderingContext2D,
+  iCol: number,
+  iRow: number,
+  tileSizePadded: number,
+  textTile: Tile,
+): void {
+  const text: string = textTile.toString().replace('_', '\n');
+  const tileXCenter: number = iCol * tileSizePadded + tileSizePadded / 2;
+  const tileYCenter: number = iRow * tileSizePadded + tileSizePadded / 2;
+  const fontSize: number = tileSizePadded / 3.3;
+  renderTextOnCanvas(context, text, tileXCenter, tileYCenter, fontSize);
+}
+
+function drawImageFromTile(
+  context: CanvasRenderingContext2D,
+  iCol: number,
+  iRow: number,
+  tileSizePadded: number,
+  borderSize: number,
+  color: Color,
+  renderTile: RenderTile | undefined,
+): void {
+  const x: number = iCol * tileSizePadded;
+  const y: number = iRow * tileSizePadded;
+
+  // Render extra spacing and background only if margin size is greater than 0
+  if (borderSize > 0) {
+    // If using fill
+    context.fillStyle = color.toString();
+    context.fillRect(x, y, tileSizePadded, tileSizePadded);
+
+    // // If using stroke
+    // context.strokeStyle = color.toString();
+    // context.lineWidth = borderSize;
+    // // NOTE: Stroke operates on half pixels: https://stackoverflow.com/a/13879402
+    // console.log(
+    //   `stroke`,
+    //   x + borderSize / 2,
+    //   y + borderSize / 2,
+    //   tileSizePadded - borderSize,
+    //   tileSizePadded - borderSize,
+    // );
+    // context.strokeRect(
+    //   x + borderSize / 2,
+    //   y + borderSize / 2,
+    //   tileSizePadded - borderSize,
+    //   tileSizePadded - borderSize,
+    // );
+  }
+
+  if (renderTile?.tile == null) return;
+
+  context.drawImage(
+    renderTile.canvas,
+    x + borderSize,
+    y + borderSize,
+    // tileSize,
+    // tileSize,
+  );
 }

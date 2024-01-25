@@ -25,7 +25,7 @@ console.log('// ===================== Editor.ts ======================== //');
 
 const DEFAULT_TILE_SET_NAME = 'New';
 const DEFAULT_TILE_SET_LINK = '';
-const DEFAULT_TILE_SET_CONFIG: string = '28, 112\n7, 193';
+const DEFAULT_TILE_SET_CONFIG: string = ',28,112\n255,7,193,255_a';
 
 // ================================================================= //
 // State
@@ -140,6 +140,12 @@ function onUpdateEditTileSetLink(): void {
 }
 function onUpdateEditTileSetConfig(): void {
   newTileSetConfig = HTML_ELEMENTS.editTileSetConfig.value;
+  newTileSetConfig = newTileSetConfig
+    .replaceAll('[', '')
+    .replaceAll('],', '')
+    .replaceAll(']', '')
+    .replaceAll(' ', '');
+  HTML_ELEMENTS.editTileSetConfig.value = newTileSetConfig;
   updatePreview();
 }
 
@@ -178,7 +184,6 @@ function updatePreview(): void {
       );
       HTML_ELEMENTS.editTileSetPreviewError.innerText = '';
     } catch (error: unknown) {
-      // console.error(error);
       HTML_ELEMENTS.editTileSetPreviewError.innerText = String(error);
     }
   }
