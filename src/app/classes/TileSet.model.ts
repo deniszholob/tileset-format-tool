@@ -1,13 +1,19 @@
 import { Tile } from './Tile.model.js';
 import { TileSetStr } from './TileSetStr.model.js';
 
-export class TileSet {
+export interface ITileSet {
   name: string;
   link?: string;
   /** 2D array of tile IDs corresponding to their binary values
    * @ref: TODO: Add reading material
    */
   set: (Tile | undefined)[][]; // TODO: rename to tileIdMatrix?
+}
+
+export class TileSet implements ITileSet {
+  name: string;
+  link?: string;
+  set: (Tile | undefined)[][];
 
   numRows: number;
   numCols: number;
@@ -20,11 +26,19 @@ export class TileSet {
     const tileSetsBase: TileSetStr = JSON.parse(jsonString);
     return new TileSet(tileSetsBase);
   }
-  constructor(obj: TileSetStr) {
+
+  constructor(obj: TileSetStr | ITileSet) {
     this.name = obj.name;
     this.link = obj.link;
-    this.set = obj.set.map((row: string[]): (Tile | undefined)[] =>
-      row.map((tile: string): Tile | undefined => Tile.getTileFromString(tile)),
+    this.set = obj.set.map(
+      (row: string[] | (Tile | undefined)[]): (Tile | undefined)[] =>
+        row.map((tile: string | Tile | undefined): Tile | undefined =>
+          !tile
+            ? undefined
+            : typeof tile === 'string'
+              ? Tile.getTileFromString(tile)
+              : new Tile(tile.id, tile.variant),
+        ),
     );
 
     this.numRows = this.set.length;

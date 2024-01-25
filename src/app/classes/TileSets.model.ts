@@ -21,7 +21,7 @@ export class TileSets {
 
   private getTileSetFromBase(tileSetsBase: TileSetStr[]): TileSet[] {
     return tileSetsBase.map(
-      (tileSetBase: TileSetStr) => new TileSet(tileSetBase),
+      (tileSetBase: TileSetStr): TileSet => new TileSet(tileSetBase),
     );
   }
 
@@ -40,12 +40,10 @@ export class TileSets {
   //   this.sets.splice(index, 1);
   // }
 
-  public toJson(): string {
-    const tileSetsJson: string[] = this.sets.map((v) => v.toJson());
-    return JSON.stringify(tileSetsJson);
+  public toJson(spacing?: number): string {
+    return JSON.stringify(this.sets, null, spacing);
   }
 
-  /** TODO: Add Custom Option (Not Here?) */
   public toSelectOptions(): SelectOption[] {
     return this.sets.map((v, i) => ({
       name: `${i} | ${v.toString()}`,

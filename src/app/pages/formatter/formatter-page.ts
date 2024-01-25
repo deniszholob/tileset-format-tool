@@ -7,7 +7,7 @@ import { DEFAULT_TILE_SETS } from '../../data/tile-set_default.data.js';
 import { BIT_MASK_TILE_SET } from '../../data/tile-set-bit-mask.data.js';
 import {
   existSavedTileSets,
-  loadTileSetsToLocalStorage,
+  loadTileSetsFromLocalStorage,
 } from '../../util/data-util.ts.js';
 import {
   checkImageLoaded,
@@ -128,7 +128,7 @@ function getSelectedTileSet(idx: number): TileSet {
 
 function loadTileSets(): void {
   TILE_SETS = existSavedTileSets()
-    ? loadTileSetsToLocalStorage()
+    ? loadTileSetsFromLocalStorage()
     : DEFAULT_TILE_SETS;
   TILE_SET_OPTIONS = TILE_SETS.toSelectOptions();
 }
