@@ -1,16 +1,13 @@
-export interface TileSetBase {
-  name: string;
-  link?: string;
-  set: (number | null)[][];
-}
+import { Tile } from './Tile.model.js';
+import { TileSetStr } from './TileSetStr.model.js';
 
-export class TileSet implements TileSetBase {
+export class TileSet {
   name: string;
   link?: string;
   /** 2D array of tile IDs corresponding to their binary values
    * @ref: TODO: Add reading material
    */
-  set: (number | null)[][]; // TODO: rename to tileIdMatrix?
+  set: (Tile | undefined)[][]; // TODO: rename to tileIdMatrix?
 
   numRows: number;
   numCols: number;
@@ -20,14 +17,15 @@ export class TileSet implements TileSetBase {
   tileCount: number;
 
   public static getTileSetFromJson(jsonString: string): TileSet {
-    const tileSetsBase: TileSetBase = JSON.parse(jsonString);
+    const tileSetsBase: TileSetStr = JSON.parse(jsonString);
     return new TileSet(tileSetsBase);
   }
-
-  constructor(obj: TileSetBase) {
+  constructor(obj: TileSetStr) {
     this.name = obj.name;
     this.link = obj.link;
-    this.set = obj.set;
+    this.set = obj.set.map((row: string[]): (Tile | undefined)[] =>
+      row.map((tile: string): Tile | undefined => Tile.getTileFromString(tile)),
+    );
 
     this.numRows = this.set.length;
     this.numCols = this.set?.[0].length ?? 0;
@@ -38,5 +36,19 @@ export class TileSet implements TileSetBase {
 
   public toString(): string {
     return `${this.name} | ${this.numRows}x${this.numCols} - ${this.tileCount} tiles`;
+  }
+
+  public toTileSetBase(): TileSetStr {
+    return {
+      name: this.name,
+      link: this.link,
+      set: this.set.map((row: (Tile | undefined)[]): string[] =>
+        row.map((tile: Tile | undefined): string => tile?.toString() ?? ''),
+      ),
+    };
+  }
+
+  public toJson(): string {
+    return JSON.stringify(this.toTileSetBase());
   }
 }

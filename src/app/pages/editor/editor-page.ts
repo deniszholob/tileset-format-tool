@@ -1,33 +1,42 @@
-import { APP_UPDATE_DATE } from '../app-update.js';
-import { TileSet } from '../classes/TileSet.model.js';
-import { TileSets } from '../classes/TileSets.model.js';
-import { DEFAULT_TILE_SETS } from '../data/tile-set_default.data.js';
-import { generateBitMaskTiles, renderTileSet } from '../tile-set-renderer.js';
+import { APP_UPDATE_DATE } from '../../app-update.js';
+import { TileSet } from '../../classes/TileSet.model.js';
+import { TileSets } from '../../classes/TileSets.model.js';
+import { DEFAULT_TILE_SETS } from '../../data/tile-set_default.data.js';
+// import { DEFAULT_TILE_SETS } from '../../data/tile-set_default.data.js';
 import {
-  getRenderImageFromTiles,
-  RenderImage,
-  Tile,
-} from '../tile-set-worker.js';
-import {
-  Color,
+  csvToMatrix,
   existSavedTileSets,
   loadTileSetsToLocalStorage,
   saveTileSetsToLocalStorage,
-} from '../util.js';
+} from '../../util/data-util.ts.js';
+import { Color } from '../../util/html-util.js';
+import {
+  generateBitMaskTiles,
+  renderTileSet,
+} from '../../util/tile-set-renderer.js';
+import {
+  getRenderImageFromTiles,
+  RenderImage,
+  RenderSet,
+} from '../../util/tile-set-worker.js';
 import { HtmlElementsEditorPage } from './html-elements.js';
 
 console.log('// ===================== Editor.ts ======================== //');
+
+const DEFAULT_TILE_SET_NAME = 'New';
+const DEFAULT_TILE_SET_LINK = '';
+const DEFAULT_TILE_SET_CONFIG: string = '28, 112\n7, 193';
 
 // ================================================================= //
 // State
 
 const HTML_ELEMENTS = new HtmlElementsEditorPage();
 let TILE_SETS: TileSets = DEFAULT_TILE_SETS;
-let bitMaskTiles: Tile[] | undefined = undefined;
+let bitMaskTiles: RenderSet | undefined = undefined;
 
-let newTileSetName: string = 'New';
-let newTileSetLink: string = '';
-let newTileSetConfig: string = '[\n  [28, 112],\n  [  7, 193]\n]';
+let newTileSetName: string = DEFAULT_TILE_SET_NAME;
+let newTileSetLink: string = DEFAULT_TILE_SET_LINK;
+let newTileSetConfig: string = DEFAULT_TILE_SET_CONFIG;
 
 // ================================================================= //
 // Expose global functions
@@ -65,6 +74,7 @@ function onLoad(): void {
   console.log('// ================= onLoad() - Editor ==================== //');
   console.log(`App Updated last: `, APP_UPDATE_DATE);
   HTML_ELEMENTS.updateDate.innerHTML = APP_UPDATE_DATE;
+  HTML_ELEMENTS.editTileSetConfig.placeholder = DEFAULT_TILE_SET_CONFIG;
   loadTileSets();
   syncStateWithHtml();
   makeBitMaskTiles();
@@ -76,7 +86,7 @@ function makeBitMaskTiles(): void {
   updatePreview();
 }
 
-function syncStateWithHtml() {
+function syncStateWithHtml(): void {
   HTML_ELEMENTS.editTileSetName.value = newTileSetName;
   HTML_ELEMENTS.editTileSetLink.value = newTileSetLink;
   HTML_ELEMENTS.editTileSetConfig.value = newTileSetConfig;
@@ -97,9 +107,11 @@ function loadTileSets(): void {
 }
 
 function editTileSetReset(): void {
-  newTileSetName = '';
-  newTileSetLink = '';
-  newTileSetConfig = '';
+  newTileSetName = DEFAULT_TILE_SET_NAME;
+  newTileSetLink = DEFAULT_TILE_SET_LINK;
+  newTileSetConfig = DEFAULT_TILE_SET_CONFIG;
+  syncStateWithHtml();
+  updatePreview();
 }
 
 function editTileSetNew(): void {
@@ -118,15 +130,15 @@ function editTileSetEdit(): void {
 
 function editTileSetDelete(): void {}
 
-function onUpdateEditTileSetName() {
+function onUpdateEditTileSetName(): void {
   newTileSetName = HTML_ELEMENTS.editTileSetName.value;
   updatePreview();
 }
-function onUpdateEditTileSetLink() {
+function onUpdateEditTileSetLink(): void {
   newTileSetLink = HTML_ELEMENTS.editTileSetLink.value;
   updatePreview();
 }
-function onUpdateEditTileSetConfig() {
+function onUpdateEditTileSetConfig(): void {
   newTileSetConfig = HTML_ELEMENTS.editTileSetConfig.value;
   updatePreview();
 }
@@ -134,7 +146,7 @@ function onUpdateEditTileSetConfig() {
 function updatePreview(): void {
   if (bitMaskTiles) {
     try {
-      const set = JSON.parse(newTileSetConfig);
+      const set: string[][] = csvToMatrix(newTileSetConfig);
       const tileSet: TileSet = new TileSet({
         name: newTileSetName,
         link: newTileSetLink,

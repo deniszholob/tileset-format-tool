@@ -1,0 +1,10 @@
+{
+  "overrides": [
+    {
+      "files": "*.data.ts",
+      "options": {
+        "printWidth": 100
+      }
+    }
+  ]
+}

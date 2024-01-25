@@ -1,24 +1,30 @@
-import { APP_UPDATE_DATE } from './app-update.js';
-import { SelectOption } from './classes/SelectOption.model.js';
-import { TileSet } from './classes/TileSet.model.js';
-import { TileSets } from './classes/TileSets.model.js';
-import { DEFAULT_TILE_SETS } from './data/tile-set_default.data.js';
-import { BIT_MASK_TILE_SET } from './data/tile-set-bit-mask.data.js';
-import { HtmlElementsMainPage } from './html-elements.js';
-import { generateBitMaskTiles, renderTileSet } from './tile-set-renderer.js';
+import { APP_UPDATE_DATE } from '../../app-update.js';
+import { SelectOption } from '../../classes/SelectOption.model.js';
+import { TileSet } from '../../classes/TileSet.model.js';
+import { TileSets } from '../../classes/TileSets.model.js';
+import { DEFAULT_TILE_SETS } from '../../data/tile-set_default.data.js';
+// import { DEFAULT_TILE_SETS } from '../../data/tile-set_default.data.js';
+import { BIT_MASK_TILE_SET } from '../../data/tile-set-bit-mask.data.js';
+import {
+  existSavedTileSets,
+  loadTileSetsToLocalStorage,
+} from '../../util/data-util.ts.js';
+import {
+  checkImageLoaded,
+  Color,
+  getImageFromFile,
+} from '../../util/html-util.js';
+import {
+  generateBitMaskTiles,
+  renderTileSet,
+} from '../../util/tile-set-renderer.js';
 import {
   cutImageIntoTiles,
   getRenderImageFromTiles,
   RenderImage,
-  Tile,
-} from './tile-set-worker.js';
-import {
-  checkImageLoaded,
-  Color,
-  existSavedTileSets,
-  getImageFromFile,
-  loadTileSetsToLocalStorage,
-} from './util.js';
+  RenderSet,
+} from '../../util/tile-set-worker.js';
+import { HtmlElementsMainPage } from './html-elements.js';
 
 // console.log(TILE_SETS);
 // console.log(TILE_SET_OPTIONS);
@@ -38,23 +44,25 @@ interface UserUpload {
 }
 
 let userUpload: UserUpload | undefined = undefined;
-let imageTiles: Tile[] | undefined = undefined;
-let bitMaskTiles: Tile[] | undefined = undefined;
+let imageRenderSet: RenderSet | undefined = undefined;
+let bitMaskRenderSet: RenderSet | undefined = undefined;
 
 let tileSize: number = 32;
 let numRows: number = 1;
 let numCols: number = 1;
 
+// craftpix-top tiles
 // let outerBorderSize: number = 3;
 // let borderSizeSource: number = 7;
 let outerBorderSize: number = 0;
 let borderSizeSource: number = 0;
 let borderSizeOutput: number = 0;
 
-let bgColor: string = '#bbbbbb'; // #ff0000 // red
+let bgColor: string = '#bbbbbb';
+// let bgColor: string = '#ff0000'; // red
 let bgAlpha: number = 100;
 
-let renderTileIds: boolean = false;
+let doRenderTileIds: boolean = false;
 
 let inputTileSetId: number = 1;
 let outputTileSetId: number = 0;
@@ -123,14 +131,12 @@ function loadTileSets(): void {
   TILE_SETS = existSavedTileSets()
     ? loadTileSetsToLocalStorage()
     : DEFAULT_TILE_SETS;
-
   TILE_SET_OPTIONS = TILE_SETS.toSelectOptions();
 }
 
 function makeBitMaskTiles(): void {
   const bitMaskImageElement: HTMLImageElement = HTML_ELEMENTS.bitMask;
-  bitMaskTiles = generateBitMaskTiles(bitMaskImageElement);
-  // console.log({ bitMaskImageElement, bitMaskTileSize, bitMaskTiles });
+  bitMaskRenderSet = generateBitMaskTiles(bitMaskImageElement);
   reRenderInputImageBitMask();
   reRenderOutputImageBitMask();
 }
@@ -147,7 +153,7 @@ function syncStateWithHtml(): void {
   HTML_ELEMENTS.bgColorInput.value = bgColor;
   HTML_ELEMENTS.bgAlphaInput.valueAsNumber = bgAlpha;
 
-  HTML_ELEMENTS.renderTileIds.checked = renderTileIds;
+  HTML_ELEMENTS.renderTileIds.checked = doRenderTileIds;
 
   HTML_ELEMENTS.inputTileSetSelect.selectedIndex = inputTileSetId;
   HTML_ELEMENTS.outputTileSetSelect.selectedIndex = outputTileSetId;
@@ -237,7 +243,7 @@ function onUpdateBgAlpha(): void {
 }
 
 export function onToggleRenderTileIds(): void {
-  renderTileIds = !renderTileIds;
+  doRenderTileIds = !doRenderTileIds;
   reRenderInputImagePreview();
   reRenderOutputImagePreview();
   reRenderInputImageBitMask();
@@ -297,10 +303,8 @@ function recalculateRowsCols(): void {
 function recalculateInputImageVars(): void {
   const image: HTMLImageElement | undefined = userUpload?.image;
   if (checkImageLoaded(image)) {
-    // tileSize = Math.max(image.width / numCols, image.height / numRows);
     tileSize = getTileSizeFromImage(image, outerBorderSize);
-    // console.log({ tileSize, outerBorderSize });
-    imageTiles = cutImageIntoTiles(
+    imageRenderSet = cutImageIntoTiles(
       image,
       tileSize,
       selectedInputTileSet,
@@ -309,7 +313,7 @@ function recalculateInputImageVars(): void {
     );
   } else {
     tileSize = 0;
-    imageTiles = undefined;
+    imageRenderSet = undefined;
   }
   HTML_ELEMENTS.tileSizeInput.valueAsNumber = tileSize;
 }
@@ -327,15 +331,14 @@ function getTileSizeFromImage(
 }
 
 function reRenderInputImageBitMask(): void {
-  if (bitMaskTiles) {
+  if (bitMaskRenderSet) {
     const tileRender: RenderImage = getRenderImageFromTiles(
-      bitMaskTiles,
+      bitMaskRenderSet,
       selectedInputTileSet,
       borderSizeOutput,
       new Color(bgColor, bgAlpha),
-      renderTileIds,
+      doRenderTileIds,
     );
-
     renderTileSet(
       tileRender,
       HTML_ELEMENTS.inputImageBitMask,
@@ -347,15 +350,14 @@ function reRenderInputImageBitMask(): void {
 }
 
 function reRenderOutputImageBitMask(): void {
-  if (bitMaskTiles) {
+  if (bitMaskRenderSet) {
     const tileRender: RenderImage = getRenderImageFromTiles(
-      bitMaskTiles,
+      bitMaskRenderSet,
       selectedOutputTileSet,
       borderSizeOutput,
       new Color(bgColor, bgAlpha),
-      renderTileIds,
+      doRenderTileIds,
     );
-
     renderTileSet(
       tileRender,
       HTML_ELEMENTS.outputImageBitMask,
@@ -367,13 +369,13 @@ function reRenderOutputImageBitMask(): void {
 }
 
 function reRenderInputImagePreview(): void {
-  if (imageTiles && userUpload) {
+  if (imageRenderSet && userUpload) {
     const tileRender: RenderImage = getRenderImageFromTiles(
-      imageTiles,
+      imageRenderSet,
       selectedInputTileSet,
       borderSizeOutput,
       new Color(bgColor, bgAlpha),
-      renderTileIds,
+      doRenderTileIds,
     );
 
     renderTileSet(
@@ -391,15 +393,14 @@ function reRenderInputImagePreview(): void {
 }
 
 function reRenderOutputImagePreview(): void {
-  if (imageTiles && userUpload) {
+  if (imageRenderSet && userUpload) {
     const tileRender: RenderImage = getRenderImageFromTiles(
-      imageTiles,
+      imageRenderSet,
       selectedOutputTileSet,
       borderSizeOutput,
       new Color(bgColor, bgAlpha),
-      renderTileIds,
+      doRenderTileIds,
     );
-
     renderTileSet(
       tileRender,
       HTML_ELEMENTS.outputImagePreview,
