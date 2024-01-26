@@ -180,18 +180,20 @@
 
       <hr class="my-4 border-blue-500" />
 
-      <div class="flex flex-col gap-4 container-max m-auto">
-        <div>
+      <div class="flex flex-row gap-4 container-max m-auto flex-wrap">
+        <!-- <div>
           <button onclick="onSaveTileSets()" class="bg-blue-500 text-white px-4 py-2 rounded-md">
             Save Tile Sets Config <br />
             <small>(To browser local storage)</small>
           </button>
-
+        </div> -->
+        <div>
           <button onclick="onUploadTileSets()" class="bg-blue-500 text-white px-4 py-2 rounded-md">
             Upload Tile Sets Config <br />
             <small>(To browser local storage)</small>
           </button>
-
+        </div>
+        <div>
           <button
             onclick="onDownloadTileSets()"
             class="bg-blue-500 text-white px-4 py-2 rounded-md"
@@ -199,17 +201,24 @@
             Download Tile Sets Config<br />
             <small>(Json from local storage)</small>
           </button>
-
+        </div>
+        <div>
           <button onclick="onResetTileSets()" class="bg-red-500 text-white px-4 py-2 rounded-md">
             Reset Tile Sets Config <br />
             <small>(Clear local storage, reset to default)</small>
+          </button>
+        </div>
+        <div>
+          <button onclick="onClearTileSets()" class="bg-red-500 text-white px-4 py-2 rounded-md">
+            Clear Tile Sets Config <br />
+            <small>(Clear all entries)</small>
           </button>
         </div>
       </div>
 
       <hr class="my-4 border-blue-500" />
 
-      <div id="editorSpace" class="flex flex-col gap-4 container-max m-auto">
+      <div id="editorSpace" class="flex flex-col gap-4 container-max m-auto hidden">
         <p>
           Create your own tile set rule set to use in the formatter. <br />
           Use numbers from -1 to 255 to represent the main tiles <br />
@@ -257,7 +266,11 @@
             ></textarea>
 
             <div id="editTileSetActions">
+              <button id="editTileSetSave" class="bg-blue-500 text-white px-2 py-1 rounded-md">
+                Save
+              </button>
               <button
+                id="editTileSetAdd"
                 class="bg-blue-500 text-white px-2 py-1 rounded-md"
                 onclick="editTileSetAdd()"
               >
@@ -301,28 +314,51 @@
 
       <hr class="my-4 border-blue-500" />
 
-      <div id="editorList" class="flex flex-col gap-4 container-max m-auto">
+      <div class="flex flex-col gap-4 container-max m-auto">
         <div>
           <button class="bg-green-500 text-white px-2 py-1 rounded-md" onclick="editTileSetNew()">
             New
           </button>
         </div>
-        <div class="flex flex-row gap-2">
-          <button class="bg-red-500 text-white px-2 py-1 rounded-md">Delete</button>
-          <button class="bg-orange-500 text-white px-2 py-1 rounded-md">Edit</button>
-          <span>0 | blob-tilepipe2 | 4x12 - 48 tiles</span>
-          <a
-            id="tileSetLink"
-            href="https://opengameart.org/content/swamp-2d-tileset-pixel-art"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-blue-600 hover:text-blue-500 underline"
-          >
-            craftpix
-          </a>
-          <img src="" alt="Preview" />
+
+        <div id="editorList" class="flex flex-col gap-2">
+          <!-- Inject List Item template instance here -->
         </div>
       </div>
+
+      <!-- List Item Template for editorList -->
+      <template id="editorListItemTemplate">
+        <div class="flex flex-col gap-2 py-4">
+          <div class="flex flex-row gap-2">
+            <!-- Inject List Item template instance here -->
+            <button
+              id="editorListItemTemplateDelete"
+              class="bg-red-500 text-white px-2 py-1 rounded-md"
+            >
+              Delete
+            </button>
+            <button
+              id="editorListItemTemplateEdit"
+              class="bg-orange-500 text-white px-2 py-1 rounded-md"
+            >
+              Edit
+            </button>
+            <span id="editorListItemTemplateDisplay">Tile Name Here</span>
+            <a
+              id="editorListItemTemplateLink"
+              href="https://opengameart.org/content/swamp-2d-tileset-pixel-art"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-blue-600 hover:text-blue-500 underline"
+            >
+              LINK
+            </a>
+          </div>
+          <div>
+            <img id="editorListItemTemplatePreview" src="" alt="Preview" />
+          </div>
+        </div>
+      </template>
 
       <hr class="my-4 border-blue-500" />
       <br />

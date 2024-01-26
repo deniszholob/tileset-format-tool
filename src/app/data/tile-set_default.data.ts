@@ -2,7 +2,6 @@ import { TileSets } from '../classes/TileSets.model.js';
 import { TileSetStr } from '../classes/TileSetStr.model.js';
 import { arrToSrtArr } from './data.mod.js';
 import { BIT_MASK_TILE_SET_BASE } from './tile-set-bit-mask.data.js';
-// import { BIT_MASK_TILE_SET } from './tile-set-bit-mask.data.js';
 
 export const DEFAULT_TILE_SETS_BASE: TileSetStr[] = [
   {
@@ -251,7 +250,8 @@ export const DEFAULT_TILE_SETS_BASE: TileSetStr[] = [
     ].map(arrToSrtArr),
   },
   BIT_MASK_TILE_SET_BASE,
-  // TILE_SETS_EXTRA_BASE
+  // ...TILE_SETS_EXTRA_BASE,
 ];
 
 export const DEFAULT_TILE_SETS: TileSets = new TileSets(DEFAULT_TILE_SETS_BASE);
+// export const DEFAULT_TILE_SETS: TileSets = new TileSets(TILE_SETS_TEST_Base);

@@ -15,14 +15,14 @@ export class TileSets {
   }
 
   constructor(sets: TileSetStr[] = []) {
-    if (sets.entries.length === 0) console.warn('No tile sets provided');
+    if (sets.length === 0) console.warn('No tile sets provided');
     this.sets = this.getTileSetFromBase(sets);
   }
 
   private getTileSetFromBase(tileSetsBase: TileSetStr[]): TileSet[] {
-    return tileSetsBase.map(
-      (tileSetBase: TileSetStr): TileSet => new TileSet(tileSetBase),
-    );
+    return tileSetsBase
+      .filter((s) => !!s)
+      .map((tileSetBase: TileSetStr): TileSet => new TileSet(tileSetBase));
   }
 
   // public addTileSet(tileSetBase: TileSetBase): void {
@@ -45,9 +45,8 @@ export class TileSets {
   }
 
   public toSelectOptions(): SelectOption[] {
-    return this.sets.map((v, i) => ({
-      name: `${i} | ${v.toString()}`,
-      value: i,
-    }));
+    return this.sets.map(
+      (v: TileSet, i: number): SelectOption => v.toSelectOption(i),
+    );
   }
 }

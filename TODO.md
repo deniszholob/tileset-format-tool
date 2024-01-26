@@ -7,6 +7,7 @@
 
 ## App
 
+- [ ] Settings page for defaults
 - [ ] custom export size
 - [ ] Image/layout
   - [/] responsive images that should scale (keeping aspect ration) to fit max height/width of container
@@ -16,5 +17,4 @@
 
 ## Editor
 
-- [ ] custom tile sets with tile-set builder/exporter
 - [ ] warn if duplicates exist in ruleset (to convert to variations)

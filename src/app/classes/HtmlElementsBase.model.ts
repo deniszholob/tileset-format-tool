@@ -1,10 +1,8 @@
 export class HtmlElementsBase {
-  public updateDate: HTMLSpanElement = this.getElementById('updateDate');
-
-  constructor() {}
+  constructor(private node: DocumentFragment | Document) {}
 
   protected getElementById<T extends HTMLElement>(name: string): T {
-    const element: HTMLElement | null = document.getElementById(name);
+    const element: HTMLElement | null = this.node.getElementById(name);
     if (this.checkNull(element)) return element as T;
     throw new Error(`Element "${name}" does not exist: ${element}`);
   }
