@@ -100,7 +100,7 @@
   </head>
 
   <body
-    class="bg-stone-200 min-h-screen min-w-screen flex justify-center flex-col"
+    class="bg-stone-200 min-h-screen min-w-screen flex justify-center flex-col h-svh"
     onload="onLoad()"
   >
     <!-- Without this image doesn't load programmatically for some reason -->
@@ -110,7 +110,7 @@
     <!-- <img id="bitMask" src="assets/bit-mask-tiles-blue-green.png" class="hidden" /> -->
     <!-- <img id="bitMask" src="assets/bit-mask-tiles-bw.png" class="hidden" /> -->
 
-    <div class="w-full p-4 m-auto" style="max-width: 1920px">
+    <div class="w-full p-4 m-auto h-full" style="max-width: 1920px">
       <div id="header" class="flex flex-row justify-evenly items-center">
         <div class="inline-flex gap-4 items-center">
           <h1 class="text-3xl">Tile Set Tool</h1>
@@ -438,6 +438,11 @@
           </a>
         </div>
       </div>
+      Note: Some large resolution images may fail to load/download, sometime right clicking to view
+      image in new tab helps.
+
+      <hr class="my-4 border-blue-500" />
+      <br />
     </div>
 
     <!-- https://jakearchibald.com/2017/es-modules-in-browsers/ -->

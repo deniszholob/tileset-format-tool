@@ -1,5 +1,10 @@
 import { HtmlElementsBase } from '../../classes/HtmlElementsBase.model.js';
 export class HtmlElementsMainPage extends HtmlElementsBase {
+    updateDate = this.getElementById('updateDate');
+    constructor() {
+        // console.log('HtmlElementsMainPage', document);
+        super(document);
+    }
     bitMask = this.getElementById('bitMask');
     imageInput = this.getElementById('imageInput');
     uploadImagePreview = this.getElementById('uploadImagePreview');

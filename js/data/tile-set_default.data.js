@@ -1,7 +1,6 @@
 import { TileSets } from '../classes/TileSets.model.js';
 import { arrToSrtArr } from './data.mod.js';
 import { BIT_MASK_TILE_SET_BASE } from './tile-set-bit-mask.data.js';
-// import { BIT_MASK_TILE_SET } from './tile-set-bit-mask.data.js';
 export const DEFAULT_TILE_SETS_BASE = [
     {
         name: 'blob-tilepipe2',
@@ -186,16 +185,6 @@ export const DEFAULT_TILE_SETS_BASE = [
         ].map(arrToSrtArr),
     },
     {
-        name: 'kenney-roads',
-        link: 'https://kenney.nl/assets/road-textures',
-        set: [
-            [17, '20', '80', '28', '112', '20_a', '80_a', '28_a', '112_a', 85, '247', '223'],
-            [68, '5', '65', '7', '193', '5_a', '65_a', '7_a', '193_a', 119, '253', '127'],
-            [-1, null, 31, 241, 21, 81, 245, 95, 16, 1, '247_a', '223_a'],
-            [null, 255, 199, 124, 69, 84, 125, 215, 4, 64, '253_a', '127_a'],
-        ].map(arrToSrtArr),
-    },
-    {
         name: 'craftpix-side',
         link: 'https://opengameart.org/content/swamp-2d-tileset-pixel-art',
         set: [
@@ -205,6 +194,16 @@ export const DEFAULT_TILE_SETS_BASE = [
             [0, 4, 68, 64, 85, 29, 21, 23, null, null],
             [92, 84, 116, 209, 81, 113, '28_a', '112_a', null, null],
             [71, 69, 197, 16, 17, 1, '127_a', '253_a', null, null],
+        ].map(arrToSrtArr),
+    },
+    {
+        name: 'kenney-roads',
+        link: 'https://kenney.nl/assets/road-textures',
+        set: [
+            [17, '20', '80', '28', '112', '20_a', '80_a', '28_a', '112_a', 85, '247', '223'],
+            [68, '5', '65', '7', '193', '5_a', '65_a', '7_a', '193_a', 221, '253', '127'],
+            [-1, null, 31, 241, 21, 81, 245, 95, 16, 1, '247_a', '223_a'],
+            [null, 255, 199, 124, 69, 84, 125, 215, 4, 64, '253_a', '127_a'],
         ].map(arrToSrtArr),
     },
     {
@@ -249,6 +248,7 @@ export const DEFAULT_TILE_SETS_BASE = [
         ].map(arrToSrtArr),
     },
     BIT_MASK_TILE_SET_BASE,
-    // TILE_SETS_EXTRA_BASE
+    // ...TILE_SETS_EXTRA_BASE,
 ];
 export const DEFAULT_TILE_SETS = new TileSets(DEFAULT_TILE_SETS_BASE);
+// export const DEFAULT_TILE_SETS: TileSets = new TileSets(TILE_SETS_TEST_Base);

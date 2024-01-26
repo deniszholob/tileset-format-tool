@@ -10,12 +10,14 @@ export class TileSets {
         return new TileSets(tileSetsBase);
     }
     constructor(sets = []) {
-        if (sets.entries.length === 0)
+        if (sets.length === 0)
             console.warn('No tile sets provided');
         this.sets = this.getTileSetFromBase(sets);
     }
     getTileSetFromBase(tileSetsBase) {
-        return tileSetsBase.map((tileSetBase) => new TileSet(tileSetBase));
+        return tileSetsBase
+            .filter((s) => !!s)
+            .map((tileSetBase) => new TileSet(tileSetBase));
     }
     // public addTileSet(tileSetBase: TileSetBase): void {
     //   this.sets.push(new TileSet(tileSetBase));
@@ -29,15 +31,10 @@ export class TileSets {
     //   );
     //   this.sets.splice(index, 1);
     // }
-    toJson() {
-        const tileSetsJson = this.sets.map((v) => v.toJson());
-        return JSON.stringify(tileSetsJson);
+    toJson(spacing) {
+        return JSON.stringify(this.sets, null, spacing);
     }
-    /** TODO: Add Custom Option (Not Here?) */
     toSelectOptions() {
-        return this.sets.map((v, i) => ({
-            name: `${i} | ${v.toString()}`,
-            value: i,
-        }));
+        return this.sets.map((v, i) => v.toSelectOption(i));
     }
 }

@@ -1,17 +1,18 @@
-export function renderTextOnCanvas(canvas, text, x, y, fontSize) {
-    const context = canvas.getContext('2d');
-    if (!context)
-        throw new Error(`Cannot load Canvas Context`);
+export function renderTextOnCanvas(context, text, x, y, fontSize) {
     context.imageSmoothingEnabled = false;
     // context.textRendering = 'geometricPrecision';
     context.fillStyle = 'black';
     // context.font = `${fontSize}px Arial`;
     context.font = `${Math.round(fontSize)}px VT323 monospace`;
     // console.log(Math.round(fontSize));
-    const textWidth = context.measureText(text).width;
-    const textX = x - textWidth / 2;
-    const textY = y + fontSize / 2;
-    context.fillText(text, textX, textY);
+    const lines = text.split('\n');
+    lines.forEach((line, i) => {
+        const textWidth = context.measureText(line).width;
+        const textX = x - textWidth / 2;
+        const textY = y; // + fontSize / 2;
+        context.fillText(line, textX, textY + fontSize * i);
+    });
+    // context.fillText(text, textX, textY);
 }
 export async function getImageFromFile(file) {
     const imageUrl = URL.createObjectURL(file);

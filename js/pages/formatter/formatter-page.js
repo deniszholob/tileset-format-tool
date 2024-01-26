@@ -2,7 +2,7 @@ import { APP_UPDATE_DATE } from '../../app-update.js';
 import { DEFAULT_TILE_SETS } from '../../data/tile-set_default.data.js';
 // import { DEFAULT_TILE_SETS } from '../../data/tile-set_default.data.js';
 import { BIT_MASK_TILE_SET } from '../../data/tile-set-bit-mask.data.js';
-import { existSavedTileSets, loadTileSetsToLocalStorage, } from '../../util/data-util.ts.js';
+import { existSavedTileSets, loadTileSetsFromLocalStorage, } from '../../util/data-util.ts.js';
 import { checkImageLoaded, Color, getImageFromFile, } from '../../util/html-util.js';
 import { generateBitMaskTiles, renderTileSet, } from '../../util/tile-set-renderer.js';
 import { cutImageIntoTiles, getRenderImageFromTiles, } from '../../util/tile-set-worker.js';
@@ -69,7 +69,6 @@ window.onUpdateOutputTileSet = onUpdateOutputTileSet;
 // Global Functions
 function onLoad() {
     console.log('// ================= onLoad() - Main ==================== //');
-    console.log(`App Updated last: `, APP_UPDATE_DATE);
     HTML_ELEMENTS.updateDate.innerHTML = APP_UPDATE_DATE;
     loadTileSets();
     makeBitMaskTiles();
@@ -83,7 +82,7 @@ function getSelectedTileSet(idx) {
 }
 function loadTileSets() {
     TILE_SETS = existSavedTileSets()
-        ? loadTileSetsToLocalStorage()
+        ? loadTileSetsFromLocalStorage()
         : DEFAULT_TILE_SETS;
     TILE_SET_OPTIONS = TILE_SETS.toSelectOptions();
 }
