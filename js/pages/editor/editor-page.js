@@ -172,11 +172,12 @@ function updatePreview() {
 function editTileSetSave(index) {
     // TODO: Save to tilesets
     if (TILE_SETS.sets[index]) {
-        TILE_SETS.sets[index] = new TileSet({
+        const saveTileSet = new TileSet({
             name: newTileSetName,
             link: newTileSetLink,
             set: csvToMatrix(newTileSetConfig),
         });
+        TILE_SETS.sets[index] = saveTileSet;
         saveTileSetsToLocalStorage(TILE_SETS);
         editTileSetReset();
         editTileSetCancel();
@@ -229,7 +230,6 @@ function editTileSetNew() {
 function editTileSetDelete(index) {
     const yes = confirm('Are you sure you want to delete this tile set?');
     if (yes) {
-        console.log('delete');
         TILE_SETS.sets.splice(index, 1).filter((v) => !!v);
         HTML_ELEMENTS.editTileSetSave.removeEventListener('click', () => {
             editTileSetSave(index);
@@ -245,7 +245,7 @@ function editTileSetEdit(index) {
     scrollToEditor();
     HTML_ELEMENTS.editTileSetSave.addEventListener('click', () => {
         editTileSetSave(index);
-    });
+    }, { once: true });
     newTileSetName = TILE_SETS.sets[index].name;
     newTileSetLink = TILE_SETS.sets[index].link ?? '';
     newTileSetConfig = TILE_SETS.sets[index].toSetCSV();
@@ -253,8 +253,6 @@ function editTileSetEdit(index) {
     updatePreview();
 }
 function renderConfig() {
-    const tileList = TILE_SETS.toSelectOptions();
-    console.log({ tileList });
     HTML_ELEMENTS.editorList.innerHTML = '';
     TILE_SETS.sets.forEach((tileSet, index) => {
         const item = createEditorListItemHtmlInstance(index, tileSet);

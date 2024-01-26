@@ -188,9 +188,9 @@ export const DEFAULT_TILE_SETS_BASE = [
         name: 'craftpix-side',
         link: 'https://opengameart.org/content/swamp-2d-tileset-pixel-art',
         set: [
-            ['28', 124, '112', 247, 199, 223, null, null, null, null],
-            [31, 255, 241, 241, -1, 31, 95, 215, 119, null],
-            [7, 199, 193, '253', 124, '127', 245, 125, 221, null],
+            ['28', '124_a', '112', 247, '199', 223, null, null, null, null],
+            ['31', 255, '241', '241_a', -1, '31_a', 95, 215, 119, null],
+            [7, '199_a', 193, '253', '124_a', '127', 245, 125, 221, null],
             [0, 4, 68, 64, 85, 29, 21, 23, null, null],
             [92, 84, 116, 209, 81, 113, '28_a', '112_a', null, null],
             [71, 69, 197, 16, 17, 1, '127_a', '253_a', null, null],
