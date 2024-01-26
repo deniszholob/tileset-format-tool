@@ -230,11 +230,12 @@ function updatePreview(): void {
 function editTileSetSave(index: number): void {
   // TODO: Save to tilesets
   if (TILE_SETS.sets[index]) {
-    TILE_SETS.sets[index] = new TileSet({
+    const saveTileSet: TileSet = new TileSet({
       name: newTileSetName,
       link: newTileSetLink,
       set: csvToMatrix(newTileSetConfig),
     });
+    TILE_SETS.sets[index] = saveTileSet;
     saveTileSetsToLocalStorage(TILE_SETS);
     editTileSetReset();
     editTileSetCancel();
@@ -295,7 +296,6 @@ function editTileSetDelete(index: number): void {
     'Are you sure you want to delete this tile set?',
   );
   if (yes) {
-    console.log('delete');
     TILE_SETS.sets.splice(index, 1).filter((v) => !!v);
 
     HTML_ELEMENTS.editTileSetSave.removeEventListener('click', () => {
@@ -313,9 +313,13 @@ function editTileSetEdit(index: number): void {
   HTML_ELEMENTS.editTileSetAdd.classList.add('hidden');
   scrollToEditor();
 
-  HTML_ELEMENTS.editTileSetSave.addEventListener('click', () => {
-    editTileSetSave(index);
-  });
+  HTML_ELEMENTS.editTileSetSave.addEventListener(
+    'click',
+    () => {
+      editTileSetSave(index);
+    },
+    { once: true },
+  );
 
   newTileSetName = TILE_SETS.sets[index].name;
   newTileSetLink = TILE_SETS.sets[index].link ?? '';
@@ -326,8 +330,6 @@ function editTileSetEdit(index: number): void {
 }
 
 function renderConfig(): void {
-  const tileList: SelectOption[] = TILE_SETS.toSelectOptions();
-  console.log({ tileList });
   HTML_ELEMENTS.editorList.innerHTML = '';
   TILE_SETS.sets.forEach((tileSet: TileSet, index: number) => {
     const item = createEditorListItemHtmlInstance(index, tileSet);

@@ -3,13 +3,13 @@ import { TileSets } from '../classes/TileSets.model.js';
 const LOCAL_STORAGE_KEY = 'tile-sets';
 
 export function saveTileSetsToLocalStorage(tileSets: TileSets): void {
-  console.log(`Saved to local storage: `, tileSets.toJson());
+  // console.log(`Saved to local storage: `, tileSets.toJson());
   localStorage.setItem(LOCAL_STORAGE_KEY, tileSets.toJson());
 }
 
 export function loadTileSetsFromLocalStorage(): TileSets {
   const tileSetsJson: string = localStorage.getItem(LOCAL_STORAGE_KEY) ?? '';
-  console.log(`Loaded from local storage: `, JSON.parse(tileSetsJson));
+  // console.log(`Loaded from local storage: `, JSON.parse(tileSetsJson));
 
   return TileSets.getTileSetsFromJson(tileSetsJson);
 }
