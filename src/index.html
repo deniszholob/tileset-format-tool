@@ -95,63 +95,73 @@
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="./styles/styles.css" />
-    <!-- TODO: Remove sandbox Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
-  <body
-    class="bg-stone-200 min-h-screen min-w-screen flex justify-center flex-col h-svh"
-    onload="onLoad()"
-  >
+  <body class="min-w-screen flex h-svh min-h-screen flex-col justify-center" onload="onLoad()">
     <!-- Without this image doesn't load programmatically for some reason -->
-    <img id="bitMask" src="assets/bit-mask-tiles-beige-brown_64.png" class="hidden" />
-    <!-- <img id="bitMask" src="assets/bit-mask-tiles-beige-brown.png" class="hidden" /> -->
-    <!-- <img id="bitMask" src="assets/bit-mask-tiles-green-brown.png" class="hidden" /> -->
-    <!-- <img id="bitMask" src="assets/bit-mask-tiles-blue-green.png" class="hidden" /> -->
-    <!-- <img id="bitMask" src="assets/bit-mask-tiles-bw.png" class="hidden" /> -->
+    <img id="bitMask32" src="assets/bit-mask-tiles-bw_32.png" class="hidden" />
+    <img id="bitMask64" src="assets/bit-mask-tiles-bw_64.png" class="hidden" />
 
-    <div class="w-full p-4 m-auto h-full" style="max-width: 1920px">
-      <div id="header" class="flex flex-row justify-evenly items-center">
-        <div class="inline-flex gap-4 items-center">
-          <h1 class="text-3xl">Tile Set Tool</h1>
-          <a
-            href="https://gamedev.stackexchange.com/questions/148460/combinations-for-tiling-two-textures-together/148464#148464"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-blue-600 hover:text-blue-500 underline"
-          >
-            Tile Sets Overview
-          </a>
+    <div class="m-auto h-full w-full p-4" style="max-width: 1920px">
+      <section id="header" class="m-0 flex flex-col gap-2 rounded-btn bg-neutral p-4">
+        <div class="flex flex-row flex-wrap items-center justify-center gap-4">
+          <div class="flex flex-row items-center gap-4">
+            <h1 class="text-3xl">Tile Set Tool</h1>
+            <a
+              href="https://gamedev.stackexchange.com/questions/148460/combinations-for-tiling-two-textures-together/148464#148464"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link link-info tooltip tooltip-right"
+              data-tip="Tile Sets Overview"
+            >
+              <i class="fa-solid fa-circle-info fa-lg"></i>
+            </a>
+          </div>
+
+          <div id="navLinks" class="flex flex-1 flex-row flex-wrap justify-center gap-10">
+            <!-- Inject templateNavItem instances here -->
+          </div>
+          <template id="templateNavItem">
+            <a id="templateNavLink_idx_" href="./page.html" class="link link-secondary text-xl">
+              PageTitle
+            </a>
+          </template>
+
+          <div class="flex flex-none flex-row items-center gap-4">
+            <a
+              class="link link-primary tooltip tooltip-left"
+              data-tip="Discord Chat"
+              href="https://discord.gg/PkyzXzz"
+            >
+              <i class="fa-brands fa-discord fa-xl"></i>
+            </a>
+
+            <a
+              class="link link-primary tooltip tooltip-left"
+              data-tip="Github Source Code"
+              href="https://github.com/deniszholob/tileset-format-tool"
+            >
+              <i class="fa-brands fa-github fa-xl"></i>
+            </a>
+
+            <div class="flex flex-col text-center text-sm">
+              <span>Updated</span>
+              <span id="updateDate"></span>
+            </div>
+
+            <!-- TODO: Enable theme switch -->
+            <label class="swap swap-rotate">
+              <input type="checkbox" class="theme-controller" value="dark" disabled />
+              <i class="fa-solid fa-sun fa-lg swap-on text-amber-500"></i>
+              <i class="fa-solid fa-moon fa-lg swap-off text-purple-500"></i>
+            </label>
+          </div>
         </div>
 
-        <div class="flex gap-2">
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-blue-600 hover:text-blue-500 underline"
-            href="https://discord.gg/PkyzXzz"
-          >
-            Discord
-          </a>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-blue-600 hover:text-blue-500 underline"
-            href="https://github.com/deniszholob/tileset-format-tool"
-          >
-            Github
-          </a>
-          <span>Updated: <span id="updateDate"></span></span>
-        </div>
-      </div>
+        <hr class="border-secondary/10" />
 
-      <div class="flex flex-col gap-4 container-max m-auto">
-        <div id="nav">
-          Navigation:
-          <a href="./editor.html" class="text-blue-600 hover:text-blue-500 underline">Editor</a>
-        </div>
         <div class="flex gap-4">
-          <span class="text-center text-muted">
+          <span class="text-muted text-center">
             If you find the tool or source code useful, you can
           </span>
           <div class="flex gap-4">
@@ -159,7 +169,7 @@
               href="https://ko-fi.com/deniszholob"
               target="_blank"
               rel="noopener"
-              class="text-blue-600 hover:text-blue-500 underline"
+              class="link link-primary"
             >
               Buy me Ko-fi
             </a>
@@ -168,280 +178,267 @@
               href="https://patreon.com/deniszholob"
               target="_blank"
               rel="noopener"
-              class="text-blue-600 hover:text-blue-500 underline"
+              class="link link-primary"
             >
-              Support on Patreon
+              Support me on Patreon
             </a>
           </div>
         </div>
-      </div>
+      </section>
 
-      <hr class="my-4 border-blue-500" />
+      <hr class="my-4 w-full border-primary/50" />
 
-      <div class="flex flex-wrap flex-row gap-4">
-        <div id="Image" class="flex flex-col gap-4 container-max m-auto">
-          <div
-            id="ImageUpload"
-            class="flex flex-row items-center justify-between p-4 border border-gray-300 rounded-md bg-blue-500 text-white flex-1 container-max m-auto flex-wrap"
-          >
-            <div class="flex flex-col justify-center flex-1">
-              <label for="imageInput" class="mb-2 text-xl">Upload Tile Set</label>
-
-              <input
-                type="file"
-                id="imageInput"
-                accept="image/*"
-                class=""
-                onchange="onImageUpload()"
-              />
-            </div>
-
-            <div class="flex-1 flex flex-col">
-              <img
-                id="uploadImagePreview"
-                alt="Uploaded Image"
-                class="h-40 w-auto object-contain m-auto image-pixelated"
-              />
-              <p class="text-center"><span class="font-bold" id="uploadImageDimensions"></span></p>
-            </div>
-          </div>
-
-          <div
-            class="flex flex-row gap-4 flex-wrap border border-gray-300 rounded-md p-4 bg-stone-100"
-          >
-            <div class="flex items-center flex-1">
-              <label for="tileSizeInput" class="mr-2">Square Tile Size (px):</label>
-              <input
-                type="number"
-                id="tileSizeInput"
-                class="p-2 border border-gray-300 rounded-md max-w-20"
-                min="1"
-                value="32"
-                oninput="onTileSizeChange()"
-                disabled
-              />
-            </div>
-
-            <div class="flex items-center flex-1">
-              <label for="rowsInput" class="mr-2">Rows:</label>
-              <input
-                type="number"
-                id="rowsInput"
-                class="p-2 border border-gray-300 rounded-md max-w-20"
-                min="1"
-                value="1"
-                oninput="onNumRowsChange()"
-                disabled
-              />
-            </div>
-
-            <div class="flex items-center flex-1">
-              <label for="columnsInput" class="mr-2">Columns: </label>
-              <input
-                type="number"
-                id="columnsInput"
-                class="p-2 border border-gray-300 rounded-md max-w-20"
-                min="1"
-                value="1"
-                oninput="onNumColsChange()"
-                disabled
-              />
-            </div>
+      <div class="flex flex-row flex-wrap gap-4">
+        <div id="Image" class="container-max card m-auto flex flex-col gap-4 p-4">
+          <div id="ImageUpload" class="flex flex-col items-center justify-between rounded-md">
+            <label for="imageInput" class="mb-2 text-xl">
+              <div class="label">
+                <span class="label-text">Upload Tile Set</span>
+                <span class="label-text-alt font-bold" id="uploadImageDimensions"></span>
+              </div>
+              <div class="flex flex-col justify-center gap-4">
+                <input
+                  type="file"
+                  id="imageInput"
+                  accept="image/*"
+                  class="file-input file-input-bordered file-input-primary"
+                  onchange="onImageUpload()"
+                />
+                <img
+                  id="uploadImagePreview"
+                  alt="Upload Image"
+                  class="image-pixelated m-auto h-40 w-auto object-contain"
+                />
+              </div>
+              <div class="label">
+                <span class="label-text-alt">Square Tile Based on Tileset:</span>
+                <span class="label-text-alt" id="tileSize">---</span>
+              </div>
+            </label>
           </div>
         </div>
 
-        <!-- <hr class="my-4 border-blue-500" /> -->
+        <!-- <hr class="my-4 w-full border-primary/50" /> -->
 
-        <div id="Settings" class="flex flex-col gap-4 container-max m-auto">
-          <!-- <h2 class="text-xl text-center">Settings</h2> -->
-
-          <div
-            class="flex flex-row gap-4 flex-wrap border border-gray-300 rounded-md p-4 bg-stone-100"
-          >
-            <div class="flex-1">
-              <label for="sourceImageBorderSizeInput" class="mr-2">
-                Source Image Border (px):
-              </label>
+        <div id="Settings" class="container-max m-auto flex flex-col gap-4">
+          <div class="card flex flex-row gap-4 p-4">
+            <label class="form-control cursor-pointer" for="sourceImageBorderSizeInput">
+              <div class="label">
+                <span class="label-text">Source Image Border (px):</span>
+              </div>
               <input
                 type="number"
                 id="sourceImageBorderSizeInput"
-                class="p-2 border border-gray-300 rounded-md max-w-20"
                 value="0"
                 oninput="onUpdateSourceImageBorderSize()"
+                class="input input-bordered input-primary max-w-20"
               />
-            </div>
+            </label>
 
-            <div class="flex-1">
-              <label for="sourceBorderSizeInput" class="mr-2">Source Tile Border (px):</label>
+            <label class="form-control max-w-xs cursor-pointer" for="sourceTileBorderSizeInput">
+              <div class="label">
+                <span class="label-text">Source Tile Border (px):</span>
+              </div>
               <input
                 type="number"
-                id="sourceBorderSizeInput"
-                class="p-2 border border-gray-300 rounded-md max-w-20"
+                id="sourceTileBorderSizeInput"
                 value="0"
-                oninput="onUpdateSourceBorderSize()"
+                oninput="onUpdateSourceTileBorderSize()"
+                class="input input-bordered input-primary max-w-20"
               />
-            </div>
-
-            <div class="flex-1">
-              <label for="outputBorderSizeInput" class="mr-2">Output Tile Border (px):</label>
-              <input
-                type="number"
-                id="outputBorderSizeInput"
-                class="p-2 border border-gray-300 rounded-md max-w-20"
-                value="1"
-                oninput="onUpdateOutputBorderSize()"
-              />
-            </div>
+            </label>
           </div>
 
-          <div
-            class="flex flex-row gap-4 flex-wrap border border-gray-300 rounded-md p-4 bg-stone-100"
-          >
-            <button onclick="onProcessImage()" class="bg-blue-500 text-white px-4 py-2 rounded-md">
-              Re Process Image
-            </button>
-
-            <div class="flex-1">
-              <label for="bgColorInput" class="mr-2">BG Color:</label>
-              <input type="color" id="bgColorInput" value="#ff0000" oninput="onUpdateBgColor()" />
-            </div>
-
-            <div class="flex-1">
-              <label for="bgAlphaInput" class="mr-2">BG Alpha:</label>
+          <div class="card flex flex-row flex-wrap items-baseline gap-4 p-4">
+            <label class="form-control max-w-xs cursor-pointer" for="outputImageBorderSizeInput">
+              <div class="label">
+                <span class="label-text">Output Image Border (px):</span>
+              </div>
               <input
                 type="number"
-                id="bgAlphaInput"
-                value="100"
-                oninput="onUpdateBgAlpha()"
-                min="0"
-                max="100"
-                step="1"
-                class="p-2 border border-gray-300 rounded-md max-w-20"
+                id="outputImageBorderSizeInput"
+                value="0"
+                oninput="onUpdateOutputImageBorderSize()"
+                class="input input-bordered input-primary max-w-20"
+                disabled
               />
+            </label>
+
+            <label class="form-control max-w-xs cursor-pointer" for="outputTileBorderSizeInput">
+              <div class="label">
+                <span class="label-text">Output Tile Border (px):</span>
+              </div>
+              <input
+                type="number"
+                id="outputTileBorderSizeInput"
+                value="0"
+                oninput="onUpdateOutputTileBorderSize()"
+                class="input input-bordered input-primary max-w-20"
+              />
+            </label>
+
+            <div class="flex flex-row gap-2">
+              <label class="form-control max-w-xs cursor-pointer" for="bgColorInput">
+                <div class="label">
+                  <span class="label-text">BG Color</span>
+                </div>
+                <div class="input-color input input-bordered">
+                  <input
+                    type="color"
+                    id="bgColorInput"
+                    value="#ffffff"
+                    oninput="onUpdateBgColor()"
+                  />
+                </div>
+              </label>
+
+              <label class="form-control max-w-xs cursor-pointer" for="bgAlphaInput">
+                <div class="label">
+                  <span class="label-text">BG Alpha</span>
+                </div>
+                <input
+                  type="range"
+                  id="bgAlphaInput"
+                  min="0"
+                  max="100"
+                  value="0"
+                  class="range"
+                  step="25"
+                  oninput="onUpdateBgAlpha()"
+                />
+                <div class="flex w-full justify-between px-2 text-xs">
+                  <span>0</span> <span>25</span> <span>50</span> <span>75</span>
+                  <span>100</span>
+                </div>
+              </label>
             </div>
 
-            <div class="flex-1">
-              <label for="renderTileIds" class="mr-2">Render Tile Ids:</label>
+            <label class="form-control max-w-xs cursor-pointer" for="renderTileIds">
+              <div class="label">
+                <span class="label-text">Show Tile ID</span>
+              </div>
               <input
                 type="checkbox"
                 id="renderTileIds"
-                onclick="onToggleRenderTileIds()"
-                checked="true"
+                checked="checked"
+                oninput="onToggleRenderTileIds()"
+                class="toggle toggle-primary toggle-lg"
               />
-            </div>
+            </label>
+            <!--
+            <button onclick="onProcessImage()" class="btn btn-primary self-end">
+              Re Process Image
+            </button>
+            -->
           </div>
         </div>
       </div>
 
-      <hr class="my-4 border-blue-500" />
+      <hr class="my-4 w-full border-primary/50" />
 
-      <div id="Preview" class="flex flex-row justify-evenly gap-4 mb-4 flex-wrap">
-        <div class="flex flex-col gap-4 border border-gray-300 rounded-md p-4 flex-1 bg-stone-100">
+      <div id="Preview" class="mb-4 flex flex-row flex-wrap justify-evenly gap-4">
+        <div class="card flex flex-1 flex-col gap-8 rounded-md p-4 shadow-xl">
           <div>
-            <h2 class="text-xl text-center pb-4">Tiled Input</h2>
-            <label for="inputTileSetSelect" class="mr-2">Input Tile Set:</label>
-            <select
-              id="inputTileSetSelect"
-              class="p-2 border border-gray-300 rounded-md"
-              onchange="onUpdateInputTileSet()"
-            >
-              <option value="0" selected>Option 0</option>
-            </select>
-            <a
-              id="inputTileSetLink"
-              href=""
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-blue-600 hover:text-blue-500 underline"
-            ></a>
+            <h2 class="pb-4 text-center text-xl">Tiled Input</h2>
+            <label for="inputTileSetSelect" class="form-control">
+              <div class="label">
+                <span class="label-text">Input Tile Set</span>
+                <a
+                  id="inputTileSetLink"
+                  href=""
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="link label-text-alt link-primary"
+                ></a>
+              </div>
+
+              <select
+                id="inputTileSetSelect"
+                class="select select-primary"
+                onchange="onUpdateInputTileSet()"
+              >
+                <option value="0" selected>Option 0</option>
+              </select>
+            </label>
           </div>
 
-          <a
-            id="inputImageBitMaskLink"
-            download="input_image_bit_mask.png"
-            class="block p-4 rounded-md border border-gray-300"
-          >
-            <p class="text-center mb-2">
+          <a id="inputImageBitMaskLink" download="input_image_bit_mask.png">
+            <p class="mb-2 text-center">
               Input Bit Mask <span class="font-bold" id="inputImageBitMaskDimensions"></span>
             </p>
             <img
               id="inputImageBitMask"
-              class="h-96 w-auto object-contain m-auto border border-gray-300 image-pixelated bg-checkerboard"
+              class="image-pixelated bg-checkerboard m-auto h-96 w-auto border border-secondary object-contain"
               alt="Input Bit Mask"
             />
           </a>
 
-          <a
-            id="inputImagePreviewLink"
-            download="input_image.png"
-            class="block p-4 rounded-md border border-gray-300"
-          >
-            <p class="text-center mb-2">
+          <a id="inputImagePreviewLink" download="input_image.png">
+            <p class="mb-2 text-center">
               Input Tile Set <span class="font-bold" id="inputImagePreviewDimensions"></span>
             </p>
             <img
               id="inputImagePreview"
-              class="h-96 w-auto object-contain m-auto border border-gray-300 image-pixelated bg-checkerboard"
+              class="image-pixelated bg-checkerboard m-auto h-96 w-auto border border-secondary object-contain"
               alt="Input Tile Set"
             />
           </a>
         </div>
 
-        <div class="flex flex-col gap-4 border border-gray-300 rounded-md p-4 flex-1 bg-stone-100">
+        <div class="card flex flex-1 flex-col gap-8 rounded-md p-4 shadow-xl">
           <div>
-            <h2 class="text-xl text-center pb-4">Tiled Output</h2>
-            <label for="outputTileSetSelect" class="mr-2">Output Tile Set:</label>
-            <select
-              id="outputTileSetSelect"
-              class="p-2 border border-gray-300 rounded-md"
-              onchange="onUpdateOutputTileSet()"
-            >
-              <option value="0" selected>Option 0</option>
-            </select>
-            <a
-              id="outputTileSetLink"
-              href=""
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-blue-600 hover:text-blue-500 underline"
-            ></a>
+            <h2 class="pb-4 text-center text-xl">Tiled Output</h2>
+
+            <label for="outputTileSetSelect" class="form-control">
+              <div class="label">
+                <span class="label-text">Output Tile Set</span>
+                <a
+                  id="outputTileSetLink"
+                  href=""
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="link label-text-alt link-primary"
+                ></a>
+              </div>
+
+              <select
+                id="outputTileSetSelect"
+                class="select select-primary"
+                onchange="onUpdateOutputTileSet()"
+              >
+                <option value="0" selected>Option 0</option>
+              </select>
+            </label>
           </div>
 
-          <a
-            id="outputImageBitMaskLink"
-            download="output_image_bit_mask.png"
-            class="block p-4 rounded-md border border-gray-300"
-          >
-            <p class="text-center mb-2">
+          <a id="outputImageBitMaskLink" download="output_image_bit_mask.png">
+            <p class="mb-2 text-center">
               Output Bit Mask <span class="font-bold" id="outputImageBitMaskDimensions"></span>
             </p>
             <img
               id="outputImageBitMask"
-              class="h-96 w-auto object-contain m-auto border border-gray-300 image-pixelated bg-checkerboard"
+              class="image-pixelated bg-checkerboard m-auto h-96 w-auto border border-gray-300 object-contain"
               alt="Output Bit Mask"
             />
           </a>
 
-          <a
-            id="outputImagePreviewLink"
-            download="output_image.png"
-            class="block p-4 rounded-md border border-gray-300"
-          >
-            <p class="text-center mb-2">
+          <a id="outputImagePreviewLink" download="output_image.png">
+            <p class="mb-2 text-center">
               Output Tile Set <span class="font-bold" id="outputImagePreviewDimensions"></span>
             </p>
             <img
               id="outputImagePreview"
-              class="h-96 w-auto object-contain m-auto border border-gray-300 image-pixelated bg-checkerboard"
+              class="image-pixelated bg-checkerboard m-auto h-96 w-auto border border-gray-300 object-contain"
               alt="Output Tile Set"
             />
           </a>
         </div>
       </div>
-      Note: Some large resolution images may fail to load/download, sometime right clicking to view
-      image in new tab helps.
+      Note: Some large resolution images may fail to load/download, sometimes right clicking to view
+      image in new tab helps. Or opening the page again via the header links (reload doesn't always
+      work for some reason)
 
-      <hr class="my-4 border-blue-500" />
+      <hr class="my-4 w-full border-primary/50" />
       <br />
     </div>
 

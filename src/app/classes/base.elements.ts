@@ -1,4 +1,4 @@
-export class HtmlElementsBase {
+export class BaseHtmlElements {
   constructor(private node: DocumentFragment | Document) {}
 
   protected getElementById<T extends HTMLElement>(name: string): T {

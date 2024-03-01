@@ -1,12 +1,13 @@
+import { APP_ENV_LOCAL } from '../app-update.js';
 import { TileSets } from '../classes/TileSets.model.js';
 import { TileSetStr } from '../classes/TileSetStr.model.js';
 import { arrToSrtArr } from './data.mod.js';
-import { BIT_MASK_TILE_SET_BASE } from './tile-set-bit-mask.data.js';
+import { TILE_SETS_EXTRA_BASE } from './tile-set_extra.data.js';
 
 export const DEFAULT_TILE_SETS_BASE: TileSetStr[] = [
   {
     name: 'blob-tilepipe2',
-    link: 'https://discourse.mapeditor.org/t/neither-terrain-nor-wang-can-handle-a-blob-tileset/4671',
+    link: 'https://aleksandrbazhin.itch.io/tilepipe2',
     set: [
       [16, 20, 84, 80, 213, 92, 116, 87, 28, 125, 124, 112],
       [17, 21, 85, 81, 29, 127, 253, 113, 31, 119, -1, 245],
@@ -82,7 +83,7 @@ export const DEFAULT_TILE_SETS_BASE: TileSetStr[] = [
   },
   {
     name: 'wang-marching-squares-tilepipe2',
-    link: 'https://discourse.mapeditor.org/t/neither-terrain-nor-wang-can-handle-a-blob-tileset/4671',
+    link: 'https://aleksandrbazhin.itch.io/tilepipe2',
     set: [
       [112, 31, 253, 124],
       [221, 127, 255, 247],
@@ -166,7 +167,6 @@ export const DEFAULT_TILE_SETS_BASE: TileSetStr[] = [
   },
   {
     name: 'rpg-maker',
-    link: 'https://discourse.mapeditor.org/t/neither-terrain-nor-wang-can-handle-a-blob-tileset/4671',
     set: [
       [0, 85],
       [28, 112],
@@ -174,7 +174,7 @@ export const DEFAULT_TILE_SETS_BASE: TileSetStr[] = [
     ].map(arrToSrtArr),
   },
   {
-    name: 'craftpix-top',
+    name: 'craftpix-top-forest',
     link: 'https://craftpix.net/product/forest-top-down-2d-game-tileset/',
     set: [
       [247, '199', 223, '28', 125, '112', '28_a', '124_a', '112_a'],
@@ -187,7 +187,7 @@ export const DEFAULT_TILE_SETS_BASE: TileSetStr[] = [
     ].map(arrToSrtArr),
   },
   {
-    name: 'craftpix-side',
+    name: 'craftpix-side-swamp',
     link: 'https://opengameart.org/content/swamp-2d-tileset-pixel-art',
     set: [
       ['28', '124_a', '112', 247, '199', 223, null, null, null, null],
@@ -249,9 +249,10 @@ export const DEFAULT_TILE_SETS_BASE: TileSetStr[] = [
       [240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255],
     ].map(arrToSrtArr),
   },
-  BIT_MASK_TILE_SET_BASE,
-  // ...TILE_SETS_EXTRA_BASE,
 ];
 
-export const DEFAULT_TILE_SETS: TileSets = new TileSets(DEFAULT_TILE_SETS_BASE);
+const DEFAULT_TILE_SETS_ENV: TileSetStr[] = [...DEFAULT_TILE_SETS_BASE];
+if (APP_ENV_LOCAL) DEFAULT_TILE_SETS_ENV.push(...TILE_SETS_EXTRA_BASE);
+
+export const DEFAULT_TILE_SETS: TileSets = new TileSets(DEFAULT_TILE_SETS_ENV);
 // export const DEFAULT_TILE_SETS: TileSets = new TileSets(TILE_SETS_TEST_Base);

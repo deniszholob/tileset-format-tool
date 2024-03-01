@@ -1,6 +1,6 @@
 {
   "editor.bracketPairColorization.enabled": true,
-  "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.linkedEditing": true,
@@ -90,5 +90,6 @@
   "cSpell.words": [
     "tilesets"
   ],
-  "liveServer.settings.port": 5501
+  "liveServer.settings.port": 5501,
+  "liveServer.settings.root": "/public"
 }

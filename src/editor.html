@@ -43,7 +43,7 @@
     <meta name="twitter:creator" content="@deniszholob" />
 
     <!-- Title/Icon -->
-    <title>Tileset Format Tool</title>
+    <title>Tileset Format Tool | Editor</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
@@ -95,65 +95,73 @@
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="./styles/styles.css" />
-    <!-- TODO: Remove sandbox Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
-  <body
-    class="bg-stone-200 min-h-screen min-w-screen flex justify-center flex-col h-svh"
-    onload="onLoad()"
-  >
+  <body class="min-w-screen flex h-svh min-h-screen flex-col justify-center" onload="onLoad()">
     <!-- Without this image doesn't load programmatically for some reason -->
-    <img id="bitMask" src="assets/bit-mask-tiles-beige-brown_64.png" class="hidden" />
-    <!-- <img id="bitMask" src="assets/bit-mask-tiles-beige-brown.png" class="hidden" /> -->
-    <!-- <img id="bitMask" src="assets/bit-mask-tiles-green-brown.png" class="hidden" /> -->
-    <!-- <img id="bitMask" src="assets/bit-mask-tiles-blue-green.png" class="hidden" /> -->
-    <!-- <img id="bitMask" src="assets/bit-mask-tiles-bw.png" class="hidden" /> -->
+    <img id="bitMask32" src="assets/bit-mask-tiles-bw_32.png" class="hidden" />
+    <img id="bitMask64" src="assets/bit-mask-tiles-bw_64.png" class="hidden" />
 
-    <div class="w-full p-4 m-auto h-full" style="max-width: 1920px">
-      <div id="header" class="flex flex-row justify-evenly items-center">
-        <div class="inline-flex gap-4 items-center">
-          <h1 class="text-3xl">Tile Set Tool</h1>
-          <small>(WIP)</small>
-          <a
-            href="https://gamedev.stackexchange.com/questions/148460/combinations-for-tiling-two-textures-together/148464#148464"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-blue-600 hover:text-blue-500 underline"
-          >
-            Tile Sets Overview
-          </a>
+    <div class="m-auto h-full w-full p-4" style="max-width: 1920px">
+      <section id="header" class="m-0 flex flex-col gap-2 rounded-btn bg-neutral p-4">
+        <div class="flex flex-row flex-wrap items-center justify-center gap-4">
+          <div class="flex flex-row items-center gap-4">
+            <h1 class="text-3xl">Tile Set Tool</h1>
+            <a
+              href="https://gamedev.stackexchange.com/questions/148460/combinations-for-tiling-two-textures-together/148464#148464"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link link-info tooltip tooltip-right"
+              data-tip="Tile Sets Overview"
+            >
+              <i class="fa-solid fa-circle-info fa-lg"></i>
+            </a>
+          </div>
+
+          <div id="navLinks" class="flex flex-1 flex-row flex-wrap justify-center gap-10">
+            <!-- Inject templateNavItem instances here -->
+          </div>
+          <template id="templateNavItem">
+            <a id="templateNavLink_idx_" href="./page.html" class="link link-secondary text-xl">
+              PageTitle
+            </a>
+          </template>
+
+          <div class="flex flex-none flex-row items-center gap-4">
+            <a
+              class="link link-primary tooltip tooltip-left"
+              data-tip="Discord Chat"
+              href="https://discord.gg/PkyzXzz"
+            >
+              <i class="fa-brands fa-discord fa-xl"></i>
+            </a>
+
+            <a
+              class="link link-primary tooltip tooltip-left"
+              data-tip="Github Source Code"
+              href="https://github.com/deniszholob/tileset-format-tool"
+            >
+              <i class="fa-brands fa-github fa-xl"></i>
+            </a>
+
+            <div class="flex flex-col text-center text-sm">
+              <span>Updated</span>
+              <span id="updateDate"></span>
+            </div>
+
+            <!-- TODO: Enable theme switch -->
+            <label class="swap swap-rotate">
+              <input type="checkbox" class="theme-controller" value="dark" disabled />
+              <i class="fa-solid fa-sun fa-lg swap-on text-amber-500"></i>
+              <i class="fa-solid fa-moon fa-lg swap-off text-purple-500"></i>
+            </label>
+          </div>
         </div>
 
-        <div class="flex gap-2">
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-blue-600 hover:text-blue-500 underline"
-            href="https://discord.gg/PkyzXzz"
-          >
-            Discord
-          </a>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-blue-600 hover:text-blue-500 underline"
-            href="https://github.com/deniszholob/tileset-format-tool"
-          >
-            Github
-          </a>
-          <span>Updated: <span id="updateDate"></span></span>
-        </div>
-      </div>
-
-      <div class="flex flex-col gap-4 container-max m-auto">
-        <div id="nav">
-          Navigation:
-          <a href="./index.html" class="text-blue-600 hover:text-blue-500 underline">Formatter</a>
-        </div>
+        <hr class="border-secondary/10" />
 
         <div class="flex gap-4">
-          <span class="text-center text-muted">
+          <span class="text-muted text-center">
             If you find the tool or source code useful, you can
           </span>
           <div class="flex gap-4">
@@ -161,7 +169,7 @@
               href="https://ko-fi.com/deniszholob"
               target="_blank"
               rel="noopener"
-              class="text-blue-600 hover:text-blue-500 underline"
+              class="link link-primary"
             >
               Buy me Ko-fi
             </a>
@@ -170,17 +178,18 @@
               href="https://patreon.com/deniszholob"
               target="_blank"
               rel="noopener"
-              class="text-blue-600 hover:text-blue-500 underline"
+              class="link link-primary"
             >
-              Support on Patreon
+              Support me on Patreon
             </a>
           </div>
         </div>
-      </div>
+      </section>
 
-      <hr class="my-4 border-blue-500" />
+      <!-- <hr class="my-4 w-full border-primary/50" /> -->
+      <br />
 
-      <div class="flex flex-row gap-4 container-max m-auto flex-wrap">
+      <div class="container-max m-auto flex flex-row flex-wrap justify-center gap-4">
         <!-- <div>
           <button onclick="onSaveTileSets()" class="bg-blue-500 text-white px-4 py-2 rounded-md">
             Save Tile Sets Config <br />
@@ -188,62 +197,71 @@
           </button>
         </div> -->
         <div>
-          <button onclick="onUploadTileSets()" class="bg-blue-500 text-white px-4 py-2 rounded-md">
+          <button onclick="onUploadTileSets()" class="btn-vertical btn btn-outline btn-primary">
             Upload Tile Sets Config <br />
             <small>(To browser local storage)</small>
           </button>
         </div>
         <div>
-          <button
-            onclick="onDownloadTileSets()"
-            class="bg-blue-500 text-white px-4 py-2 rounded-md"
-          >
+          <button onclick="onDownloadTileSets()" class="btn-vertical btn btn-outline btn-primary">
             Download Tile Sets Config<br />
             <small>(Json from local storage)</small>
           </button>
         </div>
         <div>
-          <button onclick="onResetTileSets()" class="bg-red-500 text-white px-4 py-2 rounded-md">
+          <button onclick="onResetTileSets()" class="btn-vertical btn btn-outline btn-error">
             Reset Tile Sets Config <br />
             <small>(Clear local storage, reset to default)</small>
           </button>
         </div>
         <div>
-          <button onclick="onClearTileSets()" class="bg-red-500 text-white px-4 py-2 rounded-md">
+          <button onclick="onClearTileSets()" class="btn-vertical btn btn-outline btn-error">
             Clear Tile Sets Config <br />
             <small>(Clear all entries)</small>
           </button>
         </div>
       </div>
 
-      <hr class="my-4 border-blue-500" />
+      <hr class="my-4 w-full border-primary/50" />
 
-      <div id="editorSpace" class="flex flex-col gap-4 container-max m-auto hidden">
-        <p>
-          Create your own tile set rule set to use in the formatter. <br />
-          Use numbers from -1 to 255 to represent the main tiles <br />
-          Use _tag suffix to represent any variations <br />
-          e.g. If you have multiple grass tiles, you can encode them like 255, 255_a, 255_b <br />
-          The number part will share the same bit mask, the suffix will differentiate the textures
-          <br />
-          Use empty space for empty tiles <br />
-        </p>
-        <div class="tileSet flex flex-row gap-4">
+      <div id="editorSpace" class="container-max m-auto flex hidden flex-col">
+        <div class="chat chat-start">
+          <div class="avatar chat-image">
+            <div class="w-10 rounded-full bg-neutral text-accent">
+              <i class="fa-solid fa-robot fa-xl"></i>
+            </div>
+          </div>
+          <div class="chat-bubble">
+            Create your own tile set rule set to use in the formatter. <br />
+            Use numbers from -1 to 255 to represent the main tiles <br />
+            Use _tag suffix to represent any variations <br />
+            e.g. If you have multiple grass tiles, you can encode them like 255, 255_a, 255_b <br />
+            The number part will share the same bit mask, the suffix will differentiate the textures
+            <br />
+            Use empty space for empty tiles <br />
+          </div>
+        </div>
+
+        <div class="tileSet card card-body flex flex-row gap-4">
           <div class="flex flex-col gap-4">
-            <label for="editTileSetName">Tile Set Name</label>
-            <input
-              id="editTileSetName"
-              class="p-2 border border-gray-300 rounded-md"
-              type="text"
-              placeholder="NewTileSet"
-              onchange="onUpdateEditTileSetName()"
-              onkeyup="onUpdateEditTileSetName()"
-            />
+            <label class="form-control max-w-xs cursor-pointer" for="editTileSetName">
+              <div class="label">
+                <span class="label-text">Tile Set Name</span>
+              </div>
+              <input
+                id="editTileSetName"
+                class="input input-bordered input-primary"
+                type="text"
+                placeholder="New"
+                onchange="onUpdateEditTileSetName()"
+                onkeyup="onUpdateEditTileSetName()"
+              />
+            </label>
 
             <label for="editTileSetLink">Tile Set Link (Optional)</label>
             <input
               id="editTileSetLink"
-              class="p-2 border border-gray-300 rounded-md"
+              class="input input-bordered input-primary"
               name="editTileSetLink"
               type="text"
               placeholder="https://itch.io/"
@@ -254,7 +272,7 @@
             <label for="editTileSetConfig">Tile Set Config (CSV)</label>
             <textarea
               id="editTileSetConfig"
-              class="p-2 border border-gray-300 rounded-md"
+              class="textarea textarea-bordered textarea-primary"
               name="editTileSetConfig"
               cols="40"
               rows="10"
@@ -266,45 +284,27 @@
             ></textarea>
 
             <div id="editTileSetActions">
-              <button id="editTileSetSave" class="bg-blue-500 text-white px-2 py-1 rounded-md">
-                Save
-              </button>
-              <button
-                id="editTileSetAdd"
-                class="bg-blue-500 text-white px-2 py-1 rounded-md"
-                onclick="editTileSetAdd()"
-              >
+              <button id="editTileSetSave" class="btn btn-primary">Save</button>
+              <button id="editTileSetAdd" class="btn btn-primary" onclick="editTileSetAdd()">
                 Add
               </button>
-              <button
-                class="bg-blue-500 text-white px-2 py-1 rounded-md"
-                onclick="editTileSetCancel()"
-              >
+              <button class="btn btn-outline btn-primary" onclick="editTileSetCancel()">
                 Cancel
               </button>
-              <button
-                class="bg-red-500 text-white px-2 py-1 rounded-md"
-                onclick="editTileSetReset()"
-              >
-                Reset
-              </button>
+              <button class="btn btn-outline btn-error" onclick="editTileSetReset()">Reset</button>
             </div>
           </div>
 
           <div id="editTileSetPreviewContainer">
             <p id="editTileSetPreviewError" class="text-red-500"></p>
-            <a
-              id="editTileSetPreviewLink"
-              download="output_image.png"
-              class="block p-4 rounded-md border border-gray-300"
-            >
-              <p class="text-center mb-2">
+            <a id="editTileSetPreviewLink" download="output_image.png" class="block rounded-md p-4">
+              <p class="mb-2 text-center">
                 <span id="editTileSetPreviewName"></span>
                 <span class="font-bold" id="editTileSetPreviewDimensions"></span>
               </p>
               <img
                 id="editTileSetPreview"
-                class="w-auto object-contain m-auto border border-gray-300 image-pixelated bg-checkerboard"
+                class="image-pixelated bg-checkerboard m-auto w-auto object-contain"
                 alt="Preview"
               />
             </a>
@@ -312,55 +312,60 @@
         </div>
       </div>
 
-      <hr class="my-4 border-blue-500" />
+      <hr class="my-4 w-full border-primary/50" />
 
-      <div class="flex flex-col gap-4 container-max m-auto">
-        <div>
-          <button class="bg-green-500 text-white px-2 py-1 rounded-md" onclick="editTileSetNew()">
-            New
+      <div class="container-max m-auto flex flex-col gap-4">
+        <div class="m-auto">
+          <button class="btn btn-success px-20" onclick="editTileSetNew()">
+            <strong class="font-bold">New</strong>
+            Tile Set Config
           </button>
         </div>
 
-        <div id="editorList" class="flex flex-col gap-2">
+        <div id="editorList" class="flex flex-col gap-10">
           <!-- Inject List Item template instance here -->
+          <div class="m-auto flex w-96 flex-col gap-4">
+            <div class="w-full text-center">Loading Tile Set Configurations...</div>
+            <div class="skeleton h-64 w-full"></div>
+          </div>
         </div>
       </div>
 
       <!-- List Item Template for editorList -->
       <template id="editorListItemTemplate">
-        <div class="flex flex-col gap-2 py-4">
-          <div class="flex flex-row gap-2">
-            <!-- Inject List Item template instance here -->
-            <button
-              id="editorListItemTemplateDelete"
-              class="bg-red-500 text-white px-2 py-1 rounded-md"
-            >
-              Delete
-            </button>
-            <button
-              id="editorListItemTemplateEdit"
-              class="bg-orange-500 text-white px-2 py-1 rounded-md"
-            >
-              Edit
-            </button>
-            <span id="editorListItemTemplateDisplay">Tile Name Here</span>
-            <a
-              id="editorListItemTemplateLink"
-              href="https://opengameart.org/content/swamp-2d-tileset-pixel-art"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-blue-600 hover:text-blue-500 underline"
-            >
-              LINK
-            </a>
+        <div class="card m-auto flex flex-col items-center gap-2 bg-neutral p-8 pt-4 shadow-xl">
+          <div class="flex flex-col items-center gap-2">
+            <div>
+              <button id="editorListItemTemplateEdit" class="btn btn-warning">Edit</button>
+              <button id="editorListItemTemplateDelete" class="btn btn-outline btn-error">
+                Delete
+              </button>
+            </div>
+            <div>
+              <span id="editorListItemTemplateDisplay">Tile Name Here</span>
+              <a
+                id="editorListItemTemplateLink"
+                href="https://opengameart.org/content/swamp-2d-tileset-pixel-art"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link link-primary"
+              >
+                LINK
+              </a>
+            </div>
           </div>
           <div>
-            <img id="editorListItemTemplatePreview" src="" alt="Preview" />
+            <img
+              id="editorListItemTemplatePreview"
+              src=""
+              alt="Preview"
+              class="image-pixelated bg-checkerboard"
+            />
           </div>
         </div>
       </template>
 
-      <hr class="my-4 border-blue-500" />
+      <hr class="my-4 w-full border-primary/50" />
       <br />
     </div>
 

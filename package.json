@@ -10,16 +10,18 @@
   "scripts": {
     "ci": "npm ci",
     "i": "npm i",
+    "copy:build": "copy-and-watch --clean 'src/**/*.html' 'src/meta/**/!(*.md)' 'src/icons/**/!(*.md)' 'global/**/!(*.md|.gitkeep|*.css)' 'public/'",
+    "copy:watch": "copy-and-watch --watch 'src/**/*.html' 'src/meta/**/!(*.md)' 'src/icons/**/!(*.md)' 'global/**/!(*.md|.gitkeep|*.css)' 'public/'",
+    "tailwind:build": "npx tailwindcss -i ./global/styles/styles.css -o ./public/styles/styles.css",
+    "tailwind:watch": "npx tailwindcss -i ./global/styles/styles.css -o ./public/styles/styles.css --watch",
     "ts:build": "tsc",
     "ts:watch": "tsc -w",
-    "copy:build": "copy-and-watch --clean 'src/**/*.html' 'src/meta/**/!(*.md)' 'src/icons/**/!(*.md)' 'global/**/!(*.md,*.gitkeep)' 'public/'",
-    "copy:watch": "copy-and-watch --watch 'src/**/*.html' 'src/meta/**/!(*.md)' 'src/icons/**/!(*.md)' 'global/**/!(*.md,*.gitkeep)' 'public/'",
     "lint": "npx eslint .",
     "lint:fix": "npx eslint . --fix",
     "lint:err": "npx eslint . --quiet",
     "format:fix": "npx prettier . --write",
     "format:check": "npx prettier . --check",
-    "build:prod": "npm run copy:build && npm run ts:build",
+    "build:prod": "npm run copy:build && npm run tailwind:build && npm run ts:build",
     "npmVersionPatch": "npm version patch",
     "pre-commit": "npx lint-staged",
     "prepare": "husky install"
@@ -33,17 +35,22 @@
     ]
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
     "copy-and-watch": "0.1.6",
+    "daisyui": "^4.6.1",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-simple-import-sort": "10.0.0",
     "eslint-plugin-unused-imports": "3.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
-    "prettier": "3.2.2",
+    "prettier": "^3.2.2",
     "prettier-plugin-organize-attributes": "1.0.0",
+    "prettier-plugin-tailwindcss": "^0.5.11",
+    "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3"
   }
 }

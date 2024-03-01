@@ -1,4 +1,4 @@
-import { matrixToCsv } from '../util/data-util.ts.js';
+import { CSVConverter } from '../util/CSVConverter.js';
 import { SelectOption } from './SelectOption.model.js';
 import { Tile } from './Tile.model.js';
 import { TileSetStr } from './TileSetStr.model.js';
@@ -71,7 +71,7 @@ export class TileSet implements ITileSet {
   }
 
   public toSetCSV(): string {
-    return matrixToCsv(
+    return CSVConverter.matrixToCsv(
       this.set,
       (tile: Tile | undefined): string => tile?.toString() ?? '',
     );

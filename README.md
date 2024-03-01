@@ -16,5 +16,11 @@ If you find the cheat sheet or the source code useful, consider:
 
 # Screenshots
 
-![Tile Set Format Tool](screenshots/tile-set-format-tool.png)
-![Tile Set Format Tool Editor](screenshots/tile-set-format-tool-editor.png)
+Formatter Page
+![Tile Set Format Tool - Formatter](screenshots/Tile-Set-Tool_Formatter.png)
+
+Editor Page
+![Tile Set Format Tool - Editor](screenshots/Tile-Set-Tool_Editor.png)
+
+Settings Page
+![Tile Set Format Tool - Settings](screenshots/Tile-Set-Tool_Settings.png)

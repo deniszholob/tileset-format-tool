@@ -24,31 +24,9 @@ export function clearTileSetsFromLocalStorage(): void {
 
 // ------------------------------------------------------------------ //
 
-const LINE_DELIMITER = '\n';
-const VALUE_DELIMITER = ',';
-
-export function csvToMatrix(csv: string): string[][] {
-  const result: string[][] = csv
-    .split(LINE_DELIMITER)
-    .map((row: string): string[] =>
-      row
-        .trim()
-        .split(VALUE_DELIMITER)
-        .map((value: string): string => value.trim()),
-    );
-  return result;
+export function deepCopy<T>(obj: T): T {
+  return JSON.parse(JSON.stringify(obj));
 }
-
-export function matrixToCsv<T>(
-  matrix: T[][],
-  mapper: (o: T) => string,
-): string {
-  return matrix
-    .map((row: T[]): string => row.map(mapper).join(VALUE_DELIMITER))
-    .join(LINE_DELIMITER);
-}
-
-// ------------------------------------------------------------------ //
 
 /** https://stackoverflow.com/a/30800715 */
 export function downloadJSONtoFile(json: string, fileName: string): void {
@@ -60,8 +38,4 @@ export function downloadJSONtoFile(json: string, fileName: string): void {
   document.body.appendChild(elDownload);
   elDownload.click();
   elDownload.remove();
-}
-
-export function deepCopy<T>(obj: T): T {
-  return JSON.parse(JSON.stringify(obj));
 }

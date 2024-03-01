@@ -1,34 +1,26 @@
-import { BaseHtmlElements } from '../../classes/base.elements.js';
+import { GenericPageHtmlElements } from '../../components/generic-page.elements.js';
 
-export class HtmlElementsMainPage extends BaseHtmlElements {
-  public updateDate: HTMLSpanElement = this.getElementById('updateDate');
-
-  constructor() {
-    // console.log('HtmlElementsMainPage', document);
-    super(document);
-  }
-
-  public bitMask: HTMLImageElement = this.getElementById('bitMask');
+export class HtmlElementsFormatterPage extends GenericPageHtmlElements {
   public imageInput: HTMLInputElement = this.getElementById('imageInput');
   public uploadImagePreview: HTMLImageElement =
     this.getElementById('uploadImagePreview');
   public uploadImageDimensions: HTMLSpanElement = this.getElementById(
     'uploadImageDimensions',
   );
-  // =================================================
-  public tileSizeInput: HTMLInputElement = this.getElementById('tileSizeInput');
-  public rowsInput: HTMLInputElement = this.getElementById('rowsInput');
-  public columnsInput: HTMLInputElement = this.getElementById('columnsInput');
+  public tileSize: HTMLSpanElement = this.getElementById('tileSize');
 
   // =================================================
   public sourceImageBorderSizeInput: HTMLInputElement = this.getElementById(
     'sourceImageBorderSizeInput',
   );
-  public sourceBorderSizeInput: HTMLInputElement = this.getElementById(
-    'sourceBorderSizeInput',
+  public sourceTileBorderSizeInput: HTMLInputElement = this.getElementById(
+    'sourceTileBorderSizeInput',
   );
-  public outputBorderSizeInput: HTMLInputElement = this.getElementById(
-    'outputBorderSizeInput',
+  public outputImageBorderSizeInput: HTMLInputElement = this.getElementById(
+    'outputImageBorderSizeInput',
+  );
+  public outputTileBorderSizeInput: HTMLInputElement = this.getElementById(
+    'outputTileBorderSizeInput',
   );
   public bgColorInput: HTMLInputElement = this.getElementById('bgColorInput');
   public bgAlphaInput: HTMLInputElement = this.getElementById('bgAlphaInput');

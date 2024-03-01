@@ -1,16 +1,9 @@
-import { BaseHtmlElements } from '../../classes/base.elements.js';
+import { GenericPageHtmlElements } from '../../components/generic-page.elements.js';
 
-export class HtmlElementsEditorPage extends BaseHtmlElements {
-  public updateDate: HTMLSpanElement = this.getElementById('updateDate');
-
-  constructor() {
-    // console.log('HtmlElementsEditorPage', document);
-    super(document);
-  }
-
-  public bitMask: HTMLImageElement = this.getElementById('bitMask');
+export class EditorPageHtmlElements extends GenericPageHtmlElements {
   public editorSpace: HTMLDivElement = this.getElementById('editorSpace');
 
+  // ---------------------------- Editor Form ---------------------------- //
   public editTileSetName: HTMLInputElement =
     this.getElementById('editTileSetName');
   public editTileSetLink: HTMLInputElement =
@@ -18,12 +11,12 @@ export class HtmlElementsEditorPage extends BaseHtmlElements {
   public editTileSetConfig: HTMLTextAreaElement =
     this.getElementById('editTileSetConfig');
 
-  public editTileSetSave: HTMLTextAreaElement =
+  public editTileSetSave: HTMLButtonElement =
     this.getElementById('editTileSetSave');
-  public editTileSetAdd: HTMLTextAreaElement =
+  public editTileSetAdd: HTMLButtonElement =
     this.getElementById('editTileSetAdd');
 
-  // ------------------------------------------------------------------ //
+  // ---------------------------- Editor Preview ---------------------------- //
   public editTileSetPreviewContainer: HTMLDivElement = this.getElementById(
     'editTileSetPreviewContainer',
   );
@@ -42,7 +35,7 @@ export class HtmlElementsEditorPage extends BaseHtmlElements {
     'editTileSetPreviewError',
   );
 
-  // ------------------------------------------------------------------ //
+  // ---------------------------- Tileset List  ---------------------------- //
   public editorList: HTMLDivElement = this.getElementById('editorList');
   public editorListItemTemplate: HTMLTemplateElement = this.getElementById(
     'editorListItemTemplate',
