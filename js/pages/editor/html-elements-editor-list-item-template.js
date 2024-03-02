@@ -1,5 +1,5 @@
-import { HtmlElementsBase } from '../../classes/HtmlElementsBase.model.js';
-export class HTMLElementsEditorListItemTemplate extends HtmlElementsBase {
+import { BaseHtmlElements } from '../../classes/base.elements.js';
+export class HTMLElementsEditorListItemTemplate extends BaseHtmlElements {
     constructor(documentFragment, idx) {
         super(documentFragment);
         this.replaceIds(idx);

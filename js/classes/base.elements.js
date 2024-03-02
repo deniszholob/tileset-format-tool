@@ -1,4 +1,4 @@
-export class HtmlElementsBase {
+export class BaseHtmlElements {
     node;
     constructor(node) {
         this.node = node;

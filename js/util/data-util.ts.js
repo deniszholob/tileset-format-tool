@@ -16,23 +16,9 @@ export function clearTileSetsFromLocalStorage() {
     localStorage.removeItem(LOCAL_STORAGE_KEY);
 }
 // ------------------------------------------------------------------ //
-const LINE_DELIMITER = '\n';
-const VALUE_DELIMITER = ',';
-export function csvToMatrix(csv) {
-    const result = csv
-        .split(LINE_DELIMITER)
-        .map((row) => row
-        .trim()
-        .split(VALUE_DELIMITER)
-        .map((value) => value.trim()));
-    return result;
+export function deepCopy(obj) {
+    return JSON.parse(JSON.stringify(obj));
 }
-export function matrixToCsv(matrix, mapper) {
-    return matrix
-        .map((row) => row.map(mapper).join(VALUE_DELIMITER))
-        .join(LINE_DELIMITER);
-}
-// ------------------------------------------------------------------ //
 /** https://stackoverflow.com/a/30800715 */
 export function downloadJSONtoFile(json, fileName) {
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(json);
@@ -42,7 +28,4 @@ export function downloadJSONtoFile(json, fileName) {
     document.body.appendChild(elDownload);
     elDownload.click();
     elDownload.remove();
-}
-export function deepCopy(obj) {
-    return JSON.parse(JSON.stringify(obj));
 }

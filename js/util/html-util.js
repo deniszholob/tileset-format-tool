@@ -54,30 +54,3 @@ export function htmlImageToCanvasImage(image) {
 //     reader.readAsDataURL(file);
 //   }
 // }
-/** @ref https://learnersbucket.com/examples/interview/convert-hex-color-to-rgb-in-javascript/ */
-export class Color {
-    /** #000000 */
-    hex;
-    /** */
-    a;
-    r;
-    g;
-    b;
-    /**
-     * @param hex Hex color value, e.g. #000000
-     * @param alpha 0-100
-     */
-    constructor(hex, alpha) {
-        if (hex.length !== 7 || hex.charAt(0) !== '#') {
-            throw new Error('Invalid hex code: ' + hex);
-        }
-        this.hex = hex;
-        this.a = alpha / 100;
-        this.r = parseInt(hex.slice(1, 3), 16);
-        this.g = parseInt(hex.slice(3, 5), 16);
-        this.b = parseInt(hex.slice(5, 7), 16);
-    }
-    toString() {
-        return `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`;
-    }
-}

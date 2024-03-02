@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en" class="dark" data-theme="dark">
+  <head>
+    <!-- Meta Data -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Denis Zholob" />
+    <meta name="keywords" content="Denis, Zholob" />
+    <meta name="title" content="Tileset Format Tool" />
+    <meta
+      name="description"
+      content="Tile set tool to convert wetween different tile set formats, and modify borders."
+    />
+
+    <!-- Google / Search Engine Tags -->
+    <meta itemprop="name" content="Tileset Format Tool" />
+    <meta
+      itemprop="description"
+      content="Tile set tool to convert wetween different tile set formats, and modify borders."
+    />
+    <meta itemprop="image" content="assets/icons/splash.png" />
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://github.com/deniszholob/tileset-format-tool" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Tileset Format Tool" />
+    <meta
+      property="og:description"
+      content="Tile set tool to convert wetween different tile set formats, and modify borders."
+    />
+    <meta property="og:image" content="assets/icons/splash.png" />
+    <meta property="og:author" content="Denis Zholob" />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Tileset Format Tool" />
+    <meta
+      name="twitter:description"
+      content="Tile set tool to convert wetween different tile set formats, and modify borders."
+    />
+    <meta name="twitter:image" content="assets/icons/splash.png" />
+    <meta name="twitter:site" content="@deniszholob" />
+    <meta name="twitter:creator" content="@deniszholob" />
+
+    <!-- Title/Icon -->
+    <title>Tileset Format Tool | Settings</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="apple-touch-startup-image" href="assets/icons/splash.jpg" />
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#ffffff" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <!-- <base href="/" /> -->
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Meta Tags Generated via http://heymeta.com -->
+    <!-- Icons generated with https://realfavicongenerator.net/ -->
+
+    <!-- Prefetch/Preconnect -->
+    <!-- <link rel="dns-prefetch" href="https://fonts.googleapis.com"> -->
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous"> -->
+    <!-- <link rel="dns-prefetch" href="https://fonts.gstatic.com/s/"> -->
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com/s/" crossorigin="anonymous"> -->
+    <link rel="dns-prefetch" href="https://use.fontawesome.com" />
+    <link rel="preconnect" href="https://use.fontawesome.com" crossorigin="anonymous" />
+
+    <!-- Bootstrap -->
+    <!-- <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"> -->
+
+    <!-- Fonts -->
+    <!-- https://fonts.google.com/specimen/VT323?preview.text=0123456789&query=VT323+ -->
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v6.4.0/js/all.js"
+      integrity="sha384-Y7LSKwoY+C2iyfu/oupNnkGEN3EgA6skmJeVg5AyQk7ttcjX0XsLREmmuJW/SdbU"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Global Site Tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-28080172-12"></script>
+    <script async="">
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "UA-28080172-12");
+    </script>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="./styles/styles.css" />
+  </head>
+
+  <body class="min-w-screen flex h-svh min-h-screen flex-col justify-center" onload="onLoad()">
+    <!-- Without this image doesn't load programmatically for some reason -->
+    <img id="bitMask32" src="assets/bit-mask-tiles-bw_32.png" class="hidden" />
+    <img id="bitMask64" src="assets/bit-mask-tiles-bw_64.png" class="hidden" />
+
+    <div class="container-max h-full w-full p-4">
+      <section id="header" class="m-0 flex flex-col gap-2 rounded-btn bg-neutral p-4">
+        <div class="flex flex-row flex-wrap items-center justify-center gap-4">
+          <div class="flex flex-row items-center gap-4">
+            <h1 class="text-3xl">Tile Set Tool</h1>
+            <a
+              href="https://gamedev.stackexchange.com/questions/148460/combinations-for-tiling-two-textures-together/148464#148464"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link link-info tooltip tooltip-right"
+              data-tip="Tile Sets Overview"
+            >
+              <i class="fa-solid fa-circle-info fa-lg"></i>
+            </a>
+          </div>
+
+          <div id="navLinks" class="flex flex-1 flex-row flex-wrap justify-center gap-10">
+            <!-- Inject templateNavItem instances here -->
+          </div>
+          <template id="templateNavItem">
+            <a id="templateNavLink_idx_" href="./page.html" class="link link-secondary text-xl">
+              PageTitle
+            </a>
+          </template>
+
+          <div class="flex flex-none flex-row items-center gap-4">
+            <a
+              class="link link-primary tooltip tooltip-left"
+              data-tip="Discord Chat"
+              href="https://discord.gg/PkyzXzz"
+            >
+              <i class="fa-brands fa-discord fa-xl"></i>
+            </a>
+
+            <a
+              class="link link-primary tooltip tooltip-left"
+              data-tip="Github Source Code"
+              href="https://github.com/deniszholob/tileset-format-tool"
+            >
+              <i class="fa-brands fa-github fa-xl"></i>
+            </a>
+
+            <div class="flex flex-col text-center text-sm">
+              <span>Updated</span>
+              <span id="updateDate"></span>
+            </div>
+
+            <!-- TODO: Enable theme switch -->
+            <label class="swap swap-rotate">
+              <input type="checkbox" class="theme-controller" value="dark" disabled />
+              <i class="fa-solid fa-sun fa-lg swap-on text-amber-500"></i>
+              <i class="fa-solid fa-moon fa-lg swap-off text-purple-500"></i>
+            </label>
+          </div>
+        </div>
+
+        <hr class="border-secondary/10" />
+
+        <div class="flex gap-4">
+          <span class="text-muted text-center">
+            If you find the tool or source code useful, you can
+          </span>
+          <div class="flex gap-4">
+            <a
+              href="https://ko-fi.com/deniszholob"
+              target="_blank"
+              rel="noopener"
+              class="link link-primary"
+            >
+              Buy me Ko-fi
+            </a>
+
+            <a
+              href="https://patreon.com/deniszholob"
+              target="_blank"
+              rel="noopener"
+              class="link link-primary"
+            >
+              Support me on Patreon
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="flex flex-col items-center justify-center gap-4">
+        <div class="flex flex-row flex-wrap gap-x-16 gap-y-4">
+          <div
+            id="Settings_alert_unsaved"
+            role="alert"
+            class="alert alert-warning m-auto hidden w-auto"
+          >
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>Warning: You have unsaved changes</span>
+          </div>
+
+          <div class="chat chat-start">
+            <div class="avatar chat-image">
+              <div class="w-10 rounded-full bg-neutral text-accent">
+                <i class="fa-solid fa-robot fa-xl"></i>
+              </div>
+            </div>
+            <div class="chat-bubble">
+              Adjust defaults values here. <br />
+              These will be loaded and set on the formatter and editor pages each time they are
+              reloaded. <br />
+              For loading different tile sets, please go to the editor page.
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-4 w-full border-primary/50" />
+
+        <div class="flex flex-row flex-wrap justify-center gap-4">
+          <button class="btn btn-primary" onclick="onSaveChanges()">Save Changes</button>
+          <button class="btn btn-secondary" onclick="onCancelChanges()">Cancel Changes</button>
+          <button class="btn btn-error" onclick="onResetToDefaults()">Reset to Defaults</button>
+        </div>
+      </section>
+
+      <section class="flex flex-col gap-4 px-0">
+        <div class="settings-grid">
+          <div id="settings_imageSourceSettings" class="card flex-1 bg-neutral shadow-xl">
+            <div class="card-body">
+              <h2 class="card-title">Source Image</h2>
+
+              <div class="form-group">
+                <label
+                  class="form-control max-w-xs cursor-pointer"
+                  for="Setting_SourceImg_OuterBorder"
+                >
+                  <div class="label">
+                    <span class="label-text">Outer Border Size (px)</span>
+                  </div>
+                  <input
+                    type="number"
+                    id="Setting_SourceImg_OuterBorder"
+                    value="0"
+                    oninput="onUpdateSourceOuterBorderSize()"
+                    class="input input-bordered input-primary max-w-20"
+                  />
+                </label>
+
+                <label
+                  class="form-control max-w-xs cursor-pointer"
+                  for="Setting_SourceImg_TileBorder"
+                >
+                  <div class="label">
+                    <span class="label-text">Tile Border Size (px)</span>
+                  </div>
+                  <input
+                    type="number"
+                    id="Setting_SourceImg_TileBorder"
+                    value="0"
+                    oninput="onUpdateSourceTileBorderSize()"
+                    class="input input-bordered input-primary max-w-20"
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div id="settings_tilesets" class="card flex-1 bg-neutral shadow-xl">
+            <div class="card-body">
+              <h2 class="card-title">Tile Sets</h2>
+
+              <div class="form-group">
+                <label for="Setting_TileSets_Source" class="form-control max-w-full">
+                  <div class="label">
+                    <span class="label-text">Input Tile Set</span>
+                    <a
+                      id="inputTileSetLink"
+                      href=""
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="link label-text-alt link-primary"
+                    ></a>
+                  </div>
+
+                  <select
+                    id="Setting_TileSets_Source"
+                    class="select select-primary"
+                    onchange="onUpdateTileSetsSource()"
+                  >
+                    <option value="0" selected>Option 0</option>
+                  </select>
+                </label>
+
+                <label for="Setting_TileSets_Output" class="form-control max-w-full">
+                  <div class="label">
+                    <span class="label-text">Output Tile Set</span>
+                    <a
+                      id="outputTileSetLink"
+                      href=""
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="link label-text-alt link-primary"
+                    ></a>
+                  </div>
+
+                  <select
+                    id="Setting_TileSets_Output"
+                    class="select select-primary"
+                    onchange="onUpdateTileSetsOutput()"
+                  >
+                    <option value="0" selected>Option 0</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div id="settings_renderSettings" class="card flex-1 bg-neutral shadow-xl">
+            <div class="card-body">
+              <h2 class="card-title">Render</h2>
+
+              <div class="form-group">
+                <label class="form-control max-w-xs cursor-pointer" for="Setting_Render_TileID">
+                  <div class="label">
+                    <span class="label-text">Show Tile ID</span>
+                  </div>
+                  <input
+                    type="checkbox"
+                    id="Setting_Render_TileID"
+                    checked="checked"
+                    oninput="onUpdateSettingRenderTileID()"
+                    class="toggle toggle-primary toggle-lg"
+                  />
+                </label>
+
+                <div class="flex flex-row gap-2">
+                  <label
+                    class="form-control max-w-xs cursor-pointer"
+                    for="Setting_Render_Background"
+                  >
+                    <div class="label">
+                      <span class="label-text">Background</span>
+                    </div>
+                    <div class="input-color input input-bordered">
+                      <input
+                        type="color"
+                        id="Setting_Render_Background"
+                        value="#ffffff"
+                        oninput="onUpdateSettingRenderBackground()"
+                      />
+                    </div>
+                  </label>
+
+                  <label
+                    class="form-control max-w-xs cursor-pointer"
+                    for="Setting_Render_BackgroundAlpha"
+                  >
+                    <div class="label">
+                      <span class="label-text">Background Alpha</span>
+                    </div>
+                    <input
+                      type="range"
+                      id="Setting_Render_BackgroundAlpha"
+                      min="0"
+                      max="100"
+                      value="0"
+                      class="range"
+                      step="25"
+                      oninput="onUpdateSettingRenderBackgroundAlpha()"
+                    />
+                    <div class="flex w-full justify-between px-2 text-xs">
+                      <span>0</span> <span>25</span> <span>50</span> <span>75</span>
+                      <span>100</span>
+                    </div>
+                  </label>
+                </div>
+
+                <label
+                  class="form-control max-w-xs cursor-pointer"
+                  for="Setting_Render_OuterBorderSize"
+                >
+                  <div class="label">
+                    <span class="label-text">Outer Border Size (px)</span>
+                  </div>
+                  <input
+                    type="number"
+                    id="Setting_Render_OuterBorderSize"
+                    value="0"
+                    oninput="onUpdateRenderOuterBorderSize()"
+                    class="input input-bordered input-primary max-w-20"
+                  />
+                </label>
+
+                <label
+                  class="form-control max-w-xs cursor-pointer"
+                  for="Setting_Render_TileBorderSize"
+                >
+                  <div class="label">
+                    <span class="label-text">Tile Border Size (px)</span>
+                  </div>
+                  <input
+                    type="number"
+                    id="Setting_Render_TileBorderSize"
+                    value="0"
+                    oninput="onUpdateRenderTileBorderSize()"
+                    class="input input-bordered input-primary max-w-20"
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div id="settings_bitMaskRenderSettings" class="card flex-1">
+            <div class="card-body">
+              <h2 class="card-title">Bit Mask Render</h2>
+
+              <div class="form-group">
+                <label
+                  class="form-control max-w-xs cursor-pointer"
+                  for="Setting_BitMask_FancyBorder"
+                >
+                  <div class="label">
+                    <span class="label-text">Fancy Border</span>
+                  </div>
+                  <input
+                    type="checkbox"
+                    id="Setting_BitMask_FancyBorder"
+                    checked="checked"
+                    oninput="onUpdateSettingBitMaskFancyBorder()"
+                    class="toggle toggle-primary toggle-lg"
+                  />
+                </label>
+
+                <label class="form-control max-w-xs cursor-pointer">
+                  <div class="label">
+                    <span class="label-text">Bit Mask Tile Size</span>
+                  </div>
+                  <div class="join" id="Setting_BitMask_TileSize">
+                    <!-- Inject Radio Buttons here -->
+                    <div class="skeleton h-8 w-28"></div>
+                  </div>
+                </label>
+
+                <div class="flex flex-row gap-2">
+                  <label
+                    class="form-control max-w-xs cursor-pointer"
+                    for="Setting_BitMask_Background"
+                  >
+                    <div class="label">
+                      <span class="label-text">Background</span>
+                    </div>
+                    <div class="input-color input input-bordered">
+                      <input
+                        type="color"
+                        id="Setting_BitMask_Background"
+                        value="#ffffff"
+                        oninput="onUpdateSettingBitMaskBackground()"
+                      />
+                    </div>
+                  </label>
+
+                  <label
+                    class="form-control max-w-xs cursor-pointer"
+                    for="Setting_BitMask_BackgroundAlpha"
+                  >
+                    <div class="label">
+                      <span class="label-text">Background Alpha</span>
+                    </div>
+                    <input
+                      type="range"
+                      id="Setting_BitMask_BackgroundAlpha"
+                      min="0"
+                      max="100"
+                      value="0"
+                      class="range"
+                      step="25"
+                      oninput="onUpdateSettingBitMaskBackgroundAlpha()"
+                    />
+                    <div class="flex w-full justify-between px-2 text-xs">
+                      <span>0</span> <span>25</span> <span>50</span> <span>75</span>
+                      <span>100</span>
+                    </div>
+                  </label>
+                </div>
+
+                <div class="flex flex-row gap-4">
+                  <label class="form-control max-w-xs cursor-pointer" for="Setting_BitMask_Color">
+                    <div class="label">
+                      <span class="label-text">Color</span>
+                    </div>
+                    <div class="input-color input input-bordered">
+                      <input
+                        type="color"
+                        id="Setting_BitMask_Color"
+                        value="#000000"
+                        oninput="onUpdateSettingBitMaskColor()"
+                      />
+                    </div>
+                  </label>
+
+                  <label
+                    class="form-control max-w-xs cursor-pointer"
+                    for="Setting_BitMask_ColorAlpha"
+                  >
+                    <div class="label">
+                      <span class="label-text">Color Alpha</span>
+                    </div>
+                    <input
+                      type="range"
+                      id="Setting_BitMask_ColorAlpha"
+                      min="0"
+                      max="100"
+                      value="0"
+                      class="range"
+                      step="25"
+                      oninput="onUpdateSettingBitMaskColorAlpha()"
+                    />
+                    <div class="flex w-full justify-between px-2 text-xs">
+                      <span>0</span> <span>25</span> <span>50</span> <span>75</span>
+                      <span>100</span>
+                    </div>
+                  </label>
+                </div>
+
+                <label for="Setting_TileSets_Output" class="form-control max-w-full">
+                  <div class="label">
+                    <span class="label-text">Load Colors From Preset</span>
+                  </div>
+
+                  <select
+                    id="Setting_BitMask_Colors_Preset"
+                    class="select select-primary"
+                    onchange="onUpdateBitMaskColorsPreset()"
+                  >
+                    <option value="0" selected>Option 0</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <br />
+    </div>
+
+    <!-- https://jakearchibald.com/2017/es-modules-in-browsers/ -->
+    <script src="./js/pages/settings/settings-page.js" type="module"></script>
+    <noscript> Please enable JavaScript to continue using this application. </noscript>
+  </body>
+</html>

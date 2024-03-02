@@ -1,22 +1,14 @@
-import { BaseHtmlElements } from '../../classes/base.elements.js';
-export class HtmlElementsMainPage extends BaseHtmlElements {
-    updateDate = this.getElementById('updateDate');
-    constructor() {
-        // console.log('HtmlElementsMainPage', document);
-        super(document);
-    }
-    bitMask = this.getElementById('bitMask');
+import { GenericPageHtmlElements } from '../../components/generic-page.elements.js';
+export class HtmlElementsFormatterPage extends GenericPageHtmlElements {
     imageInput = this.getElementById('imageInput');
     uploadImagePreview = this.getElementById('uploadImagePreview');
     uploadImageDimensions = this.getElementById('uploadImageDimensions');
-    // =================================================
-    tileSizeInput = this.getElementById('tileSizeInput');
-    rowsInput = this.getElementById('rowsInput');
-    columnsInput = this.getElementById('columnsInput');
+    tileSize = this.getElementById('tileSize');
     // =================================================
     sourceImageBorderSizeInput = this.getElementById('sourceImageBorderSizeInput');
-    sourceBorderSizeInput = this.getElementById('sourceBorderSizeInput');
-    outputBorderSizeInput = this.getElementById('outputBorderSizeInput');
+    sourceTileBorderSizeInput = this.getElementById('sourceTileBorderSizeInput');
+    outputImageBorderSizeInput = this.getElementById('outputImageBorderSizeInput');
+    outputTileBorderSizeInput = this.getElementById('outputTileBorderSizeInput');
     bgColorInput = this.getElementById('bgColorInput');
     bgAlphaInput = this.getElementById('bgAlphaInput');
     renderTileIds = this.getElementById('renderTileIds');
