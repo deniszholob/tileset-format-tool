@@ -204,7 +204,6 @@ export class EditorPageComponent extends GenericPageComponent<EditorPageHtmlElem
       'Are you sure you want to delete this tile set?',
     );
     if (!yes) return;
-    console.log(this.tileSets);
     this.tileSets.sets.splice(idx, 1).filter((v) => !!v);
 
     this.HTML_ELEMENTS.editTileSetSave.removeEventListener('click', () => {

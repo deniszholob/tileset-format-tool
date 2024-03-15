@@ -48,6 +48,8 @@ export class HtmlElementsFormatterPage extends GenericPageHtmlElements {
   public inputImagePreviewDimensions: HTMLSpanElement = this.getElementById(
     'inputImagePreviewDimensions',
   );
+  public inputImagePreviewLinkGodotTres: HTMLAnchorElement =
+    this.getElementById('inputImagePreviewLinkGodotTres');
   public inputImagePreview: HTMLImageElement =
     this.getElementById('inputImagePreview');
 
@@ -74,6 +76,8 @@ export class HtmlElementsFormatterPage extends GenericPageHtmlElements {
   public outputImagePreviewDimensions: HTMLSpanElement = this.getElementById(
     'outputImagePreviewDimensions',
   );
+  public outputImagePreviewLinkGodotTres: HTMLAnchorElement =
+    this.getElementById('outputImagePreviewLinkGodotTres');
   public outputImagePreview: HTMLImageElement =
     this.getElementById('outputImagePreview');
 }

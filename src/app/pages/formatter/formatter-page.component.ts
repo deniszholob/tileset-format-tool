@@ -1,3 +1,4 @@
+import { GodotTresData } from '../../classes/GodotBitMask.model.js';
 import { SelectOption } from '../../classes/SelectOption.model.js';
 import { AppSettings } from '../../classes/settings.model.js';
 import { TileSet } from '../../classes/TileSet.model.js';
@@ -5,6 +6,7 @@ import { GenericPageComponent } from '../../components/generic-page.component.js
 import { NAV_LINKS } from '../../data/links.data.js';
 import { BIT_MASK_TILE_SET } from '../../data/tile-set-bit-mask.data.js';
 import { Color } from '../../util/Color.js';
+import { setAnchorDownloadDataFile } from '../../util/data-util.ts.js';
 import { checkImageLoaded, getImageFromFile } from '../../util/html-util.js';
 import { renderTileSet } from '../../util/tile-set-renderer.js';
 import {
@@ -26,9 +28,10 @@ export class FormatterPageComponent extends GenericPageComponent<HtmlElementsFor
   private userUpload: UserUpload | undefined = undefined;
   private imageRenderSet: RenderSet | undefined = undefined;
 
-  private tileSize: number = 32;
   private numRows: number = 1;
   private numCols: number = 1;
+  private tileSize: number = 32;
+  private tileSizeWithBorderCalc: number = 32;
 
   private sourceImageBorderSize: number = 0;
   private sourceTileBorderSize: number = 0;
@@ -197,8 +200,8 @@ export class FormatterPageComponent extends GenericPageComponent<HtmlElementsFor
   // ============================== Private ================================= //
 
   private syncStateWithHtml(): void {
-    this.HTML_ELEMENTS.tileSize.textContent = this.tileSize
-      ? `${this.tileSize} px`
+    this.HTML_ELEMENTS.tileSize.textContent = this.tileSizeWithBorderCalc
+      ? `${this.tileSizeWithBorderCalc} px`
       : '---';
 
     this.HTML_ELEMENTS.sourceImageBorderSizeInput.valueAsNumber =
@@ -289,6 +292,18 @@ export class FormatterPageComponent extends GenericPageComponent<HtmlElementsFor
         this.doRenderTileIds,
       );
 
+      const godotTresData: GodotTresData = new GodotTresData(
+        this.tileSizeWithBorderCalc,
+        this.userUpload.fileName,
+        this.userUpload.fileExtension,
+        this.selectedInputTileSet,
+      );
+      setAnchorDownloadDataFile(
+        this.HTML_ELEMENTS.inputImagePreviewLinkGodotTres,
+        godotTresData.toTres(),
+        godotTresData.tileTextureFileUri,
+      );
+
       renderTileSet(
         tileRender,
         this.HTML_ELEMENTS.inputImagePreview,
@@ -312,6 +327,19 @@ export class FormatterPageComponent extends GenericPageComponent<HtmlElementsFor
         new Color(this.bgColor, this.bgAlpha),
         this.doRenderTileIds,
       );
+
+      const godotTresData: GodotTresData = new GodotTresData(
+        this.tileSizeWithBorderCalc,
+        this.userUpload.fileName,
+        this.userUpload.fileExtension,
+        this.selectedOutputTileSet,
+      );
+      setAnchorDownloadDataFile(
+        this.HTML_ELEMENTS.outputImagePreviewLinkGodotTres,
+        godotTresData.toTres(),
+        godotTresData.tileTextureFileUri,
+      );
+
       renderTileSet(
         tileRender,
         this.HTML_ELEMENTS.outputImagePreview,
@@ -348,8 +376,11 @@ export class FormatterPageComponent extends GenericPageComponent<HtmlElementsFor
         this.sourceTileBorderSize,
         this.sourceImageBorderSize,
       );
+      this.tileSizeWithBorderCalc =
+        this.tileSize - 2 * this.sourceTileBorderSize;
     } else {
       this.tileSize = 0;
+      this.tileSizeWithBorderCalc = 0;
       this.imageRenderSet = undefined;
     }
     this.syncStateWithHtml();
@@ -381,7 +412,7 @@ export class FormatterPageComponent extends GenericPageComponent<HtmlElementsFor
       ? `${this.userUpload?.fileName}_`
       : '';
     const bitMaskName: string = isBitMask ? '_BitMask' : '';
-    const downloadName = `${fileName.replace(inputTileSetName ?? '', '')}${tileSetName}${bitMaskName}`;
+    const downloadName = `${fileName.replace(`_${inputTileSetName}` ?? '', '')}${tileSetName}${bitMaskName}`;
     return `${downloadName}.${fileExtension}`;
   }
 }

@@ -11,7 +11,7 @@ export class LocalStorageService {
 
   public load(): string {
     const json: string = localStorage.getItem(this.key) ?? '';
-    console.log(`Loaded from local storage: `, json);
+    // console.log(`Loaded from local storage: `, json);
     return json;
   }
 

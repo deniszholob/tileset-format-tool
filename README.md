@@ -16,11 +16,24 @@ If you find the cheat sheet or the source code useful, consider:
 
 # Screenshots
 
-Formatter Page
+### Formatter Page
+
 ![Tile Set Format Tool - Formatter](screenshots/Tile-Set-Tool_Formatter.png)
 
-Editor Page
+### Editor Page
+
 ![Tile Set Format Tool - Editor](screenshots/Tile-Set-Tool_Editor.png)
 
-Settings Page
+### Settings Page
+
 ![Tile Set Format Tool - Settings](screenshots/Tile-Set-Tool_Settings.png)
+
+### Godot .tres export:
+
+1. Download the tilemap image and corresponding godot tres
+2. Load image and. tres into godot root folder (drag-n-drop)
+3. Load the .tres into a TileMap's node "Tile Set" input
+
+Texture, tile size, and tile terrain bitmask is all set in the .tres, all you have to do is paint!
+
+![Tile Set Format Tool - Godot Export Tres](screenshots/Tile-Set-Tool_Godot-Tres-Export.png)
