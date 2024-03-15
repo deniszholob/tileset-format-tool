@@ -1,7 +1,9 @@
+import { GodotTresData } from '../../classes/GodotBitMask.model.js';
 import { GenericPageComponent } from '../../components/generic-page.component.js';
 import { NAV_LINKS } from '../../data/links.data.js';
 import { BIT_MASK_TILE_SET } from '../../data/tile-set-bit-mask.data.js';
 import { Color } from '../../util/Color.js';
+import { setAnchorDownloadDataFile } from '../../util/data-util.ts.js';
 import { checkImageLoaded, getImageFromFile } from '../../util/html-util.js';
 import { renderTileSet } from '../../util/tile-set-renderer.js';
 import { cutImageIntoTiles, getRenderImageFromTiles, } from '../../util/tile-set-worker.js';
@@ -188,12 +190,16 @@ export class FormatterPageComponent extends GenericPageComponent {
     reRenderInputImagePreview() {
         if (this.imageRenderSet && this.userUpload) {
             const tileRender = getRenderImageFromTiles(this.imageRenderSet, this.selectedInputTileSet, this.outputTileBorderSize, new Color(this.bgColor, this.bgAlpha), this.doRenderTileIds);
+            const godotTresData = new GodotTresData(this.tileSize, this.userUpload.fileName, this.userUpload.fileExtension, this.selectedInputTileSet);
+            setAnchorDownloadDataFile(this.HTML_ELEMENTS.inputImagePreviewLinkGodotTres, godotTresData.toTres(), godotTresData.tileTextureFileUri);
             renderTileSet(tileRender, this.HTML_ELEMENTS.inputImagePreview, this.HTML_ELEMENTS.inputImagePreviewLink, this.HTML_ELEMENTS.inputImagePreviewDimensions, this.getDownloadLink(false, this.selectedInputTileSet.name, this.selectedInputTileSet.name));
         }
     }
     reRenderOutputImagePreview() {
         if (this.imageRenderSet && this.userUpload) {
             const tileRender = getRenderImageFromTiles(this.imageRenderSet, this.selectedOutputTileSet, this.outputTileBorderSize, new Color(this.bgColor, this.bgAlpha), this.doRenderTileIds);
+            const godotTresData = new GodotTresData(this.tileSize, this.userUpload.fileName, this.userUpload.fileExtension, this.selectedOutputTileSet);
+            setAnchorDownloadDataFile(this.HTML_ELEMENTS.outputImagePreviewLinkGodotTres, godotTresData.toTres(), godotTresData.tileTextureFileUri);
             renderTileSet(tileRender, this.HTML_ELEMENTS.outputImagePreview, this.HTML_ELEMENTS.outputImagePreviewLink, this.HTML_ELEMENTS.outputImagePreviewDimensions, this.getDownloadLink(false, this.selectedOutputTileSet.name, this.selectedOutputTileSet.name));
         }
     }

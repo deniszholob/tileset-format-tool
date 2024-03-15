@@ -29,3 +29,9 @@ export function downloadJSONtoFile(json, fileName) {
     elDownload.click();
     elDownload.remove();
 }
+export function setAnchorDownloadDataFile(anchor, data, fileName) {
+    const dataStr = 'data:text;charset=utf-8,' + encodeURIComponent(data);
+    anchor.href = dataStr;
+    anchor.download = fileName;
+    anchor.classList.remove('hidden');
+}

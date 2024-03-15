@@ -22,6 +22,7 @@ export class HtmlElementsFormatterPage extends GenericPageHtmlElements {
     // -------------------------------------------------
     inputImagePreviewLink = this.getElementById('inputImagePreviewLink');
     inputImagePreviewDimensions = this.getElementById('inputImagePreviewDimensions');
+    inputImagePreviewLinkGodotTres = this.getElementById('inputImagePreviewLinkGodotTres');
     inputImagePreview = this.getElementById('inputImagePreview');
     // =================================================
     outputTileSetSelect = this.getElementById('outputTileSetSelect');
@@ -33,5 +34,6 @@ export class HtmlElementsFormatterPage extends GenericPageHtmlElements {
     // -------------------------------------------------
     outputImagePreviewLink = this.getElementById('outputImagePreviewLink');
     outputImagePreviewDimensions = this.getElementById('outputImagePreviewDimensions');
+    outputImagePreviewLinkGodotTres = this.getElementById('outputImagePreviewLinkGodotTres');
     outputImagePreview = this.getElementById('outputImagePreview');
 }
