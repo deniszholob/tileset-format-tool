@@ -12,7 +12,7 @@ export class LocalStorageService {
     }
     load() {
         const json = localStorage.getItem(this.key) ?? '';
-        console.log(`Loaded from local storage: `, json);
+        // console.log(`Loaded from local storage: `, json);
         return json;
     }
     clear() {
