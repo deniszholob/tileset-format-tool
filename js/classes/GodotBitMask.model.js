@@ -50,8 +50,11 @@ export class GodotTresData {
         this.tileTextureFileName = tileTextureFileName;
         this.tileTextureFileExt = tileTextureFileExt;
         const tileSetName = `_${tileSet.name}`;
-        this.tileTextureFileUri = this.tileTextureFileName.replace(tileSetName, '');
-        this.tileTextureFileUri += `${tileSetName}_TileSet.tres`;
+        this.tileTextureFileName = this.tileTextureFileName.replace(tileSetName, '');
+        this.tileTextureFileName += tileSetName;
+        this.tileTextureFileUri += `${this.tileTextureFileName}_TileSet.tres`;
+        console.log(this.tileTextureFileName);
+        console.log(this.tileTextureFileUri);
         for (let r = 0; r < tileSet.numRows; r++) {
             for (let c = 0; c < tileSet.numCols; c++) {
                 this.tileTextureTiles.push({

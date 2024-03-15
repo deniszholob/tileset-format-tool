@@ -235,7 +235,7 @@ export class FormatterPageComponent extends GenericPageComponent {
             ? `${this.userUpload?.fileName}_`
             : '';
         const bitMaskName = isBitMask ? '_BitMask' : '';
-        const downloadName = `${fileName.replace(inputTileSetName ?? '', '')}${tileSetName}${bitMaskName}`;
+        const downloadName = `${fileName.replace(`_${inputTileSetName}` ?? '', '')}${tileSetName}${bitMaskName}`;
         return `${downloadName}.${fileExtension}`;
     }
 }
