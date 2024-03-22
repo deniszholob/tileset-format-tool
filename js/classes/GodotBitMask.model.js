@@ -63,6 +63,49 @@ export class GodotTresData {
             }
         }
     }
+    getTresBitmask(tile) {
+        let outputTileStr = ``;
+        outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0 = 0\n`;
+        outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrain_set = 0\n`;
+        outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrain = ${tile.bitmask.terrain ? 0 : 1}\n`;
+        outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/right_side = ${tile.bitmask.right_center ? 0 : 1}\n`;
+        outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/bottom_right_corner = ${tile.bitmask.bottom_right ? 0 : 1}\n`;
+        outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/bottom_side = ${tile.bitmask.bottom_center ? 0 : 1}\n`;
+        outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/bottom_left_corner = ${tile.bitmask.bottom_left ? 0 : 1}\n`;
+        outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/left_side = ${tile.bitmask.left_center ? 0 : 1}\n`;
+        outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/top_left_corner = ${tile.bitmask.top_left ? 0 : 1}\n`;
+        outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/top_side = ${tile.bitmask.top_center ? 0 : 1}\n`;
+        outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/top_right_corner = ${tile.bitmask.top_right ? 0 : 1}\n`;
+        // if (tile.bitmask.terrain) {
+        //   outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrain = 0\n`;
+        // }
+        // if (tile.bitmask.right_center) {
+        //   outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/right_side = 0\n`;
+        // }
+        // if (tile.bitmask.bottom_right) {
+        //   outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/bottom_right_corner = 0\n`;
+        // }
+        // if (tile.bitmask.bottom_center) {
+        //   outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/bottom_side = 0\n`;
+        // }
+        // if (tile.bitmask.bottom_left) {
+        //   outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/bottom_left_corner = 0\n`;
+        // }
+        // if (tile.bitmask.left_center) {
+        //   outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/left_side = 0\n`;
+        // }
+        // if (tile.bitmask.top_left) {
+        //   outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/top_left_corner = 0\n`;
+        // }
+        // if (tile.bitmask.top_center) {
+        //   outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/top_side = 0\n`;
+        // }
+        // if (tile.bitmask.top_right) {
+        //   outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/top_right_corner = 0\n`;
+        // }
+        // tileTextureTilesSrt += `\n`;
+        return outputTileStr;
+    }
     toTres() {
         let output = `[gd_resource type="TileSet" load_steps=3 format=3]
 
@@ -76,41 +119,14 @@ texture_region_size = Vector2i({{tileTextureSize}}, {{tileTextureSize}})
 tile_size = Vector2i({{tileTextureSize}}, {{tileTextureSize}})
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Terrain 0"
-terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
+terrain_set_0/terrain_0/color = Color(0, 0, 0, 1)
+terrain_set_0/terrain_1/name = "Terrain 1"
+terrain_set_0/terrain_1/color = Color(1, 1, 1, 1)
 sources/1 = SubResource("TileSetAtlasSource_{{tileTextureFileName}}")
 `;
         let tileTextureTilesSrt = ``;
         this.tileTextureTiles.forEach((tile) => {
-            tileTextureTilesSrt += `${tile.colIdx}:${tile.rowIdx}/0 = 0\n`;
-            tileTextureTilesSrt += `${tile.colIdx}:${tile.rowIdx}/0/terrain_set = 0\n`;
-            if (tile.bitmask.terrain) {
-                tileTextureTilesSrt += `${tile.colIdx}:${tile.rowIdx}/0/terrain = 0\n`;
-            }
-            if (tile.bitmask.top_center) {
-                tileTextureTilesSrt += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/top_side = 0\n`;
-            }
-            if (tile.bitmask.top_right) {
-                tileTextureTilesSrt += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/top_right_corner = 0\n`;
-            }
-            if (tile.bitmask.right_center) {
-                tileTextureTilesSrt += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/right_side = 0\n`;
-            }
-            if (tile.bitmask.bottom_right) {
-                tileTextureTilesSrt += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/bottom_right_corner  = 0\n`;
-            }
-            if (tile.bitmask.bottom_center) {
-                tileTextureTilesSrt += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/bottom_side = 0\n`;
-            }
-            if (tile.bitmask.bottom_left) {
-                tileTextureTilesSrt += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/bottom_left_corner  = 0\n`;
-            }
-            if (tile.bitmask.left_center) {
-                tileTextureTilesSrt += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/left_side = 0\n`;
-            }
-            if (tile.bitmask.top_left) {
-                tileTextureTilesSrt += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/top_left_corner  = 0\n`;
-            }
-            // tileTextureTilesSrt += `\n`;
+            tileTextureTilesSrt += this.getTresBitmask(tile);
         });
         output = output.replace(`{{#tileTextureTiles}} {{/tileTextureTiles}}`, tileTextureTilesSrt);
         output = output.replaceAll(`{{tileTextureFileName}}`, this.tileTextureFileName);
