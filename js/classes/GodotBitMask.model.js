@@ -55,11 +55,15 @@ export class GodotTresData {
         this.tileTextureFileUri += `${this.tileTextureFileName}_TileSet.tres`;
         for (let r = 0; r < tileSet.numRows; r++) {
             for (let c = 0; c < tileSet.numCols; c++) {
-                this.tileTextureTiles.push({
-                    colIdx: c,
-                    rowIdx: r,
-                    bitmask: new GodotBitmask(tileSet.set[r][c]?.id ?? -1),
-                });
+                const tileSetTile = tileSet.set[r][c];
+                const tileTextureTile = tileSetTile
+                    ? {
+                        colIdx: c,
+                        rowIdx: r,
+                        bitmask: new GodotBitmask(tileSetTile.id),
+                    }
+                    : undefined;
+                this.tileTextureTiles.push(tileTextureTile);
             }
         }
     }
@@ -125,7 +129,9 @@ terrain_set_0/terrain_1/color = Color(1, 1, 1, 1)
 sources/1 = SubResource("TileSetAtlasSource_{{tileTextureFileName}}")
 `;
         let tileTextureTilesSrt = ``;
-        this.tileTextureTiles.forEach((tile) => {
+        this.tileTextureTiles
+            .filter((t) => t !== undefined)
+            .forEach((tile) => {
             tileTextureTilesSrt += this.getTresBitmask(tile);
         });
         output = output.replace(`{{#tileTextureTiles}} {{/tileTextureTiles}}`, tileTextureTilesSrt);

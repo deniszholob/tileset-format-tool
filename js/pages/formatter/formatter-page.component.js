@@ -12,9 +12,10 @@ export class FormatterPageComponent extends GenericPageComponent {
     TILE_SET_OPTIONS = this.tileSets.toSelectOptions();
     userUpload = undefined;
     imageRenderSet = undefined;
-    tileSize = 32;
     numRows = 1;
     numCols = 1;
+    tileSize = 32;
+    tileSizeWithBorderCalc = 32;
     sourceImageBorderSize = 0;
     sourceTileBorderSize = 0;
     outputImageBorderSize = 0;
@@ -151,8 +152,8 @@ export class FormatterPageComponent extends GenericPageComponent {
     }
     // ============================== Private ================================= //
     syncStateWithHtml() {
-        this.HTML_ELEMENTS.tileSize.textContent = this.tileSize
-            ? `${this.tileSize} px`
+        this.HTML_ELEMENTS.tileSize.textContent = this.tileSizeWithBorderCalc
+            ? `${this.tileSizeWithBorderCalc} px`
             : '---';
         this.HTML_ELEMENTS.sourceImageBorderSizeInput.valueAsNumber =
             this.sourceImageBorderSize;
@@ -190,7 +191,7 @@ export class FormatterPageComponent extends GenericPageComponent {
     reRenderInputImagePreview() {
         if (this.imageRenderSet && this.userUpload) {
             const tileRender = getRenderImageFromTiles(this.imageRenderSet, this.selectedInputTileSet, this.outputTileBorderSize, new Color(this.bgColor, this.bgAlpha), this.doRenderTileIds);
-            const godotTresData = new GodotTresData(this.tileSize, this.userUpload.fileName, this.userUpload.fileExtension, this.selectedInputTileSet);
+            const godotTresData = new GodotTresData(this.tileSizeWithBorderCalc, this.userUpload.fileName, this.userUpload.fileExtension, this.selectedInputTileSet);
             setAnchorDownloadDataFile(this.HTML_ELEMENTS.inputImagePreviewLinkGodotTres, godotTresData.toTres(), godotTresData.tileTextureFileUri);
             renderTileSet(tileRender, this.HTML_ELEMENTS.inputImagePreview, this.HTML_ELEMENTS.inputImagePreviewLink, this.HTML_ELEMENTS.inputImagePreviewDimensions, this.getDownloadLink(false, this.selectedInputTileSet.name, this.selectedInputTileSet.name));
         }
@@ -198,7 +199,7 @@ export class FormatterPageComponent extends GenericPageComponent {
     reRenderOutputImagePreview() {
         if (this.imageRenderSet && this.userUpload) {
             const tileRender = getRenderImageFromTiles(this.imageRenderSet, this.selectedOutputTileSet, this.outputTileBorderSize, new Color(this.bgColor, this.bgAlpha), this.doRenderTileIds);
-            const godotTresData = new GodotTresData(this.tileSize, this.userUpload.fileName, this.userUpload.fileExtension, this.selectedOutputTileSet);
+            const godotTresData = new GodotTresData(this.tileSizeWithBorderCalc, this.userUpload.fileName, this.userUpload.fileExtension, this.selectedOutputTileSet);
             setAnchorDownloadDataFile(this.HTML_ELEMENTS.outputImagePreviewLinkGodotTres, godotTresData.toTres(), godotTresData.tileTextureFileUri);
             renderTileSet(tileRender, this.HTML_ELEMENTS.outputImagePreview, this.HTML_ELEMENTS.outputImagePreviewLink, this.HTML_ELEMENTS.outputImagePreviewDimensions, this.getDownloadLink(false, this.selectedOutputTileSet.name, this.selectedOutputTileSet.name));
         }
@@ -214,9 +215,12 @@ export class FormatterPageComponent extends GenericPageComponent {
         if (checkImageLoaded(image)) {
             this.tileSize = this.getTileSizeFromImage(image, this.sourceImageBorderSize);
             this.imageRenderSet = cutImageIntoTiles(image, this.tileSize, this.selectedInputTileSet, this.sourceTileBorderSize, this.sourceImageBorderSize);
+            this.tileSizeWithBorderCalc =
+                this.tileSize - 2 * this.sourceTileBorderSize;
         }
         else {
             this.tileSize = 0;
+            this.tileSizeWithBorderCalc = 0;
             this.imageRenderSet = undefined;
         }
         this.syncStateWithHtml();
