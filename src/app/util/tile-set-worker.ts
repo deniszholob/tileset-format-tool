@@ -1,3 +1,4 @@
+import { Dimensions } from '../classes/Dimensions.js';
 import { Tile } from '../classes/Tile.model.js';
 import { TileSet } from '../classes/TileSet.model.js';
 import { BIT_MASK_TILE_SET_NAME } from '../data/tile-set-bit-mask.data.js';
@@ -6,7 +7,7 @@ import { htmlImageToCanvasImage, renderTextOnCanvas } from './html-util.js';
 
 export interface RenderSet {
   name: string;
-  tileSize: number;
+  tileDimensionsWithNoBorder: Dimensions;
   set: RenderTile[];
 }
 
@@ -27,26 +28,65 @@ export class RenderImage {
   }
 }
 
+/** Needs to have tile set selected and numCols/numRows recalculated beforehand */
+export function getTileDimensionsFromImage(
+  image: HTMLImageElement,
+  numRows: number,
+  numCols: number,
+  imageBorderSize: number = 0,
+): Dimensions {
+  const effectiveImageWidth: number = image.width - 2 * imageBorderSize;
+  const effectiveImageHeight: number = image.height - 2 * imageBorderSize;
+  const dim: Dimensions = {
+    width: effectiveImageWidth / numCols,
+    height: effectiveImageHeight / numRows,
+  };
+  return dim;
+}
+
+export function getTileDimensionsWithNoBorder(
+  tileDimensionsWithBorder: Dimensions,
+  tileBorderSize: number,
+): Dimensions {
+  return {
+    width: tileDimensionsWithBorder.width - 2 * tileBorderSize,
+    height: tileDimensionsWithBorder.height - 2 * tileBorderSize,
+  };
+}
+
+function getTileDimensionsWithBorder(
+  tileDimensionsWithNoBorder: Dimensions,
+  tileBorderSize: number,
+): Dimensions {
+  return {
+    width: tileDimensionsWithNoBorder.width + 2 * tileBorderSize,
+    height: tileDimensionsWithNoBorder.height + 2 * tileBorderSize,
+  };
+}
+
 export function cutImageIntoTiles(
   image: HTMLImageElement,
-  tileSizePadded: number,
+  tileDimensionsWithBorder: Dimensions,
   tileSet: TileSet,
-  borderSize: number = 0,
+  tileBorderSize: number = 0,
   imageBorderSize: number = 0,
 ): RenderSet {
   const canvasImage: HTMLCanvasElement = htmlImageToCanvasImage(image);
   const tiles: RenderTile[] = [];
-  const tileSize: number = tileSizePadded - 2 * borderSize;
+  const tileDimensionsWithNoBorder: Dimensions = getTileDimensionsWithNoBorder(
+    tileDimensionsWithBorder,
+    tileBorderSize,
+  );
 
   for (
     let y: number = imageBorderSize;
     y < image.height - imageBorderSize;
-    y += tileSizePadded
+    y += tileDimensionsWithBorder.height
   ) {
     for (
       let x: number = imageBorderSize;
       x < image.width - imageBorderSize;
-      x += tileSizePadded
+      x += tileDimensionsWithBorder.width
     ) {
       const tileCanvas: HTMLCanvasElement = document.createElement('canvas');
       const tileContext: CanvasRenderingContext2D | null =
@@ -54,31 +94,31 @@ export function cutImageIntoTiles(
       if (!tileContext) throw new Error(`Cannot load Canvas Context`);
       tileContext.imageSmoothingEnabled = false;
 
-      tileCanvas.width = tileSize;
-      tileCanvas.height = tileSize;
+      tileCanvas.width = tileDimensionsWithNoBorder.width;
+      tileCanvas.height = tileDimensionsWithNoBorder.height;
 
       tileContext.drawImage(
         canvasImage,
-        x + borderSize,
-        y + borderSize,
-        tileSizePadded,
-        tileSizePadded,
+        x + tileBorderSize,
+        y + tileBorderSize,
+        tileDimensionsWithBorder.width,
+        tileDimensionsWithBorder.height,
         0,
         0,
-        tileSizePadded,
-        tileSizePadded,
+        tileDimensionsWithBorder.width,
+        tileDimensionsWithBorder.height,
       );
 
       const tileFromTileSet: Tile | undefined =
-        tileSet.set[Math.round(y / tileSizePadded)][
-          Math.round(x / tileSizePadded)
+        tileSet.set[Math.round(y / tileDimensionsWithBorder.height)][
+          Math.round(x / tileDimensionsWithBorder.width)
         ];
 
       tiles.push({ tile: tileFromTileSet, canvas: tileCanvas });
     }
   }
 
-  return { name: tileSet.name, tileSize, set: tiles };
+  return { name: tileSet.name, tileDimensionsWithNoBorder, set: tiles };
 }
 
 export function getRenderImageFromTiles(
@@ -96,14 +136,18 @@ export function getRenderImageFromTiles(
   if (!context) throw new Error(`Cannot load Canvas Context`);
   context.imageSmoothingEnabled = false;
 
-  const tileSize: number = renderSet.tileSize;
+  const tileDimensionsWithNoBorder: Dimensions =
+    renderSet.tileDimensionsWithNoBorder;
   const numRows: number = tileSet.numRows;
   const numCols: number = tileSet.numCols;
 
-  const tileSizePadded: number = tileSize + 2 * borderSize;
+  const tileDimensionsWithBorder: Dimensions = getTileDimensionsWithBorder(
+    tileDimensionsWithNoBorder,
+    borderSize,
+  );
 
-  canvas.width = numCols * tileSizePadded;
-  canvas.height = numRows * tileSizePadded;
+  canvas.width = numCols * tileDimensionsWithBorder.width;
+  canvas.height = numRows * tileDimensionsWithBorder.height;
 
   const bitMaskColorOverride: Color = new Color(`#000000`);
   const bitMaskBgOverride: Color = new Color(`#ffffff`);
@@ -138,21 +182,27 @@ export function getRenderImageFromTiles(
         context,
         iCol,
         iRow,
-        tileSizePadded,
+        tileDimensionsWithBorder,
         borderSize,
         background,
         tilesToRender?.renderTile,
       );
 
       if (renderSet.name === BIT_MASK_TILE_SET_NAME && bitMaskFancyBorders)
-        drawTileInsideBorder(context, iCol, iRow, tileSize, borderSize);
+        drawTileInsideBorder(
+          context,
+          iCol,
+          iRow,
+          tileDimensionsWithNoBorder,
+          borderSize,
+        );
 
       if (doRenderText && tilesToRender?.textTile) {
         drawTextFromTile(
           context,
           iCol,
           iRow,
-          tileSizePadded,
+          tileDimensionsWithBorder,
           tilesToRender.textTile,
         );
       }
@@ -232,12 +282,15 @@ function drawTileInsideBorder(
   ctx: CanvasRenderingContext2D,
   iCol: number,
   iRow: number,
-  tileSize: number,
+  tileDimensionsWithNoBorder: Dimensions,
   padding: number,
 ): void {
-  const thickness: number = tileSize / 32;
-  const x: number = iCol * (tileSize + padding * 2) + padding;
-  const y: number = iRow * (tileSize + padding * 2) + padding;
+  const strokeThickness: number = tileDimensionsWithNoBorder.width / 32;
+  const strokeRadius: number = strokeThickness / 2;
+  const x: number =
+    iCol * (tileDimensionsWithNoBorder.width + padding * 2) + padding;
+  const y: number =
+    iRow * (tileDimensionsWithNoBorder.width + padding * 2) + padding;
 
   const bgAlpha = 0.1;
   const styleWhite = `rgba(245, 245, 245, ${bgAlpha})`;
@@ -254,21 +307,40 @@ function drawTileInsideBorder(
     // [coordinates[1], coordinates[2], styleBlack],//
     // [coordinates[2], coordinates[3], styleWhite],
     // [coordinates[3], coordinates[0], styleWhite],//
-    [[x, y + thickness / 2], [x + tileSize, y + thickness / 2], styleWhite],
+
     [
-      [x + tileSize - thickness / 2, y],
-      [x + tileSize - thickness / 2, y + tileSize],
+      // Top - left=>right
+      [x, y + strokeRadius],
+      [x + tileDimensionsWithNoBorder.width, y + strokeRadius],
+      styleWhite,
+    ],
+    [
+      // Right - top=>bottom
+      [x + tileDimensionsWithNoBorder.width - strokeRadius, y],
+      [
+        x + tileDimensionsWithNoBorder.width - strokeRadius,
+        y + tileDimensionsWithNoBorder.height,
+      ],
       styleBlack,
     ],
     [
-      [x + tileSize, y + tileSize - thickness / 2],
-      [x, y + tileSize - thickness / 2],
+      // Bottom - right=>left
+      [
+        x + tileDimensionsWithNoBorder.width,
+        y + tileDimensionsWithNoBorder.height - strokeRadius,
+      ],
+      [x, y + tileDimensionsWithNoBorder.height - strokeRadius],
       styleBlack,
     ],
-    [[x + thickness / 2, y + tileSize], [x + thickness / 2, y], styleWhite],
+    [
+      // Left - bottom=>top
+      [x + strokeRadius, y + tileDimensionsWithNoBorder.height],
+      [x + strokeRadius, y],
+      styleWhite,
+    ],
   ];
 
-  ctx.lineWidth = thickness;
+  ctx.lineWidth = strokeThickness;
   edges.forEach((edge) => {
     const style = edge[2];
     const x1 = edge[0][0];
@@ -326,13 +398,16 @@ function drawTextFromTile(
   context: CanvasRenderingContext2D,
   iCol: number,
   iRow: number,
-  tileSizePadded: number,
+  tileDimensionsWithBorder: Dimensions,
   textTile: Tile,
 ): void {
   const text: string = textTile.toString().replace('_', '\n');
-  const tileXCenter: number = iCol * tileSizePadded + tileSizePadded / 2;
-  const tileYCenter: number = iRow * tileSizePadded + tileSizePadded / 2;
-  const fontSize: number = tileSizePadded / 3.3;
+  const tileXCenter: number =
+    iCol * tileDimensionsWithBorder.width + tileDimensionsWithBorder.width / 2;
+  const tileYCenter: number =
+    iRow * tileDimensionsWithBorder.height +
+    tileDimensionsWithBorder.height / 2;
+  const fontSize: number = tileDimensionsWithBorder.width / 3.3;
   renderTextOnCanvas(context, text, tileXCenter, tileYCenter, fontSize);
 }
 
@@ -340,19 +415,24 @@ function drawImageFromTile(
   context: CanvasRenderingContext2D,
   iCol: number,
   iRow: number,
-  tileSizePadded: number,
+  tileDimensionsWithBorder: Dimensions,
   borderSize: number,
   background: Color,
   renderTile: RenderTile | undefined,
 ): void {
-  const x: number = iCol * tileSizePadded;
-  const y: number = iRow * tileSizePadded;
+  const x: number = iCol * tileDimensionsWithBorder.width;
+  const y: number = iRow * tileDimensionsWithBorder.height;
 
   // Render extra spacing and background only if margin size is greater than 0
   if (borderSize > 0) {
     // If using fill
     context.fillStyle = background.toString();
-    context.fillRect(x, y, tileSizePadded, tileSizePadded);
+    context.fillRect(
+      x,
+      y,
+      tileDimensionsWithBorder.width,
+      tileDimensionsWithBorder.height,
+    );
 
     // // If using stroke
     // context.strokeStyle = color.toString();

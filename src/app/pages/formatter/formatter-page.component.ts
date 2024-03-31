@@ -1,4 +1,8 @@
-import { GodotTresData } from '../../classes/GodotBitMask.model.js';
+import { Dimensions } from '../../classes/Dimensions.js';
+import {
+  GodotTresData,
+  TileOriginOffset,
+} from '../../classes/GodotBitMask.model.js';
 import { SelectOption } from '../../classes/SelectOption.model.js';
 import { AppSettings } from '../../classes/settings.model.js';
 import { TileSet } from '../../classes/TileSet.model.js';
@@ -12,6 +16,8 @@ import { renderTileSet } from '../../util/tile-set-renderer.js';
 import {
   cutImageIntoTiles,
   getRenderImageFromTiles,
+  getTileDimensionsFromImage,
+  getTileDimensionsWithNoBorder,
   RenderImage,
   RenderSet,
 } from '../../util/tile-set-worker.js';
@@ -22,6 +28,7 @@ interface UserUpload {
   fileExtension: string;
   image: HTMLImageElement;
 }
+
 export class FormatterPageComponent extends GenericPageComponent<HtmlElementsFormatterPage> {
   private TILE_SET_OPTIONS: SelectOption[] = this.tileSets.toSelectOptions();
 
@@ -30,8 +37,12 @@ export class FormatterPageComponent extends GenericPageComponent<HtmlElementsFor
 
   private numRows: number = 1;
   private numCols: number = 1;
-  private tileSize: number = 32;
-  private tileSizeWithBorderCalc: number = 32;
+
+  private tileDimensionsWithBorder?: Dimensions;
+  private tileDimensionsWithNoBorder?: Dimensions;
+
+  private squareTiles: boolean = false;
+  private originOffset?: TileOriginOffset;
 
   private sourceImageBorderSize: number = 0;
   private sourceTileBorderSize: number = 0;
@@ -155,6 +166,20 @@ export class FormatterPageComponent extends GenericPageComponent<HtmlElementsFor
     this.onProcessImage();
   }
 
+  public onToggleGodotSquareGrid(): void {
+    this.squareTiles = this.HTML_ELEMENTS.godotSquareGrid.checked;
+    this.onProcessImage();
+  }
+
+  public onUpdateGodotTileOriginOffset(): void {
+    this.originOffset = undefined;
+    if (this.HTML_ELEMENTS.godotOriginOffsetTop.checked)
+      this.originOffset = 'top';
+    if (this.HTML_ELEMENTS.godotOriginOffsetBottom.checked)
+      this.originOffset = 'bottom';
+    this.onProcessImage();
+  }
+
   public onProcessImage(): void {
     this.reRenderInputImagePreview();
     this.reRenderOutputImagePreview();
@@ -200,9 +225,25 @@ export class FormatterPageComponent extends GenericPageComponent<HtmlElementsFor
   // ============================== Private ================================= //
 
   private syncStateWithHtml(): void {
-    this.HTML_ELEMENTS.tileSize.textContent = this.tileSizeWithBorderCalc
-      ? `${this.tileSizeWithBorderCalc} px`
-      : '---';
+    this.HTML_ELEMENTS.tileSize.textContent = this.tileDimensionsWithNoBorder
+      ? `${this.tileDimensionsWithNoBorder.width} x ${this.tileDimensionsWithNoBorder.height}px`
+      : '--- x ---';
+
+    this.HTML_ELEMENTS.godotSquareGrid.checked = this.squareTiles;
+
+    if (!this.originOffset) {
+      this.HTML_ELEMENTS.godotOriginOffsetTop.checked = false;
+      this.HTML_ELEMENTS.godotOriginOffsetNone.checked = true;
+      this.HTML_ELEMENTS.godotOriginOffsetBottom.checked = false;
+    } else if (this.originOffset === 'top') {
+      this.HTML_ELEMENTS.godotOriginOffsetTop.checked = true;
+      this.HTML_ELEMENTS.godotOriginOffsetNone.checked = false;
+      this.HTML_ELEMENTS.godotOriginOffsetBottom.checked = false;
+    } else {
+      this.HTML_ELEMENTS.godotOriginOffsetTop.checked = false;
+      this.HTML_ELEMENTS.godotOriginOffsetNone.checked = false;
+      this.HTML_ELEMENTS.godotOriginOffsetBottom.checked = true;
+    }
 
     this.HTML_ELEMENTS.sourceImageBorderSizeInput.valueAsNumber =
       this.sourceImageBorderSize;
@@ -283,7 +324,11 @@ export class FormatterPageComponent extends GenericPageComponent<HtmlElementsFor
   }
 
   private reRenderInputImagePreview(): void {
-    if (this.imageRenderSet && this.userUpload) {
+    if (
+      this.imageRenderSet &&
+      this.userUpload &&
+      this.tileDimensionsWithNoBorder
+    ) {
       const tileRender: RenderImage = getRenderImageFromTiles(
         this.imageRenderSet,
         this.selectedInputTileSet,
@@ -293,10 +338,12 @@ export class FormatterPageComponent extends GenericPageComponent<HtmlElementsFor
       );
 
       const godotTresData: GodotTresData = new GodotTresData(
-        this.tileSizeWithBorderCalc,
-        this.userUpload.fileName,
-        this.userUpload.fileExtension,
         this.selectedInputTileSet,
+        this.tileDimensionsWithNoBorder,
+        this.userUpload.fileName,
+        // this.userUpload.fileExtension,
+        this.squareTiles,
+        this.originOffset,
       );
       setAnchorDownloadDataFile(
         this.HTML_ELEMENTS.inputImagePreviewLinkGodotTres,
@@ -319,7 +366,11 @@ export class FormatterPageComponent extends GenericPageComponent<HtmlElementsFor
   }
 
   private reRenderOutputImagePreview(): void {
-    if (this.imageRenderSet && this.userUpload) {
+    if (
+      this.imageRenderSet &&
+      this.userUpload &&
+      this.tileDimensionsWithNoBorder
+    ) {
       const tileRender: RenderImage = getRenderImageFromTiles(
         this.imageRenderSet,
         this.selectedOutputTileSet,
@@ -329,10 +380,12 @@ export class FormatterPageComponent extends GenericPageComponent<HtmlElementsFor
       );
 
       const godotTresData: GodotTresData = new GodotTresData(
-        this.tileSizeWithBorderCalc,
-        this.userUpload.fileName,
-        this.userUpload.fileExtension,
         this.selectedOutputTileSet,
+        this.tileDimensionsWithNoBorder,
+        this.userUpload.fileName,
+        // this.userUpload.fileExtension,
+        this.squareTiles,
+        this.originOffset,
       );
       setAnchorDownloadDataFile(
         this.HTML_ELEMENTS.outputImagePreviewLinkGodotTres,
@@ -365,38 +418,29 @@ export class FormatterPageComponent extends GenericPageComponent<HtmlElementsFor
   private recalculateInputImageVars(): void {
     const image: HTMLImageElement | undefined = this.userUpload?.image;
     if (checkImageLoaded(image)) {
-      this.tileSize = this.getTileSizeFromImage(
+      this.tileDimensionsWithBorder = getTileDimensionsFromImage(
         image,
+        this.numRows,
+        this.numCols,
         this.sourceImageBorderSize,
       );
       this.imageRenderSet = cutImageIntoTiles(
         image,
-        this.tileSize,
+        this.tileDimensionsWithBorder,
         this.selectedInputTileSet,
         this.sourceTileBorderSize,
         this.sourceImageBorderSize,
       );
-      this.tileSizeWithBorderCalc =
-        this.tileSize - 2 * this.sourceTileBorderSize;
+      this.tileDimensionsWithNoBorder = getTileDimensionsWithNoBorder(
+        this.tileDimensionsWithBorder,
+        this.sourceTileBorderSize,
+      );
     } else {
-      this.tileSize = 0;
-      this.tileSizeWithBorderCalc = 0;
+      this.tileDimensionsWithBorder = undefined;
+      this.tileDimensionsWithNoBorder = undefined;
       this.imageRenderSet = undefined;
     }
     this.syncStateWithHtml();
-  }
-
-  /** Needs to have tile set selected and numCols/numRows recalculated beforehand */
-  private getTileSizeFromImage(
-    image: HTMLImageElement,
-    imageBorderSize: number = 0,
-  ): number {
-    const effectiveImageWidth: number = image.width - 2 * imageBorderSize;
-    const effectiveImageHeight: number = image.height - 2 * imageBorderSize;
-    return Math.max(
-      effectiveImageWidth / this.numCols,
-      effectiveImageHeight / this.numRows,
-    );
   }
 
   private getDownloadLink(
@@ -404,10 +448,11 @@ export class FormatterPageComponent extends GenericPageComponent<HtmlElementsFor
     tileSetName: string,
     inputTileSetName?: string,
   ): string {
-    const fileExtension: string =
-      !this.userUpload?.fileExtension || !isBitMask
-        ? 'png'
-        : this.userUpload.fileExtension;
+    // RenderImage class has `this.src = canvas.toDataURL('image/png');` So no matter what, browser downloads in png
+    const fileExtension: string = 'png';
+    // !this.userUpload?.fileExtension || !isBitMask
+    //   ? 'png'
+    //   : this.userUpload.fileExtension;
     const fileName: string = this.userUpload?.fileName
       ? `${this.userUpload?.fileName}_`
       : '';

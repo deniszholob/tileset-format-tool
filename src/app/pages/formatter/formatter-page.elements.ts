@@ -16,6 +16,19 @@ export class HtmlElementsFormatterPage extends GenericPageHtmlElements {
   public sourceTileBorderSizeInput: HTMLInputElement = this.getElementById(
     'sourceTileBorderSizeInput',
   );
+  // -------------------------------------------------
+  public godotSquareGrid: HTMLInputElement =
+    this.getElementById('godotSquareGrid');
+  public godotOriginOffsetTop: HTMLInputElement = this.getElementById(
+    'godotOriginOffsetTop',
+  );
+  public godotOriginOffsetNone: HTMLInputElement = this.getElementById(
+    'godotOriginOffsetNone',
+  );
+  public godotOriginOffsetBottom: HTMLInputElement = this.getElementById(
+    'godotOriginOffsetBottom',
+  );
+  // -------------------------------------------------
   public outputImageBorderSizeInput: HTMLInputElement = this.getElementById(
     'outputImageBorderSizeInput',
   );

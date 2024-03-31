@@ -28,6 +28,13 @@ const formatterPageComponent: FormatterPageComponent =
   formatterPageComponent.onUpdateOutputTileBorderSize();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+(window as any).onToggleGodotSquareGrid = () =>
+  formatterPageComponent.onToggleGodotSquareGrid();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(window as any).onUpdateGodotTileOriginOffset = () =>
+  formatterPageComponent.onUpdateGodotTileOriginOffset();
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).onUpdateBgColor = () =>
   formatterPageComponent.onUpdateBgColor();
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

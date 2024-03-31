@@ -1,5 +1,8 @@
-import { Tile } from './Tile.model';
-import { TileSet } from './TileSet.model';
+import { Dimensions } from './Dimensions.js';
+import { Tile } from './Tile.model.js';
+import { TileSet } from './TileSet.model.js';
+
+export type TileOriginOffset = 'top' | 'bottom';
 
 /** 8-bit Directional Values of a bitmask sum up to a number between 0 and 255.
  * @ref https://code.tutsplus.com/how-to-use-tile-bitmasking-to-auto-tile-your-level-layouts--cms-25673t
@@ -46,26 +49,33 @@ class GodotBitmask {
 
 interface GodotTresDataI {
   tileTextureFileName: string;
-  tileTextureFileExt: string;
-  tileTextureSize: number;
+  // tileTextureFileExt: string;
+  tileDimensionsWithNoBorder: Dimensions;
   tileTextureTiles: Array<GodotTresDataTileI | undefined>;
+  squareTiles: boolean;
+  originOffset?: TileOriginOffset;
 }
 
 interface GodotTresDataTileI {
   colIdx: number;
   rowIdx: number;
   bitmask: GodotBitmask;
+  originOffset: number;
 }
 
 export class GodotTresData implements GodotTresDataI {
   public tileTextureTiles: Array<GodotTresDataTileI | undefined> = [];
   public tileTextureFileUri: string = '';
+  // RenderImage class has `this.src = canvas.toDataURL('image/png');` So no matter what, browser downloads in png
+  public tileTextureFileExt: string = 'png';
 
   constructor(
-    public tileTextureSize: number,
-    public tileTextureFileName: string,
-    public tileTextureFileExt: string,
     tileSet: TileSet,
+    public tileDimensionsWithNoBorder: Dimensions,
+    public tileTextureFileName: string,
+    // public tileTextureFileExt: string,
+    public squareTiles: boolean = false,
+    public originOffset?: TileOriginOffset,
   ) {
     const tileSetName: string = `_${tileSet.name}`;
     this.tileTextureFileName = this.tileTextureFileName.replace(
@@ -83,6 +93,7 @@ export class GodotTresData implements GodotTresDataI {
               colIdx: c,
               rowIdx: r,
               bitmask: new GodotBitmask(tileSetTile.id),
+              originOffset: this.getOffsetAmount(this.originOffset),
             }
           : undefined;
 
@@ -97,6 +108,8 @@ export class GodotTresData implements GodotTresDataI {
     outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0 = 0\n`;
     outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrain_set = 0\n`;
 
+    if (tile.originOffset)
+      outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/texture_origin = Vector2i(0, ${tile.originOffset})\n`;
     outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrain = ${tile.bitmask.terrain ? 0 : 1}\n`;
     outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/right_side = ${tile.bitmask.right_center ? 0 : 1}\n`;
     outputTileStr += `${tile.colIdx}:${tile.rowIdx}/0/terrains_peering_bit/bottom_right_corner = ${tile.bitmask.bottom_right ? 0 : 1}\n`;
@@ -140,6 +153,15 @@ export class GodotTresData implements GodotTresDataI {
     return outputTileStr;
   }
 
+  private getOffsetAmount(offset?: TileOriginOffset): number {
+    if (!offset) return 0;
+    const offsetAmount: number =
+      (this.tileDimensionsWithNoBorder.height -
+        this.tileDimensionsWithNoBorder.width) /
+      2;
+    return offset === 'bottom' ? offsetAmount : offsetAmount * -1;
+  }
+
   public toTres(): string {
     let output: string = `[gd_resource type="TileSet" load_steps=3 format=3]
 
@@ -147,10 +169,10 @@ export class GodotTresData implements GodotTresDataI {
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_{{tileTextureFileName}}"]
 texture = ExtResource("1_{{tileTextureFileName}}")
-texture_region_size = Vector2i({{tileTextureSize}}, {{tileTextureSize}})
+texture_region_size = Vector2i({{textureRegionWidth}}, {{textureRegionHeight}})
 {{#tileTextureTiles}} {{/tileTextureTiles}}
 [resource]
-tile_size = Vector2i({{tileTextureSize}}, {{tileTextureSize}})
+tile_size = Vector2i({{tileSizeWidth}}, {{tileSizeHeight}})
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Terrain 0"
 terrain_set_0/terrain_0/color = Color(0, 0, 0, 1)
@@ -183,8 +205,20 @@ sources/1 = SubResource("TileSetAtlasSource_{{tileTextureFileName}}")
       this.tileTextureFileExt,
     );
     output = output.replaceAll(
-      `{{tileTextureSize}}`,
-      `${this.tileTextureSize}`,
+      `{{tileSizeWidth}}`,
+      `${this.tileDimensionsWithNoBorder.width}`,
+    );
+    output = output.replaceAll(
+      `{{tileSizeHeight}}`,
+      `${this.squareTiles ? this.tileDimensionsWithNoBorder.width : this.tileDimensionsWithNoBorder.height}`,
+    );
+    output = output.replaceAll(
+      `{{textureRegionWidth}}`,
+      `${this.tileDimensionsWithNoBorder.width}`,
+    );
+    output = output.replaceAll(
+      `{{textureRegionHeight}}`,
+      `${this.tileDimensionsWithNoBorder.height}`,
     );
 
     return output;
