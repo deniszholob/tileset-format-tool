@@ -9,7 +9,14 @@ export class BitMaskTiles {
         this._tiles = this.generateBitMaskTiles(bitMaskImageElement);
     }
     generateBitMaskTiles(bitMaskImageElement) {
-        const bitMaskTileSize = Math.max(bitMaskImageElement.width / BIT_MASK_TILE_SET.numCols, bitMaskImageElement.height / BIT_MASK_TILE_SET.numRows);
-        return cutImageIntoTiles(bitMaskImageElement, bitMaskTileSize, BIT_MASK_TILE_SET, 0);
+        // const bitMaskTileSize: number = Math.max(
+        //   bitMaskImageElement.width / BIT_MASK_TILE_SET.numCols,
+        //   bitMaskImageElement.height / BIT_MASK_TILE_SET.numRows,
+        // );
+        const bitMaskTileDimensions = {
+            width: bitMaskImageElement.width / BIT_MASK_TILE_SET.numCols,
+            height: bitMaskImageElement.height / BIT_MASK_TILE_SET.numRows,
+        };
+        return cutImageIntoTiles(bitMaskImageElement, bitMaskTileDimensions, BIT_MASK_TILE_SET, 0);
     }
 }

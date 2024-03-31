@@ -1,4 +1,4 @@
-import { GodotTresData } from '../../classes/GodotBitMask.model.js';
+import { GodotTresData, } from '../../classes/GodotBitMask.model.js';
 import { GenericPageComponent } from '../../components/generic-page.component.js';
 import { NAV_LINKS } from '../../data/links.data.js';
 import { BIT_MASK_TILE_SET } from '../../data/tile-set-bit-mask.data.js';
@@ -6,7 +6,7 @@ import { Color } from '../../util/Color.js';
 import { setAnchorDownloadDataFile } from '../../util/data-util.ts.js';
 import { checkImageLoaded, getImageFromFile } from '../../util/html-util.js';
 import { renderTileSet } from '../../util/tile-set-renderer.js';
-import { cutImageIntoTiles, getRenderImageFromTiles, } from '../../util/tile-set-worker.js';
+import { cutImageIntoTiles, getRenderImageFromTiles, getTileDimensionsFromImage, getTileDimensionsWithNoBorder, } from '../../util/tile-set-worker.js';
 import { HtmlElementsFormatterPage } from './formatter-page.elements.js';
 export class FormatterPageComponent extends GenericPageComponent {
     TILE_SET_OPTIONS = this.tileSets.toSelectOptions();
@@ -14,8 +14,10 @@ export class FormatterPageComponent extends GenericPageComponent {
     imageRenderSet = undefined;
     numRows = 1;
     numCols = 1;
-    tileSize = 32;
-    tileSizeWithBorderCalc = 32;
+    tileDimensionsWithBorder;
+    tileDimensionsWithNoBorder;
+    squareTiles = false;
+    originOffset;
     sourceImageBorderSize = 0;
     sourceTileBorderSize = 0;
     outputImageBorderSize = 0;
@@ -118,6 +120,18 @@ export class FormatterPageComponent extends GenericPageComponent {
         this.doRenderTileIds = !this.doRenderTileIds;
         this.onProcessImage();
     }
+    onToggleGodotSquareGrid() {
+        this.squareTiles = this.HTML_ELEMENTS.godotSquareGrid.checked;
+        this.onProcessImage();
+    }
+    onUpdateGodotTileOriginOffset() {
+        this.originOffset = undefined;
+        if (this.HTML_ELEMENTS.godotOriginOffsetTop.checked)
+            this.originOffset = 'top';
+        if (this.HTML_ELEMENTS.godotOriginOffsetBottom.checked)
+            this.originOffset = 'bottom';
+        this.onProcessImage();
+    }
     onProcessImage() {
         this.reRenderInputImagePreview();
         this.reRenderOutputImagePreview();
@@ -152,9 +166,25 @@ export class FormatterPageComponent extends GenericPageComponent {
     }
     // ============================== Private ================================= //
     syncStateWithHtml() {
-        this.HTML_ELEMENTS.tileSize.textContent = this.tileSizeWithBorderCalc
-            ? `${this.tileSizeWithBorderCalc} px`
-            : '---';
+        this.HTML_ELEMENTS.tileSize.textContent = this.tileDimensionsWithNoBorder
+            ? `${this.tileDimensionsWithNoBorder.width} x ${this.tileDimensionsWithNoBorder.height}px`
+            : '--- x ---';
+        this.HTML_ELEMENTS.godotSquareGrid.checked = this.squareTiles;
+        if (!this.originOffset) {
+            this.HTML_ELEMENTS.godotOriginOffsetTop.checked = false;
+            this.HTML_ELEMENTS.godotOriginOffsetNone.checked = true;
+            this.HTML_ELEMENTS.godotOriginOffsetBottom.checked = false;
+        }
+        else if (this.originOffset === 'top') {
+            this.HTML_ELEMENTS.godotOriginOffsetTop.checked = true;
+            this.HTML_ELEMENTS.godotOriginOffsetNone.checked = false;
+            this.HTML_ELEMENTS.godotOriginOffsetBottom.checked = false;
+        }
+        else {
+            this.HTML_ELEMENTS.godotOriginOffsetTop.checked = false;
+            this.HTML_ELEMENTS.godotOriginOffsetNone.checked = false;
+            this.HTML_ELEMENTS.godotOriginOffsetBottom.checked = true;
+        }
         this.HTML_ELEMENTS.sourceImageBorderSizeInput.valueAsNumber =
             this.sourceImageBorderSize;
         this.HTML_ELEMENTS.sourceTileBorderSizeInput.valueAsNumber =
@@ -189,17 +219,25 @@ export class FormatterPageComponent extends GenericPageComponent {
         renderTileSet(tileRender, this.HTML_ELEMENTS.outputImageBitMask, this.HTML_ELEMENTS.outputImageBitMaskLink, this.HTML_ELEMENTS.outputImageBitMaskDimensions, this.getDownloadLink(true, this.selectedOutputTileSet.name));
     }
     reRenderInputImagePreview() {
-        if (this.imageRenderSet && this.userUpload) {
+        if (this.imageRenderSet &&
+            this.userUpload &&
+            this.tileDimensionsWithNoBorder) {
             const tileRender = getRenderImageFromTiles(this.imageRenderSet, this.selectedInputTileSet, this.outputTileBorderSize, new Color(this.bgColor, this.bgAlpha), this.doRenderTileIds);
-            const godotTresData = new GodotTresData(this.tileSizeWithBorderCalc, this.userUpload.fileName, this.userUpload.fileExtension, this.selectedInputTileSet);
+            const godotTresData = new GodotTresData(this.selectedInputTileSet, this.tileDimensionsWithNoBorder, this.userUpload.fileName, 
+            // this.userUpload.fileExtension,
+            this.squareTiles, this.originOffset);
             setAnchorDownloadDataFile(this.HTML_ELEMENTS.inputImagePreviewLinkGodotTres, godotTresData.toTres(), godotTresData.tileTextureFileUri);
             renderTileSet(tileRender, this.HTML_ELEMENTS.inputImagePreview, this.HTML_ELEMENTS.inputImagePreviewLink, this.HTML_ELEMENTS.inputImagePreviewDimensions, this.getDownloadLink(false, this.selectedInputTileSet.name, this.selectedInputTileSet.name));
         }
     }
     reRenderOutputImagePreview() {
-        if (this.imageRenderSet && this.userUpload) {
+        if (this.imageRenderSet &&
+            this.userUpload &&
+            this.tileDimensionsWithNoBorder) {
             const tileRender = getRenderImageFromTiles(this.imageRenderSet, this.selectedOutputTileSet, this.outputTileBorderSize, new Color(this.bgColor, this.bgAlpha), this.doRenderTileIds);
-            const godotTresData = new GodotTresData(this.tileSizeWithBorderCalc, this.userUpload.fileName, this.userUpload.fileExtension, this.selectedOutputTileSet);
+            const godotTresData = new GodotTresData(this.selectedOutputTileSet, this.tileDimensionsWithNoBorder, this.userUpload.fileName, 
+            // this.userUpload.fileExtension,
+            this.squareTiles, this.originOffset);
             setAnchorDownloadDataFile(this.HTML_ELEMENTS.outputImagePreviewLinkGodotTres, godotTresData.toTres(), godotTresData.tileTextureFileUri);
             renderTileSet(tileRender, this.HTML_ELEMENTS.outputImagePreview, this.HTML_ELEMENTS.outputImagePreviewLink, this.HTML_ELEMENTS.outputImagePreviewDimensions, this.getDownloadLink(false, this.selectedOutputTileSet.name, this.selectedOutputTileSet.name));
         }
@@ -213,28 +251,23 @@ export class FormatterPageComponent extends GenericPageComponent {
     recalculateInputImageVars() {
         const image = this.userUpload?.image;
         if (checkImageLoaded(image)) {
-            this.tileSize = this.getTileSizeFromImage(image, this.sourceImageBorderSize);
-            this.imageRenderSet = cutImageIntoTiles(image, this.tileSize, this.selectedInputTileSet, this.sourceTileBorderSize, this.sourceImageBorderSize);
-            this.tileSizeWithBorderCalc =
-                this.tileSize - 2 * this.sourceTileBorderSize;
+            this.tileDimensionsWithBorder = getTileDimensionsFromImage(image, this.numRows, this.numCols, this.sourceImageBorderSize);
+            this.imageRenderSet = cutImageIntoTiles(image, this.tileDimensionsWithBorder, this.selectedInputTileSet, this.sourceTileBorderSize, this.sourceImageBorderSize);
+            this.tileDimensionsWithNoBorder = getTileDimensionsWithNoBorder(this.tileDimensionsWithBorder, this.sourceTileBorderSize);
         }
         else {
-            this.tileSize = 0;
-            this.tileSizeWithBorderCalc = 0;
+            this.tileDimensionsWithBorder = undefined;
+            this.tileDimensionsWithNoBorder = undefined;
             this.imageRenderSet = undefined;
         }
         this.syncStateWithHtml();
     }
-    /** Needs to have tile set selected and numCols/numRows recalculated beforehand */
-    getTileSizeFromImage(image, imageBorderSize = 0) {
-        const effectiveImageWidth = image.width - 2 * imageBorderSize;
-        const effectiveImageHeight = image.height - 2 * imageBorderSize;
-        return Math.max(effectiveImageWidth / this.numCols, effectiveImageHeight / this.numRows);
-    }
     getDownloadLink(isBitMask, tileSetName, inputTileSetName) {
-        const fileExtension = !this.userUpload?.fileExtension || !isBitMask
-            ? 'png'
-            : this.userUpload.fileExtension;
+        // RenderImage class has `this.src = canvas.toDataURL('image/png');` So no matter what, browser downloads in png
+        const fileExtension = 'png';
+        // !this.userUpload?.fileExtension || !isBitMask
+        //   ? 'png'
+        //   : this.userUpload.fileExtension;
         const fileName = this.userUpload?.fileName
             ? `${this.userUpload?.fileName}_`
             : '';

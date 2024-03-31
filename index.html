@@ -211,14 +211,14 @@
                 />
               </div>
               <div class="label">
-                <span class="label-text-alt">Square Tile Based on Tileset:</span>
+                <span class="label-text-alt">Tile Size Based on Tileset:</span>
                 <span class="label-text-alt" id="tileSize">---</span>
               </div>
             </label>
           </div>
         </div>
 
-        <!-- <hr class="my-4 w-full border-primary/50" /> -->
+        <!-- <hr class="w-full my-4 border-primary/50" /> -->
 
         <div id="Settings" class="container-max m-auto flex flex-col gap-4">
           <div class="card flex flex-row gap-4 p-4">
@@ -246,6 +246,55 @@
                 oninput="onUpdateSourceTileBorderSize()"
                 class="input input-bordered input-primary max-w-20"
               />
+            </label>
+
+            <label class="form-control max-w-xs cursor-pointer" for="godotSquareGrid">
+              <div class="label">
+                <span class="label-text">Godot Square Grid</span>
+              </div>
+              <input
+                type="checkbox"
+                id="godotSquareGrid"
+                checked="checked"
+                oninput="onToggleGodotSquareGrid()"
+                class="toggle toggle-primary toggle-lg"
+              />
+            </label>
+
+            <label class="form-control max-w-xs cursor-pointer" for="godotOriginOffset">
+              <div class="label">
+                <span class="label-text">Godot Tile Origin Offset</span>
+              </div>
+              <div class="join">
+                <input
+                  class="btn join-item"
+                  type="radio"
+                  id="godotOriginOffsetTop"
+                  name="godotOriginOffset"
+                  value="Top"
+                  onchange="onUpdateGodotTileOriginOffset()"
+                  aria-label="Top"
+                />
+                <input
+                  class="btn join-item"
+                  type="radio"
+                  id="godotOriginOffsetNone"
+                  name="godotOriginOffset"
+                  value="None"
+                  onchange="onUpdateGodotTileOriginOffset()"
+                  aria-label="None"
+                  checked="true"
+                />
+                <input
+                  class="btn join-item"
+                  type="radio"
+                  id="godotOriginOffsetBottom"
+                  name="godotOriginOffset"
+                  value="Bottom"
+                  onchange="onUpdateGodotTileOriginOffset()"
+                  aria-label="Bottom"
+                />
+              </div>
             </label>
           </div>
 
@@ -326,7 +375,7 @@
               />
             </label>
             <!--
-            <button onclick="onProcessImage()" class="btn btn-primary self-end">
+            <button onclick="onProcessImage()" class="self-end btn btn-primary">
               Re Process Image
             </button>
             -->

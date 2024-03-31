@@ -17,6 +17,10 @@ window.onUpdateOutputImageBorderSize = () => formatterPageComponent.onUpdateOutp
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 window.onUpdateOutputTileBorderSize = () => formatterPageComponent.onUpdateOutputTileBorderSize();
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+window.onToggleGodotSquareGrid = () => formatterPageComponent.onToggleGodotSquareGrid();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+window.onUpdateGodotTileOriginOffset = () => formatterPageComponent.onUpdateGodotTileOriginOffset();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 window.onUpdateBgColor = () => formatterPageComponent.onUpdateBgColor();
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 window.onUpdateBgAlpha = () => formatterPageComponent.onUpdateBgAlpha();

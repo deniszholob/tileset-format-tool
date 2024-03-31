@@ -97,13 +97,13 @@
     <link rel="stylesheet" href="./styles/styles.css" />
   </head>
 
-  <body class="min-w-screen flex h-svh min-h-screen flex-col justify-center" onload="onLoad()">
+  <body class="flex flex-col justify-center min-h-screen min-w-screen h-svh" onload="onLoad()">
     <!-- Without this image doesn't load programmatically for some reason -->
     <img id="bitMask32" src="assets/bit-mask-tiles-bw_32.png" class="hidden" />
     <img id="bitMask64" src="assets/bit-mask-tiles-bw_64.png" class="hidden" />
 
-    <div class="container-max h-full w-full p-4">
-      <section id="header" class="m-0 flex flex-col gap-2 rounded-btn bg-neutral p-4">
+    <div class="w-full h-full p-4 container-max">
+      <section id="header" class="flex flex-col gap-2 p-4 m-0 rounded-btn bg-neutral">
         <div class="flex flex-row flex-wrap items-center justify-center gap-4">
           <div class="flex flex-row items-center gap-4">
             <h1 class="text-3xl">Tile Set Tool</h1>
@@ -118,16 +118,16 @@
             </a>
           </div>
 
-          <div id="navLinks" class="flex flex-1 flex-row flex-wrap justify-center gap-10">
+          <div id="navLinks" class="flex flex-row flex-wrap justify-center flex-1 gap-10">
             <!-- Inject templateNavItem instances here -->
           </div>
           <template id="templateNavItem">
-            <a id="templateNavLink_idx_" href="./page.html" class="link link-secondary text-xl">
+            <a id="templateNavLink_idx_" href="./page.html" class="text-xl link link-secondary">
               PageTitle
             </a>
           </template>
 
-          <div class="flex flex-none flex-row items-center gap-4">
+          <div class="flex flex-row items-center flex-none gap-4">
             <a
               class="link link-primary tooltip tooltip-left"
               data-tip="Discord Chat"
@@ -144,7 +144,7 @@
               <i class="fa-brands fa-github fa-xl"></i>
             </a>
 
-            <div class="flex flex-col text-center text-sm">
+            <div class="flex flex-col text-sm text-center">
               <span>Updated</span>
               <span id="updateDate"></span>
             </div>
@@ -153,7 +153,7 @@
             <label class="swap swap-rotate">
               <input type="checkbox" class="theme-controller" value="dark" disabled />
               <i class="fa-solid fa-sun fa-lg swap-on text-amber-500"></i>
-              <i class="fa-solid fa-moon fa-lg swap-off text-purple-500"></i>
+              <i class="text-purple-500 fa-solid fa-moon fa-lg swap-off"></i>
             </label>
           </div>
         </div>
@@ -161,7 +161,7 @@
         <hr class="border-secondary/10" />
 
         <div class="flex gap-4">
-          <span class="text-muted text-center">
+          <span class="text-center text-muted">
             If you find the tool or source code useful, you can
           </span>
           <div class="flex gap-4">
@@ -191,7 +191,7 @@
           <div
             id="Settings_alert_unsaved"
             role="alert"
-            class="alert alert-warning m-auto hidden w-auto"
+            class="hidden w-auto m-auto alert alert-warning"
           >
             <i class="fa-solid fa-triangle-exclamation"></i>
             <span>Warning: You have unsaved changes</span>
@@ -212,7 +212,7 @@
           </div>
         </div>
 
-        <hr class="my-4 w-full border-primary/50" />
+        <hr class="w-full my-4 border-primary/50" />
 
         <div class="flex flex-row flex-wrap justify-center gap-4">
           <button class="btn btn-primary" onclick="onSaveChanges()">Save Changes</button>
@@ -223,13 +223,13 @@
 
       <section class="flex flex-col gap-4 px-0">
         <div class="settings-grid">
-          <div id="settings_imageSourceSettings" class="card flex-1 bg-neutral shadow-xl">
+          <div id="settings_imageSourceSettings" class="flex-1 shadow-xl card bg-neutral">
             <div class="card-body">
               <h2 class="card-title">Source Image</h2>
 
               <div class="form-group">
                 <label
-                  class="form-control max-w-xs cursor-pointer"
+                  class="max-w-xs cursor-pointer form-control"
                   for="Setting_SourceImg_OuterBorder"
                 >
                   <div class="label">
@@ -245,7 +245,7 @@
                 </label>
 
                 <label
-                  class="form-control max-w-xs cursor-pointer"
+                  class="max-w-xs cursor-pointer form-control"
                   for="Setting_SourceImg_TileBorder"
                 >
                   <div class="label">
@@ -263,12 +263,12 @@
             </div>
           </div>
 
-          <div id="settings_tilesets" class="card flex-1 bg-neutral shadow-xl">
+          <div id="settings_tilesets" class="flex-1 shadow-xl card bg-neutral">
             <div class="card-body">
               <h2 class="card-title">Tile Sets</h2>
 
               <div class="form-group">
-                <label for="Setting_TileSets_Source" class="form-control max-w-full">
+                <label for="Setting_TileSets_Source" class="max-w-full form-control">
                   <div class="label">
                     <span class="label-text">Input Tile Set</span>
                     <a
@@ -289,7 +289,7 @@
                   </select>
                 </label>
 
-                <label for="Setting_TileSets_Output" class="form-control max-w-full">
+                <label for="Setting_TileSets_Output" class="max-w-full form-control">
                   <div class="label">
                     <span class="label-text">Output Tile Set</span>
                     <a
@@ -313,12 +313,12 @@
             </div>
           </div>
 
-          <div id="settings_renderSettings" class="card flex-1 bg-neutral shadow-xl">
+          <div id="settings_renderSettings" class="flex-1 shadow-xl card bg-neutral">
             <div class="card-body">
               <h2 class="card-title">Render</h2>
 
               <div class="form-group">
-                <label class="form-control max-w-xs cursor-pointer" for="Setting_Render_TileID">
+                <label class="max-w-xs cursor-pointer form-control" for="Setting_Render_TileID">
                   <div class="label">
                     <span class="label-text">Show Tile ID</span>
                   </div>
@@ -333,7 +333,7 @@
 
                 <div class="flex flex-row gap-2">
                   <label
-                    class="form-control max-w-xs cursor-pointer"
+                    class="max-w-xs cursor-pointer form-control"
                     for="Setting_Render_Background"
                   >
                     <div class="label">
@@ -350,7 +350,7 @@
                   </label>
 
                   <label
-                    class="form-control max-w-xs cursor-pointer"
+                    class="max-w-xs cursor-pointer form-control"
                     for="Setting_Render_BackgroundAlpha"
                   >
                     <div class="label">
@@ -366,7 +366,7 @@
                       step="25"
                       oninput="onUpdateSettingRenderBackgroundAlpha()"
                     />
-                    <div class="flex w-full justify-between px-2 text-xs">
+                    <div class="flex justify-between w-full px-2 text-xs">
                       <span>0</span> <span>25</span> <span>50</span> <span>75</span>
                       <span>100</span>
                     </div>
@@ -374,7 +374,7 @@
                 </div>
 
                 <label
-                  class="form-control max-w-xs cursor-pointer"
+                  class="max-w-xs cursor-pointer form-control"
                   for="Setting_Render_OuterBorderSize"
                 >
                   <div class="label">
@@ -390,7 +390,7 @@
                 </label>
 
                 <label
-                  class="form-control max-w-xs cursor-pointer"
+                  class="max-w-xs cursor-pointer form-control"
                   for="Setting_Render_TileBorderSize"
                 >
                   <div class="label">
@@ -408,13 +408,13 @@
             </div>
           </div>
 
-          <div id="settings_bitMaskRenderSettings" class="card flex-1">
+          <div id="settings_bitMaskRenderSettings" class="flex-1 card">
             <div class="card-body">
               <h2 class="card-title">Bit Mask Render</h2>
 
               <div class="form-group">
                 <label
-                  class="form-control max-w-xs cursor-pointer"
+                  class="max-w-xs cursor-pointer form-control"
                   for="Setting_BitMask_FancyBorder"
                 >
                   <div class="label">
@@ -429,23 +429,23 @@
                   />
                 </label>
 
-                <label class="form-control max-w-xs cursor-pointer">
+                <label class="max-w-xs cursor-pointer form-control">
                   <div class="label">
                     <span class="label-text">Bit Mask Tile Size</span>
                   </div>
                   <div class="join" id="Setting_BitMask_TileSize">
                     <!-- Inject Radio Buttons here -->
-                    <div class="skeleton h-8 w-28"></div>
+                    <div class="h-8 skeleton w-28"></div>
                   </div>
                 </label>
 
                 <div class="flex flex-row gap-2">
                   <label
-                    class="form-control max-w-xs cursor-pointer"
+                    class="max-w-xs cursor-pointer form-control"
                     for="Setting_BitMask_Background"
                   >
                     <div class="label">
-                      <span class="label-text">Background</span>
+                      <span class="label-text">Terrain Border</span>
                     </div>
                     <div class="input-color input input-bordered">
                       <input
@@ -458,11 +458,11 @@
                   </label>
 
                   <label
-                    class="form-control max-w-xs cursor-pointer"
+                    class="max-w-xs cursor-pointer form-control"
                     for="Setting_BitMask_BackgroundAlpha"
                   >
                     <div class="label">
-                      <span class="label-text">Background Alpha</span>
+                      <span class="label-text">Terrain Border Alpha</span>
                     </div>
                     <input
                       type="range"
@@ -474,7 +474,7 @@
                       step="25"
                       oninput="onUpdateSettingBitMaskBackgroundAlpha()"
                     />
-                    <div class="flex w-full justify-between px-2 text-xs">
+                    <div class="flex justify-between w-full px-2 text-xs">
                       <span>0</span> <span>25</span> <span>50</span> <span>75</span>
                       <span>100</span>
                     </div>
@@ -482,9 +482,9 @@
                 </div>
 
                 <div class="flex flex-row gap-4">
-                  <label class="form-control max-w-xs cursor-pointer" for="Setting_BitMask_Color">
+                  <label class="max-w-xs cursor-pointer form-control" for="Setting_BitMask_Color">
                     <div class="label">
-                      <span class="label-text">Color</span>
+                      <span class="label-text">Terrain</span>
                     </div>
                     <div class="input-color input input-bordered">
                       <input
@@ -497,11 +497,11 @@
                   </label>
 
                   <label
-                    class="form-control max-w-xs cursor-pointer"
+                    class="max-w-xs cursor-pointer form-control"
                     for="Setting_BitMask_ColorAlpha"
                   >
                     <div class="label">
-                      <span class="label-text">Color Alpha</span>
+                      <span class="label-text">Terrain Alpha</span>
                     </div>
                     <input
                       type="range"
@@ -513,14 +513,14 @@
                       step="25"
                       oninput="onUpdateSettingBitMaskColorAlpha()"
                     />
-                    <div class="flex w-full justify-between px-2 text-xs">
+                    <div class="flex justify-between w-full px-2 text-xs">
                       <span>0</span> <span>25</span> <span>50</span> <span>75</span>
                       <span>100</span>
                     </div>
                   </label>
                 </div>
 
-                <label for="Setting_TileSets_Output" class="form-control max-w-full">
+                <label for="Setting_TileSets_Output" class="max-w-full form-control">
                   <div class="label">
                     <span class="label-text">Load Colors From Preset</span>
                   </div>

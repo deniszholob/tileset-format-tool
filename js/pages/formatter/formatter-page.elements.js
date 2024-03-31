@@ -7,6 +7,12 @@ export class HtmlElementsFormatterPage extends GenericPageHtmlElements {
     // =================================================
     sourceImageBorderSizeInput = this.getElementById('sourceImageBorderSizeInput');
     sourceTileBorderSizeInput = this.getElementById('sourceTileBorderSizeInput');
+    // -------------------------------------------------
+    godotSquareGrid = this.getElementById('godotSquareGrid');
+    godotOriginOffsetTop = this.getElementById('godotOriginOffsetTop');
+    godotOriginOffsetNone = this.getElementById('godotOriginOffsetNone');
+    godotOriginOffsetBottom = this.getElementById('godotOriginOffsetBottom');
+    // -------------------------------------------------
     outputImageBorderSizeInput = this.getElementById('outputImageBorderSizeInput');
     outputTileBorderSizeInput = this.getElementById('outputTileBorderSizeInput');
     bgColorInput = this.getElementById('bgColorInput');
